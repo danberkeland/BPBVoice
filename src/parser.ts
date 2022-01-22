@@ -2,27 +2,22 @@ import { SpeechSegment } from "@speechly/react-client";
 
 export enum IntentType {
   Unknown = "unknown",
-  Sort = "sort",
-  Filter = "filter",
-  Reset = "reset",
+  Customer = "customer",
+  Prado_pickup = "prado_pickup",
+  DelivDate = "delivDate",
+  Order = "order",
+  Check_prod_order = "check_prod_order"
 }
 
 export enum EntityType {
   CustName = "custName",
-  SortField = "sort_field",
+  DelivDate = "delivDate",
+  ProdName = "prodName",
+  Qty = 'qty'
 }
 
-export enum SortEntityType {
-  Unknown = "unknown",
-  DelivDate = "delivDate",
-  CustName = "custName",
-  ProdName = "prodName",
-  Qty = "qty"
-  
-}
 
 const SpeechIntentValues = Object.values(IntentType) as string[];
-const SortTypeValues = Object.values(SortEntityType) as string[];
 
 export function parseIntent(segment: SpeechSegment): IntentType {
   const { intent } = segment;
@@ -33,29 +28,15 @@ export function parseIntent(segment: SpeechSegment): IntentType {
 
   return IntentType.Unknown;
 }
-
+/*
 export function parseCustNameEntity(segment: SpeechSegment): string[] {
-  const langs: string[] = [];
+  const orderInfo: string[] = [];
 
   for (const e of segment.entities) {
     if (e.type === EntityType.CustName) {
-      langs.push(e.value.toLowerCase());
+      orderInfo.push(e.value.toLowerCase());
     }
   }
 
   return langs;
-}
-
-export function parseSortEntity(segment: SpeechSegment): SortEntityType {
-  let s = SortEntityType.Unknown;
-
-  for (const e of segment.entities) {
-    const val = e.value.toLowerCase();
-
-    if (e.type === EntityType.SortField && SortTypeValues.includes(val)) {
-      s = val as SortEntityType;
-    }
-  }
-
-  return s;
-}
+}*/

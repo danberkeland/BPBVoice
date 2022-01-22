@@ -1,0 +1,49 @@
+contexts:
+- name: BPBVoiceQuery
+  host: api.speechly.com
+  apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OTYzNmM3MTk3NjI1NzNkOWNiZjUyZTlhZDA4NWI5MDhmMWJiMmY1ZTYyMzBhMTFhMDIyNzFiNjRjNGI1OGQ5YmM3YzQ2N2M3MjYwZjc0NTQ4YjA1MWUzNDcyNjNhODNkN2Y0MTg2MTM4NjU0NjcwNDllZTViMThkYWE0MzNlNyIsInNjb3BlIjoiY29uZmlnIiwiaXNzIjoiaHR0cHM6Ly9hcGkuc3BlZWNobHkuY29tLyIsImF1ZCI6Imh0dHBzOi8vYXBpLnNwZWVjaGx5LmNvbS8ifQ.4k4oMfXNYPFQfwDpPNUdkNI2zXyV64HywRM-Pw4sd5A
+  remotename: BPBVoiceQuery
+current-context: BPBVoiceQuery
+
+imports:
+  - name: customers_normalized
+    source: customers.csv
+    field: 1
+  - name: customers_as_spoken
+    source: customers.csv
+    field: 2
+  - name: products_normalized
+    source: products.csv
+    field: 1
+  - name: products_as_spoken
+    source: products.csv
+    field: 2
+
+entities:
+  - name: custName
+    type: lookup
+    input_items: $customers_as_spoken
+    output_items: $customers_normalized
+  - name: delivDate
+    type: date
+  - name: prodName
+    type: lookup
+    input_items: $products_as_spoken
+    output_items: $products_normalized
+  - name: qty
+    type: number
+
+intents:
+  - name: customer
+  - name: prado_pickup
+  - name: delivDate
+  - name: order
+  - name: check_prod_order
+
+templates: |
+ *customer order for $customers_as_spoken(custName)
+ *prado_pickup [ slo pickup | prado pickup | san luis pickup | san luis obispo pickup ]
+ *delivDate $SPEECHLY.DATE(delivDate)
+ *order $SPEECHLY.NUMBER(qty) $products_as_spoken(prodName)
+ *check_prod_order how many $products_as_spoken(prodName) does $customers_as_spoken(custName) get $SPEECHLY.DATE(delivDate)
+

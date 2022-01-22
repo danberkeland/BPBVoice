@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@speechly/react-client": "^1.1.0",
+    "@speechly/react-ui": "^2.3.0",
     "@speechly/react-voice-forms": "^1.1.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
