@@ -28,15 +28,11 @@ export function parseIntent(segment: SpeechSegment): IntentType {
 
   return IntentType.Unknown;
 }
-/*
-export function parseCustNameEntity(segment: SpeechSegment): string[] {
+
+export function parseEntities(segment: SpeechSegment): string[] {
   const orderInfo: string[] = [];
-
-  for (const e of segment.entities) {
-    if (e.type === EntityType.CustName) {
-      orderInfo.push(e.value.toLowerCase());
-    }
+  for (const e of segment.entities) {  
+       orderInfo.push(e.value+" ");   
   }
-
-  return langs;
-}*/
+  return orderInfo;
+}

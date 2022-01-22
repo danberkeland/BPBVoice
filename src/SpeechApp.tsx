@@ -3,13 +3,17 @@ import { SpeechSegment, useSpeechContext } from "@speechly/react-client";
 
 import {
   IntentType,
-  parseIntent
+  EntityType,
+  parseIntent,
+  parseEntities
 } from "./parser";
 
 import { PushToTalkButton } from "@speechly/react-ui";
+import { setSyntheticTrailingComments } from "typescript";
 
 export const SpeechApp: React.FC = (): JSX.Element => {
-  const [filter, setFilter] = useState<IntentType>();
+  const [filter, setFilter ] = useState<IntentType>();
+  const [entities, setEntities ] = useState<string[]>();
  
   const { toggleRecording, speechState, segment } = useSpeechContext();
 
@@ -18,7 +22,10 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       return;
     }
     const nextFilter: IntentType = parseSegment(segment);
+    const nextEntities: string[] = parseEntities(segment);
+    
     setFilter(nextFilter);
+    setEntities(nextEntities)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segment]);
@@ -34,6 +41,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
       <div>Display decision goes here. </div>
       <div>{filter}</div>
+      <div>{entities}</div>
     </div>
   );
 };
