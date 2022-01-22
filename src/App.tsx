@@ -1,9 +1,13 @@
 import React from "react";
 import { SpeechProvider } from "@speechly/react-client";
+import Amplify from "aws-amplify";
+import awsconfig from "./aws-exports";
 
 import "./App.css";
 
 import { SpeechApp } from "./SpeechApp";
+
+Amplify.configure(awsconfig);
 
 function App(): JSX.Element {
   return (
