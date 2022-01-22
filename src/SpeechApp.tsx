@@ -32,7 +32,8 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         size="80px" >
       </PushToTalkButton>
 
-      <div>Display decision goes here.</div>
+      <div>Display decision goes here. </div>
+      <div>{filter}</div>
     </div>
   );
 };
