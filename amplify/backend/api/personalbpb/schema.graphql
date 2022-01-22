@@ -1,0 +1,223 @@
+type Customer @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  nickName: String!
+  custName: String!
+  zoneName: String
+  addr1: String
+  addr2: String
+  city: String
+  zip: String
+  email: String
+  firstName: String
+  lastName: String
+  phone: String
+  toBePrinted: Boolean
+  toBeEmailed: Boolean
+  printDuplicate: Boolean
+  terms: String
+  invoicing: String
+  prodsNotAllowed: [String]
+  latestFirstDeliv: Float
+  latestFinalDeliv: Float
+  webpageURL: String
+  picURL: String
+  gMap: String
+  specialInstructions: String
+  delivOrder: Int
+  customProd: [String]
+  templateProd: [String]
+  userSubs: [String]
+  qbID: String
+  currentBalance: String
+}
+
+type Product @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  prodName: String!
+  nickName: String!
+  packGroup: String
+  packSize: Int
+  doughType: String
+  freezerThaw: Boolean
+  eodCount: Boolean
+  packGroupOrder: Int
+  readyTime: Float
+  bakedWhere: [String]
+  wholePrice: Float
+  retailPrice: Float
+  isWhole: Boolean
+  depends: String
+  weight: Float
+  descrip: String
+  picURL: String
+  squareID: String
+  currentStock: Int
+  whoCountedLast: String
+  forBake: String
+  bakeExtra: Int
+  batchSize: Int
+  preshaped: Int
+  prepreshaped: Int
+  updatePreDate: String
+  updateFreezerDate: String
+  backporchbakerypre: Int
+  backporchbakery: Int
+  bpbextrapre: Int
+  bpbextra: Int
+  bpbssetoutpre: Int
+  bpbssetout: Int
+  defaultInclude: Boolean
+  leadTime: Int
+  qbID: String
+  freezerCount: Int
+  freezerClosing: Int
+  sheetMake: Int
+  freezerNorth: Int
+  freezerNorthClosing: Int
+  freezerNorthFlag: String
+}
+
+type Order @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  qty: Int
+  prodName: String!
+  custName: String
+  PONote: String
+  route: String
+  SO: Int
+  isWhole: Boolean
+  delivDate: String
+  timeStamp: String
+  rate: Float
+}
+
+type Standing @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  timeStamp: String
+  prodName: String
+  custName: String
+  isStand: Boolean
+  Sun: Int
+  Mon: Int
+  Tue: Int
+  Wed: Int
+  Thu: Int
+  Fri: Int
+  Sat: Int
+}
+
+type Holding @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  timeStamp: String
+  prodName: String
+  custName: String
+  Sun: Int
+  Mon: Int
+  Tue: Int
+  Wed: Int
+  Thu: Int
+  Fri: Int
+  Sat: Int
+  Test: String
+}
+
+type Route @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  routeName: String
+  routeStart: Float
+  routeTime: Float
+  RouteDepart: String
+  RouteArrive: String
+  RouteServe: [String]
+  RouteSched: [String]
+  printOrder: Int
+  driver: String
+}
+
+type Zone @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  zoneNum: Int
+  zoneName: String
+  zoneFee: Int
+}
+
+type AltPricing @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  custName: String
+  prodName: String
+  wholePrice: Float
+}
+
+type Closure @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  custName: String
+  firstDate: String
+  lastDate: String
+}
+
+type HeldforWeeklyInvoicing @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  custName: String!
+  delivDate: String!
+  prodName: String!
+  qty: Int
+  rate: Float
+}
+
+
+type Dough @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  doughName: String
+  hydration: Float
+  process: [String]
+  batchSize: Float
+  mixedWhere: String
+  components: [String]
+  oldDough: Float
+  isBakeReady: Boolean
+  buffer: Float
+  bucketSets: Int
+  preBucketSets: Int
+  updatePreBucket: String
+  saltInDry: Boolean
+ 
+}
+
+type DoughComponent @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  dough: String
+  componentType: String
+  componentName: String
+  amount: Float
+}
+
+type Notes @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  note: String
+  forWhom: String
+  byWhom: String
+  when: String
+}
+
+type AuthSettings @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  sub: String
+  authType: String
+  tempPassword: String
+  tempUsername: String
+  subSubs: [String]
+  firstName: String
+  lastName: String
+  businessName: String
+  phone: String
+  email: String
+  verified: Boolean
+}
+
+
+type InfoQBAuth @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  infoName: String
+  infoContent: String
+}
+
