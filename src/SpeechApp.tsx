@@ -21,7 +21,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     if (segment === undefined) {
       return;
     }
-    const nextFilter: IntentType = parseSegment(segment);
+    const nextFilter: IntentType = parseIntent(segment);
     const nextEntities: string[] = parseEntities(segment);
     
     setFilter(nextFilter);
@@ -45,9 +45,3 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     </div>
   );
 };
-
-function parseSegment(segment: SpeechSegment): IntentType{
-  const intent = parseIntent(segment);
-  console.log(intent)
-  return intent
-}
