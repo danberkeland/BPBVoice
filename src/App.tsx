@@ -9,8 +9,12 @@ import "./App.css";
 
 import { SpeechApp } from "./SpeechApp";
 
-Amplify.configure(awsconfig);
-Auth.configure(awsconfig);
+Amplify.configure({
+  ...awsconfig,
+  Auth: {
+      mandatorySignIn: true,
+  }
+})
 
 interface AuthProps {
   signOut: any,
