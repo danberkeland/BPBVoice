@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Amplify from "aws-amplify";
+import { Amplify, Auth }  from "aws-amplify";
 import awsconfig from "./aws-exports";
 
 Amplify.configure({
@@ -12,6 +12,8 @@ Amplify.configure({
       mandatorySignIn: true,
   }
 })
+
+Auth.configure(awsconfig)
 
 ReactDOM.render(
   <React.StrictMode>
