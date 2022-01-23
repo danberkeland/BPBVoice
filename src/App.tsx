@@ -10,15 +10,11 @@ import "./App.css";
 import { SpeechApp } from "./SpeechApp";
 
 Amplify.configure(awsconfig);
+Auth.configure(awsconfig);
 
 function App(): JSX.Element {
 
-  
-  useEffect(() => {
-    Auth.currentAuthenticatedUser()
-  }, []);
-
-
+ 
   return (
     <div className="App">
       <AmplifySignOut />
