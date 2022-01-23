@@ -13,7 +13,7 @@ import { setSyntheticTrailingComments } from "typescript";
 
 export const SpeechApp: React.FC = (): JSX.Element => {
   const [filter, setFilter ] = useState<IntentType>();
-  const [entities, setEntities ] = useState<string[]>();
+  const [entities, setEntities ] = useState<{ type: EntityType; value: string; }[]>();
  
   const { toggleRecording, speechState, segment } = useSpeechContext();
 
@@ -22,7 +22,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       return;
     }
     const nextFilter: IntentType = parseIntent(segment);
-    const nextEntities: string[] = parseEntities(segment);
+    const nextEntities: { type: EntityType; value: string; }[] = parseEntities(segment);
     
     setFilter(nextFilter);
     setEntities(nextEntities)
@@ -39,9 +39,15 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         size="80px" >
       </PushToTalkButton>
 
-      <div>Display decision goes here. </div>
+      <div>Display decisions: </div>
       <div>{filter}</div>
-      <div>{entities}</div>
+      {entities?.map((ent) => {
+        return(
+          <React.Fragment>
+            {ent.type} {ent.value}<br />
+          </React.Fragment>
+        )
+      })}
     </div>
   );
 };

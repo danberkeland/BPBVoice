@@ -29,10 +29,14 @@ export function parseIntent(segment: SpeechSegment): IntentType {
   return IntentType.Unknown;
 }
 
-export function parseEntities(segment: SpeechSegment): string[] {
-  const orderInfo: string[] = [];
-  for (const e of segment.entities) {  
-       orderInfo.push(e.value+" ");   
+export function parseEntities(segment: SpeechSegment): { type: EntityType, value: string }[] {
+  const orderInfo: { 
+    type: EntityType; 
+    value: string; 
+  }[] = []
+  for (const e of segment.entities) { 
+      let toAdd: { type: EntityType, value: string }  = {type: e.type as EntityType, value: e.value}
+       orderInfo.push(toAdd);   
   }
   return orderInfo;
 }

@@ -1,3 +1,5 @@
+# speechly deploy . -a 685bb1db-a418-4ff1-9a0c-dfcc888e23ec
+
 contexts:
 - name: BPBVoiceQuery
   host: api.speechly.com
@@ -43,7 +45,7 @@ intents:
 templates: |
  *customer order for $customers_as_spoken(custName)
  *prado_pickup [ slo pickup | prado pickup | san luis pickup | san luis obispo pickup ]
- *delivDate $SPEECHLY.DATE(delivDate)
- *order $SPEECHLY.NUMBER(qty) $products_as_spoken(prodName)
+ *delivDate delivery date $SPEECHLY.DATE(delivDate)
+ *order place order $SPEECHLY.NUMBER(qty) $products_as_spoken(prodName)
  *check_prod_order how many $products_as_spoken(prodName) does $customers_as_spoken(custName) get $SPEECHLY.DATE(delivDate)
 
