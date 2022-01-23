@@ -124,16 +124,7 @@ export const fetchOrders = async () => {
 
 export const promisedData = () => {
   const all: Promise<(
-    Product[] | 
-    Customer[] | 
-    Route[] | 
-    Standing[] | 
-    Dough[] | 
-    DoughComponent[] | 
-    AltPricing[] | 
-    InfoQBAuth[] | 
-    Order[]
-    )[]> = new Promise((resolve, reject) => {
+    [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]])> = new Promise((resolve, reject) => {
     resolve(fetchData());
   });
 
@@ -152,7 +143,7 @@ const fetchData = async () => {
   let doughComponents = await fetchDoughComponents();
   let altPricing = await fetchAltPricing();
   let QBInfo = await fetchQBInfo();
-  let data = [
+  let data: [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]] = [
     products,
     customers,
     routes,

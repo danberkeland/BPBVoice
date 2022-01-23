@@ -17,18 +17,9 @@ import { PushToTalkButton } from "@speechly/react-ui";
 export const SpeechApp: React.FC = (): JSX.Element => {
   const [ filter, setFilter ] = useState<IntentType>();
   const [ entities, setEntities ] = useState<{ type: EntityType; value: string; }[]>();
-  const [ database, setDatabase ] = useState<(Product[] | Customer[] | Route[] | Standing[] | Dough[] | DoughComponent[] | AltPricing[] | InfoQBAuth[] | Order[])[]>([])
+  const [ database, setDatabase ] = useState<[Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]>([[],[],[],[],[],[],[],[],[]])
  
   const { segment } = useSpeechContext();
-
-  useEffect(() => {
-    try{
-      console.log(database[0])
-    } catch{
-      console.log("Not loaded yet")
-    }
-    
-  },[database])
 
   useEffect(() => {
     promisedData()
@@ -61,8 +52,15 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       <div>{filter}</div>
       {entities?.map((ent) => {
         return(
-          <React.Fragment>
+          <React.Fragment key={ent.type + ent.value}>
             {ent.type} {ent.value}<br />
+          </React.Fragment>
+        )
+      })}
+      {database[0]?.map(data => {
+        return(
+          <React.Fragment key={data.prodName}>
+            {data.prodName}<br />
           </React.Fragment>
         )
       })}
