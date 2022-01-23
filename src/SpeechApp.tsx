@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { SpeechSegment, useSpeechContext } from "@speechly/react-client";
+import { useSpeechContext } from "@speechly/react-client";
+
+import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "./API";
 
 import {
   IntentType,
@@ -15,9 +17,9 @@ import { PushToTalkButton } from "@speechly/react-ui";
 export const SpeechApp: React.FC = (): JSX.Element => {
   const [ filter, setFilter ] = useState<IntentType>();
   const [ entities, setEntities ] = useState<{ type: EntityType; value: string; }[]>();
-  const [ database, setDatabase ] = useState([])
+  const [ database, setDatabase ] = useState<(Product[] | Customer[] | Route[] | Standing[] | Dough[] | DoughComponent[] | AltPricing[] | InfoQBAuth[] | Order[])[]>([])
  
-  const { toggleRecording, speechState, segment } = useSpeechContext();
+  const { segment } = useSpeechContext();
 
   useEffect(() => {
     try{
@@ -30,7 +32,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     promisedData()
-      .then((db: any) => setDatabase(db));
+      .then((db) => setDatabase(db));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
