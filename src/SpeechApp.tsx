@@ -13,18 +13,30 @@ import {
 import { promisedData } from "./helpers/databaseFetchers";
 
 import { PushToTalkButton } from "@speechly/react-ui";
+import { Auth } from "aws-amplify";
 
 export const SpeechApp: React.FC = (): JSX.Element => {
   const [ filter, setFilter ] = useState<IntentType>();
   const [ entities, setEntities ] = useState<{ type: EntityType; value: string; }[]>();
   const [ database, setDatabase ] = useState<[Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]>([[],[],[],[],[],[],[],[],[]])
- 
+  const [ userInfo, setUserInfo ] = useState()
+
   const { segment } = useSpeechContext();
 
+  const userInfoCheck = async () => {
+    const user = await Auth.currentAuthenticatedUser()
+    setUserInfo(user)
+  }
+
   useEffect(() => {
+    userInfoCheck()
+  },[])
+
+  useEffect(() => {
+    userInfo &&
     promisedData()
       .then((db) => setDatabase(db));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [userInfo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (segment === undefined) {

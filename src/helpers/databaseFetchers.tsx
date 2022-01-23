@@ -16,7 +16,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
 
 
-const fetchFromDataBase = async (baseFunc: any, base: string, limit: string) => {
+const fetchFromDataBase = async (baseFunc: any, base: any, limit: any) => {
   try {
     const data: any = await API.graphql(
       graphqlOperation(baseFunc, { limit: limit })
