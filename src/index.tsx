@@ -49,7 +49,14 @@ const AuthSetup = {
 
 const ampConfig = Amplify.configure({
   ...awsconfig,
-  Auth: AuthSetup
+  Auth: AuthSetup,
+  API: {
+    graphql_endpoint: "https://aceshl3krjg4rgtaxctab6f6je.appsync-api.us-east-2.amazonaws.com/graphql",
+    graphql_headers: async () => ({
+      'x-api-key': 'da2-qdistujpznfy5fl3u2onoimzmm'
+    })
+
+  }
 })
 
 console.log("ampConfig", ampConfig)

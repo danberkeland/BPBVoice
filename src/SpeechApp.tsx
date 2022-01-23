@@ -25,6 +25,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   const userInfoCheck = async () => {
     const user = await Auth.currentAuthenticatedUser()
+    console.log("user",user)
     setUserInfo(user)
   }
 
