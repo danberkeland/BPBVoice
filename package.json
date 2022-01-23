@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/preset-typescript": "^7.16.7",
     "@speechly/react-client": "^1.1.0",
     "@speechly/react-ui": "^2.3.0",
     "@speechly/react-voice-forms": "^1.1.1",
@@ -23,7 +24,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --verbose",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

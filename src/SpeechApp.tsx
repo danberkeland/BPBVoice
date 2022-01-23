@@ -8,14 +8,30 @@ import {
   parseEntities
 } from "./parser";
 
+import { promisedData } from "./helpers/databaseFetchers";
+
 import { PushToTalkButton } from "@speechly/react-ui";
-import { setSyntheticTrailingComments } from "typescript";
 
 export const SpeechApp: React.FC = (): JSX.Element => {
-  const [filter, setFilter ] = useState<IntentType>();
-  const [entities, setEntities ] = useState<{ type: EntityType; value: string; }[]>();
+  const [ filter, setFilter ] = useState<IntentType>();
+  const [ entities, setEntities ] = useState<{ type: EntityType; value: string; }[]>();
+  const [ database, setDatabase ] = useState([])
  
   const { toggleRecording, speechState, segment } = useSpeechContext();
+
+  useEffect(() => {
+    try{
+      console.log(database[0])
+    } catch{
+      console.log("Not loaded yet")
+    }
+    
+  },[database])
+
+  useEffect(() => {
+    promisedData()
+      .then((db: any) => setDatabase(db));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (segment === undefined) {
