@@ -2,7 +2,7 @@ import React, { useEffect} from "react";
 import { SpeechProvider } from "@speechly/react-client";
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "./aws-exports";
-import { AmplifySignOut } from "@aws-amplify/ui-react";
+import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 
 
 import "./App.css";
@@ -29,4 +29,4 @@ function App(): JSX.Element {
   );
 }
 
-export default App;
+export default withAuthenticator(App);
