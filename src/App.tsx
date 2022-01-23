@@ -1,20 +1,12 @@
-import React, { useEffect} from "react";
+import React from "react";
 import { SpeechProvider } from "@speechly/react-client";
-import Amplify, { Auth } from "aws-amplify";
-import awsconfig from "./aws-exports";
+
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
 
 import "./App.css";
 
 import { SpeechApp } from "./SpeechApp";
-
-Amplify.configure({
-  ...awsconfig,
-  Auth: {
-      mandatorySignIn: true,
-  }
-})
 
 interface AuthProps {
   signOut: any,
