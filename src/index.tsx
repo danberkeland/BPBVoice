@@ -9,11 +9,18 @@ import awsconfig from "./aws-exports";
 Amplify.configure({
   ...awsconfig,
   Auth: {
-      mandatorySignIn: true,
-  }
+
+    // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
+    identityPoolId: 'us-east-2:6862d50d-412d-432c-8d77-4867cef8fb94',
+    
+    // REQUIRED - Amazon Cognito Region
+    region: 'us-east-2',
+
+}
 })
 
-Auth.configure(awsconfig)
+const currentConfig = Auth.configure();
+console.log("currentConfig",currentConfig)
 
 ReactDOM.render(
   <React.StrictMode>
