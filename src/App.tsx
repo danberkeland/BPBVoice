@@ -2,7 +2,7 @@ import React, { useEffect} from "react";
 import { SpeechProvider } from "@speechly/react-client";
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "./aws-exports";
-import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
+import { AmplifySignOut } from "@aws-amplify/ui-react";
 
 
 import "./App.css";
