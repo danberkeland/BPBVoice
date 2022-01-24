@@ -16,6 +16,35 @@ import { getFullOrders } from "./helpers/getFullOrders"
 import { PushToTalkButton } from "@speechly/react-ui";
 import { Auth } from "aws-amplify";
 
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+
+import styled from "styled-components";
+
+const Title = styled.h2`
+  font-family: "Montserrat", sans-serif;
+  padding: 0;
+  margin: 40px 10px 5px 10px;
+  color: rgb(66, 97, 201);
+`;
+
+const DateStyle = styled.h3`
+  padding: 0;
+  color: black;
+  margin: 5px 10px 25px 10px;
+`;
+
+
+const BasicContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  border: 1px solid lightgray;
+  padding: 10px 10px;
+  margin: auto;
+  box-sizing: border-box;
+`;
+
 export const SpeechApp: React.FC = (): JSX.Element => {
   const [filter, setFilter] = useState<IntentType>();
   const [entities, setEntities] = useState<{ type: EntityType; value: string; }[]>();
@@ -58,16 +87,18 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     const nextFilter: IntentType = parseIntent(segment);
     const nextEntities: { type: EntityType; value: string; }[] = parseEntities(segment);
 
-    for (let ent of nextEntities){
-      if (ent.type === "custName"){
+    for (let ent of nextEntities) {
+      if (ent.type === "custName") {
         setCustomer(ent.value)
       }
-      if (ent.type === "delivDate"){
+      if (ent.type === "delivDate") {
         setDelivDate(ent.value)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segment]);
+
+  let custo = customers && customers[customers.findIndex(custo => custo.nickName === customer)].custName
 
   return (
     <div>
@@ -77,16 +108,17 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         intro="Push to talk"
         size="80px" >
       </PushToTalkButton>
-      <h1>{customers && customers[customers.findIndex(custo => custo.nickName === customer)].custName}</h1>
-      <h2>{delivDate}</h2>
-      {customers && order?.filter(or => (or.custName === customers[customers.findIndex(custo => custo.nickName === customer)].custName) && or.qty > 0).map((ord: any) => {
-        return (
-          <React.Fragment key={ord.delivDate + ord.prodName + ord.custName}>
-            
-            {ord.qty} {ord.prodName}<br />
-          </React.Fragment>
-        )
-      })}
+      <Title>{custo}</Title>
+      <DateStyle>{delivDate}</DateStyle>
+      <BasicContainer>
+        <div className="card">
+          <DataTable value={customers && order?.filter(or => (or.custName === custo  && or.qty > 0))} responsiveLayout="scroll">
+            <Column field="qty" header="Quantity"></Column>
+            <Column field="prodName" header="Product"></Column>
+          </DataTable>
+        </div>
+      </BasicContainer>
+
 
     </div>
   );
