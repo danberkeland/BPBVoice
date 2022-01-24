@@ -18,6 +18,7 @@ import { Auth } from "aws-amplify";
 
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Dropdown } from 'primereact/dropdown';
 
 import styled from "styled-components";
 
@@ -48,6 +49,7 @@ const BasicContainer = styled.div`
 export const SpeechApp: React.FC = (): JSX.Element => {
 
   const [userInfo, setUserInfo] = useState()
+  const [customerList, setCustomerList ] = useState([])
   const [customer, setCustomer] = useState<string>('novo')
   const [delivDate, setDelivDate] = useState<string>('2022-01-24')
   const [database, setDatabase] = useState<any>([])
@@ -75,6 +77,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
           getFullOrders(delivDate, db)).then((ords: any) => {
             setOrder(ords[0])
             setDatabase(ords[1])
+            setCustomerList(ords[2])
           });
 
   }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -109,6 +112,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       </PushToTalkButton>
       <Title>{custo}</Title>
       <DateStyle>{delivDate}</DateStyle>
+      <Dropdown value={custo} options={customerList} optionLabel="label" placeholder="Select a Customer" />
       <BasicContainer>
         <div className="card">
           <DataTable value={customers && order?.filter(or => (or.custName === custo  && or.qty > 0))} responsiveLayout="scroll">

@@ -41,6 +41,9 @@ intents:
   - name: delivDate
   - name: order
   - name: check_prod_order
+  - name: check_order
+  - name: set_customer
+  - name: set_delivDate
 
 templates: |
  *set_customer customer $customers_as_spoken(custName)

@@ -19,8 +19,10 @@ export const getFullOrders = (delivDate: any, database: any) => {
     let buildOrders = buildCartList("*", delivDate, orders);
     let buildStand = buildStandList("*", delivDate, standing);
     let fullOrder = compileFullOrderList(buildOrders, buildStand);
+    let customerList = buildCustomerList(fullOrder, customers)
+    console.log(customerList)
 
-    return [fullOrder, database];
+    return [fullOrder, database, customerList];
 };
 
 
@@ -110,5 +112,19 @@ export const sortAtoZDataByIndex = (data: any, index: any) => {
     });
     return data;
   };
+
+export const buildCustomerList = (fullOrder, customers) => {
+    fullOrder = fullOrder.filter(full => full.isWhole === true)
+    let customerList = fullOrder.map(ord => ord.custName)
+    customerList = new Set(customerList)
+    customerList = Array.from(customerList)
+    console.log(customers)
+    let customerListObj = customerList.map(custo => ({
+        label: custo,
+        value: customers[customers.findIndex(cust => cust.custName===custo)].nickName
+    }))
+    sortAtoZDataByIndex(customerListObj,"label")
+    return customerListObj
+}
 
 
