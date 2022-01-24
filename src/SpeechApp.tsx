@@ -46,8 +46,7 @@ const BasicContainer = styled.div`
 `;
 
 export const SpeechApp: React.FC = (): JSX.Element => {
-  const [filter, setFilter] = useState<IntentType>();
-  const [entities, setEntities] = useState<{ type: EntityType; value: string; }[]>();
+
   const [userInfo, setUserInfo] = useState()
   const [customer, setCustomer] = useState<string>('novo')
   const [delivDate, setDelivDate] = useState<string>('2022-01-24')
@@ -84,7 +83,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     if (segment === undefined) {
       return;
     }
-    const nextFilter: IntentType = parseIntent(segment);
+    
     const nextEntities: { type: EntityType; value: string; }[] = parseEntities(segment);
 
     for (let ent of nextEntities) {

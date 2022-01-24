@@ -43,9 +43,9 @@ intents:
   - name: check_prod_order
 
 templates: |
- *customer order for $customers_as_spoken(custName)
+ *set_customer customer $customers_as_spoken(custName)
  *prado_pickup [ slow pickup | prado pickup | san luis pickup | san luis obispo pickup ]
- *delivDate delivery date $SPEECHLY.DATE(delivDate)
+ *set_delivDate delivery date $SPEECHLY.DATE(delivDate)
  *order place order $SPEECHLY.NUMBER(qty) {[ bags of | each]} $products_as_spoken(prodName)
  *check_prod_order how many $products_as_spoken(prodName) does $customers_as_spoken(custName) get $SPEECHLY.DATE(delivDate)
  *order place order $products_as_spoken(prodName) quantity $SPEECHLY.NUMBER(qty)
