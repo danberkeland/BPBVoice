@@ -112,7 +112,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       </PushToTalkButton>
       <Title>{custo}</Title>
       <DateStyle>{delivDate}</DateStyle>
-      <Dropdown value={custo} options={customerList} optionLabel="label" placeholder="Select a Customer" />
+      <Dropdown value={customer} options={customerList} onChange={e => setCustomer(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
         <div className="card">
           <DataTable value={customers && order?.filter(or => (or.custName === custo  && or.qty > 0))} responsiveLayout="scroll">
