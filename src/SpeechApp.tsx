@@ -11,33 +11,45 @@ import {
 } from "./parser";
 
 import { promisedData } from "./helpers/databaseFetchers";
+import { getFullOrders } from "./helpers/getFullOrders"
 
 import { PushToTalkButton } from "@speechly/react-ui";
 import { Auth } from "aws-amplify";
 
 export const SpeechApp: React.FC = (): JSX.Element => {
-  const [ filter, setFilter ] = useState<IntentType>();
-  const [ entities, setEntities ] = useState<{ type: EntityType; value: string; }[]>();
-  const [ database, setDatabase ] = useState<[Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]>([[],[],[],[],[],[],[],[],[]])
-  const [ userInfo, setUserInfo ] = useState()
+  const [filter, setFilter] = useState<IntentType>();
+  const [entities, setEntities] = useState<{ type: EntityType; value: string; }[]>();
+  const [userInfo, setUserInfo] = useState()
+  const [customer, setCustomer] = useState<string>('novo')
+  const [delivDate, setDelivDate] = useState<string>('2022-01-24')
+  const [database, setDatabase] = useState<any>([])
+  const [order, setOrder] = useState<any>()
+
+  const [products, customers, routes, standing, orders] = database;
+
 
   const { segment } = useSpeechContext();
 
   const userInfoCheck = async () => {
     const user = await Auth.currentAuthenticatedUser()
-    console.log("user",user)
+    console.log("user", user)
     setUserInfo(user)
   }
 
   useEffect(() => {
     userInfoCheck()
-  },[])
+  }, [])
 
   useEffect(() => {
     userInfo &&
-    promisedData()
-      .then((db) => setDatabase(db));
-  }, [userInfo]); // eslint-disable-line react-hooks/exhaustive-deps
+      promisedData()
+        .then((db) =>
+          getFullOrders(delivDate, db)).then((ords: any) => {
+            setOrder(ords[0])
+            setDatabase(ords[1])
+          });
+
+  }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (segment === undefined) {
@@ -45,10 +57,15 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     }
     const nextFilter: IntentType = parseIntent(segment);
     const nextEntities: { type: EntityType; value: string; }[] = parseEntities(segment);
-    
-    setFilter(nextFilter);
-    setEntities(nextEntities)
 
+    for (let ent of nextEntities){
+      if (ent.type === "custName"){
+        setCustomer(ent.value)
+      }
+      if (ent.type === "delivDate"){
+        setDelivDate(ent.value)
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segment]);
 
@@ -61,22 +78,14 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         size="80px" >
       </PushToTalkButton>
 
-      <div>Display decisions: </div>
-      <div>{filter}</div>
-      {entities?.map((ent) => {
-        return(
-          <React.Fragment key={ent.type + ent.value}>
-            {ent.type} {ent.value}<br />
+      {customers && order?.filter(or => (or.custName === customers[customers.findIndex(custo => custo.nickName === customer)].custName) && or.qty > 0).map((ord: any) => {
+        return (
+          <React.Fragment key={ord.delivDate + ord.prodName + ord.custName}>
+            {ord.delivDate} {ord.prodName} {ord.qty}<br />
           </React.Fragment>
         )
       })}
-      {database[0]?.map(data => {
-        return(
-          <React.Fragment key={data.prodName}>
-            {data.prodName}<br />
-          </React.Fragment>
-        )
-      })}
+
     </div>
   );
 };

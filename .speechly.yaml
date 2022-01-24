@@ -49,4 +49,5 @@ templates: |
  *order place order $SPEECHLY.NUMBER(qty) {[ bags of | each]} $products_as_spoken(prodName)
  *check_prod_order how many $products_as_spoken(prodName) does $customers_as_spoken(custName) get $SPEECHLY.DATE(delivDate)
  *order place order $products_as_spoken(prodName) quantity $SPEECHLY.NUMBER(qty)
+ *check_order order for $customers_as_spoken(custName) delivery $SPEECHLY.DATE(delivDate)
 
