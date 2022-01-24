@@ -69,6 +69,8 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segment]);
 
+  let custo = customers[customers.findIndex(custo => custo.nickName === customer)].custName
+
   return (
     <div>
       <PushToTalkButton
@@ -77,11 +79,13 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         intro="Push to talk"
         size="80px" >
       </PushToTalkButton>
-
-      {customers && order?.filter(or => (or.custName === customers[customers.findIndex(custo => custo.nickName === customer)].custName) && or.qty > 0).map((ord: any) => {
+      <h1>{custo}</h1>
+      <h2>{delivDate}</h2>
+      {customers && order?.filter(or => (or.custName === custo) && or.qty > 0).map((ord: any) => {
         return (
           <React.Fragment key={ord.delivDate + ord.prodName + ord.custName}>
-            {ord.delivDate} {ord.prodName} {ord.qty}<br />
+            
+            {ord.qty} {ord.prodName}<br />
           </React.Fragment>
         )
       })}
