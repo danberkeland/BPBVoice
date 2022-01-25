@@ -9,7 +9,7 @@ import {
 } from "./parser";
 
 import { promisedData } from "./helpers/databaseFetchers";
-import { getOrders } from "./helpers/getFullOrders"
+import { convertDatetoBPBDate, getOrders } from "./helpers/getFullOrders"
 
 import { PushToTalkButton } from "@speechly/react-ui";
 import { Auth } from "aws-amplify";
@@ -17,6 +17,7 @@ import { Auth } from "aws-amplify";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
 
 import styled from "styled-components";
 
@@ -48,7 +49,8 @@ const BasicContainer = styled.div`
 
 const { DateTime } = require("luxon");
 
-let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0];
+let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0]
+console.log(today)
 
 
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
@@ -58,7 +60,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const [userInfo, setUserInfo] = useState()
   const [customerList, setCustomerList ] = useState<{label: string; value: string;}[]>([])
   const [customer, setCustomer] = useState<string>('novo')
-  const [delivDate, setDelivDate] = useState<string>(today)
+  const [delivDate, setDelivDate] = useState<any>(today)
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
 
@@ -71,6 +73,10 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     const user = await Auth.currentAuthenticatedUser()
     setUserInfo(user)
   }
+
+  useEffect(() => {
+    console.log(delivDate)
+  },[delivDate])
 
   useEffect(() => {
     userInfoCheck()
@@ -108,6 +114,16 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   let custo = customers.length>0 && customers[customers.findIndex(custo => custo.nickName === customer)].custName
 
+  const calDateSetter = (e) => {
+    var today = e.value
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    setDelivDate(today)
+  }
+
   return (
     <div>
       <PushToTalkButton
@@ -117,7 +133,9 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         size="80px" >
       </PushToTalkButton>
       <Title>{custo}</Title>
-      <DateStyle>{delivDate}</DateStyle>
+      <div className="field col-12 md:col-4">
+                        <Calendar id="touchUI" value={new Date(delivDate+" 00:00:00")} onChange={(e) => calDateSetter(e)} touchUI />
+                    </div>
       <Dropdown value={customer} options={customerList} onChange={e => setCustomer(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
         <div className="card">
