@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSpeechContext } from "@speechly/react-client";
 
-
-
 import {
   IntentType,
   EntityType,
@@ -48,6 +46,11 @@ const BasicContainer = styled.div`
   box-sizing: border-box;
 `;
 
+const { DateTime } = require("luxon");
+
+let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0];
+
+
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
 export const SpeechApp: React.FC = (): JSX.Element => {
@@ -55,7 +58,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const [userInfo, setUserInfo] = useState()
   const [customerList, setCustomerList ] = useState<{label: string; value: string;}[]>([])
   const [customer, setCustomer] = useState<string>('novo')
-  const [delivDate, setDelivDate] = useState<string>('2022-01-24')
+  const [delivDate, setDelivDate] = useState<string>(today)
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
 
