@@ -125,7 +125,8 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   }
 
   const convertToDisplayDate = (d: string): Date => {
-    return new Date(d)
+    var dateSplit = d.split('-')
+    return new Date(Number(dateSplit[0]),Number(dateSplit[1])-1,Number(dateSplit[2]),0,0)
 
   }
 
@@ -139,7 +140,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       </PushToTalkButton>
       <Title>{custo}</Title>
       <div className="field col-12 md:col-4">
-                        <Calendar id="touchUI" placeholder={convertToDisplayDate(delivDate).toString()} value ={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
+                        <Calendar id="touchUI" value ={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
                     </div>
       <Dropdown value={customer} options={customerList} onChange={e => setCustomer(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
