@@ -125,7 +125,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   }
 
   const convertToDisplayDate = (d: string): Date => {
-    return new Date(d+" 00:00:00")
+    return new Date(d)
 
   }
 
