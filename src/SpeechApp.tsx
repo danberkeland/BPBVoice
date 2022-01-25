@@ -60,7 +60,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const [userInfo, setUserInfo] = useState()
   const [customerList, setCustomerList ] = useState<{label: string; value: string;}[]>([])
   const [customer, setCustomer] = useState<string>('novo')
-  const [delivDate, setDelivDate] = useState<any>(today)
+  const [delivDate, setDelivDate] = useState<string>(today)
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
 
@@ -124,7 +124,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     setDelivDate(today)
   }
 
-  const convertToDisplayDate = (d) => {
+  const convertToDisplayDate = (d: string): Date => {
     return new Date(d+" 00:00:00")
 
   }
@@ -139,7 +139,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       </PushToTalkButton>
       <Title>{custo}</Title>
       <div className="field col-12 md:col-4">
-                        <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
+                        <Calendar id="touchUI" placeholder={convertToDisplayDate(delivDate).toString()} value ={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
                     </div>
       <Dropdown value={customer} options={customerList} onChange={e => setCustomer(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
