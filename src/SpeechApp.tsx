@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSpeechContext } from "@speechly/react-client";
 
 import {
@@ -22,6 +22,8 @@ import { Calendar } from 'primereact/calendar';
 import styled from "styled-components";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "./API";
+import { ToggleContext } from "./Contexts/ToggleContexts";
+import Loader from "./Loader";
 
 const Title = styled.h2`
   font-family: "Montserrat", sans-serif;
@@ -64,6 +66,9 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
 
+  const { isLoading, setIsLoading} = useContext(ToggleContext)
+
+
   const [products, customers, routes, standing, orders] = database;
 
 
@@ -83,6 +88,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
+    setIsLoading(true)
     userInfo &&
       promisedData()
         .then((db) =>
@@ -90,6 +96,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
             setOrder(ords[0])
             setDatabase(ords[1])
             setCustomerList(ords[2])
+            setIsLoading(false)
           });
 
   }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -132,6 +139,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   return (
     <div>
+      {isLoading && <Loader />}
       <PushToTalkButton
         placement="bottom"
         captureKey=" "

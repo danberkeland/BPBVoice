@@ -1,10 +1,13 @@
-import React from "react";
+import React, {useContext} from "react";
 import { SpeechProvider } from "@speechly/react-client";
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
 
 import "./App.css";
+
+import Loader from "./Loader";
+import { ToggleProvider } from "./Contexts/ToggleContexts"
 
 import { SpeechApp } from "./SpeechApp";
 
@@ -36,9 +39,11 @@ interface AuthProps {
 
 function App(props:AuthProps): JSX.Element {
 
- 
+  
   return (
-    <div className="App">
+    <ToggleProvider>
+      <div className="App">
+     
       <>
       <Title>Back Porch Bakery</Title>
       <UserStyle>Hello {props.user.username}</UserStyle>
@@ -48,6 +53,8 @@ function App(props:AuthProps): JSX.Element {
         <SpeechApp />
       </SpeechProvider>
     </div>
+    </ToggleProvider>
+    
   );
 }
 
