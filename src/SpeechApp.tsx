@@ -43,7 +43,7 @@ const BasicContainer = styled.div`
   width: 80%;
   border: 1px solid lightgray;
   padding: 10px 10px;
-  margin: auto;
+  margin: 10px auto 150px auto;
   box-sizing: border-box;
 `;
 
@@ -124,8 +124,8 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     setDelivDate(today)
   }
 
-  const convertToDisplayDate = (delivDate) => {
-    return new Date(delivDate+" 00:00:00")
+  const convertToDisplayDate = (d) => {
+    return new Date(d+" 00:00:00")
 
   }
 
