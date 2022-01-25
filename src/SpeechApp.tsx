@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSpeechContext } from "@speechly/react-client";
 
-import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "./API";
+
 
 import {
   IntentType,
@@ -11,7 +11,7 @@ import {
 } from "./parser";
 
 import { promisedData } from "./helpers/databaseFetchers";
-import { getFullOrders } from "./helpers/getFullOrders"
+import { getOrders } from "./helpers/getFullOrders"
 
 import { PushToTalkButton } from "@speechly/react-ui";
 import { Auth } from "aws-amplify";
@@ -21,6 +21,8 @@ import { Column } from 'primereact/column';
 import { Dropdown } from 'primereact/dropdown';
 
 import styled from "styled-components";
+
+import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "./API";
 
 const Title = styled.h2`
   font-family: "Montserrat", sans-serif;
@@ -46,14 +48,16 @@ const BasicContainer = styled.div`
   box-sizing: border-box;
 `;
 
+type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
+
 export const SpeechApp: React.FC = (): JSX.Element => {
 
   const [userInfo, setUserInfo] = useState()
-  const [customerList, setCustomerList ] = useState([])
+  const [customerList, setCustomerList ] = useState<{label: string; value: string;}[]>([])
   const [customer, setCustomer] = useState<string>('novo')
   const [delivDate, setDelivDate] = useState<string>('2022-01-24')
-  const [database, setDatabase] = useState<any>([])
-  const [order, setOrder] = useState<any>()
+  const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
+  const [order, setOrder] = useState<Order[]>()
 
   const [products, customers, routes, standing, orders] = database;
 
@@ -62,7 +66,6 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   const userInfoCheck = async () => {
     const user = await Auth.currentAuthenticatedUser()
-    console.log("user", user)
     setUserInfo(user)
   }
 
@@ -74,7 +77,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     userInfo &&
       promisedData()
         .then((db) =>
-          getFullOrders(delivDate, db)).then((ords: any) => {
+          getOrders(delivDate, db)).then((ords) => {
             setOrder(ords[0])
             setDatabase(ords[1])
             setCustomerList(ords[2])
@@ -100,7 +103,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segment]);
 
-  let custo = customers && customers[customers.findIndex(custo => custo.nickName === customer)].custName
+  let custo = customers.length>0 && customers[customers.findIndex(custo => custo.nickName === customer)].custName
 
   return (
     <div>

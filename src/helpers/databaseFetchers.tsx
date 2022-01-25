@@ -13,8 +13,7 @@ import {
 import { sortAtoZDataByIndex } from "./sortDataHelpers";
 
 import { API, graphqlOperation } from "aws-amplify";
-import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
-
+import { Customer, Route, Standing, Dough, Order, DoughComponent, AltPricing, InfoQBAuth, Product } from "../API";
 
 const fetchFromDataBase = async (baseFunc: any, base: any, limit: any) => {
   try {

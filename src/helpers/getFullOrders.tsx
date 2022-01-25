@@ -1,11 +1,15 @@
 import { wildcardRegExp } from "wildcard-regex";
 
+import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
+
 const clonedeep = require("lodash.clonedeep");
 
 const { DateTime } = require("luxon");
 
 
-export const convertDatetoBPBDate = (ISODate: any) => {
+export type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
+
+export const convertDatetoBPBDate = (ISODate: string) => {
     let splitDate = ISODate.split("-");
     let day = splitDate[1];
     let mo = splitDate[2];
@@ -14,43 +18,45 @@ export const convertDatetoBPBDate = (ISODate: any) => {
 };
 
 
-export const getFullOrders = (delivDate: any, database: any) => {
+export const getOrders = (delivDate: string, database: Database): [Order[], Database, {
+    label: string;
+    value: string;
+}[]] => {
     const [products, customers, routes, standing, orders] = database;
-    let buildOrders = buildCartList("*", delivDate, orders);
-    let buildStand = buildStandList("*", delivDate, standing);
-    let fullOrder = compileFullOrderList(buildOrders, buildStand);
-    let customerList = buildCustomerList(fullOrder, customers)
-    console.log(customerList)
-
-    return [fullOrder, database, customerList];
+    let buildOrders: Order[] = buildCartList("*", delivDate, orders);
+    let buildStand: Order[] = buildStandList("*", delivDate, standing);
+    let Order: Order[] = compileOrderList(buildOrders, buildStand);
+    Order = Order.filter(full => full.qty>0)
+    let customerList: { label: string, value: string }[] = buildCustomerList(Order, customers)
+    return [Order, database, customerList];
 };
 
 
-export const buildCartList = (chosen: any, delivDate: any, orders: any) => {
+export const buildCartList = (chosen: string, delivDate: string, orders: Order[]) => {
     let BPBDate = convertDatetoBPBDate(delivDate);
-    let filteredOrders = clonedeep(orders);
-    let builtCartList = [];
+    let filteredOrders: Order[] = clonedeep(orders);
+    let builtCartList: Order[] = [];
     if (filteredOrders) {
         builtCartList = filteredOrders.filter(
-            (order: any) =>
-                order["delivDate"] === BPBDate &&
-                order["custName"].match(wildcardRegExp(`${chosen}`))
+            (order) =>
+                order.delivDate === BPBDate &&
+                order.custName.match(wildcardRegExp(`${chosen}`))
         );
     }
 
     return builtCartList;
 };
 
-export const buildStandList = (chosen: any, delivDate: any, standing: any) => {
-    let filteredStanding = clonedeep(standing);
-    let builtStandList = [];
+export const buildStandList = (chosen: string, delivDate: string, standing: Standing[]): Order[] => {
+    let filteredStanding: Standing[] = clonedeep(standing);
+    let builtStandList: Standing[] = [];
     builtStandList = filteredStanding.filter((stand: any) =>
         stand["custName"].match(wildcardRegExp(`${chosen}`))
     );
 
     builtStandList = builtStandList.filter((stand: any) => stand.isStand === true);
 
-    let convertedStandList = convertStandListtoStandArray(
+    let convertedStandList: Order[] = convertStandListtoStandArray(
         builtStandList,
         delivDate
 
@@ -60,19 +66,19 @@ export const buildStandList = (chosen: any, delivDate: any, standing: any) => {
 
 
 const convertStandListtoStandArray = (
-    builtStandList: any,
-    delivDate: any
+    builtStandList: Standing[],
+    delivDate: string
 
-) => {
+): Order[] => {
     let dateSplit = delivDate.split("-");
     let dayOfWeek = DateTime.local(
         Number(dateSplit[0]),
         Number(dateSplit[1]),
         Number(dateSplit[2])
     ).weekdayShort;
-    let convertedStandList = builtStandList.map((order: any) => ({
+    let convertedStandList: Order[] = builtStandList.map((order) => ({
+       
         id: null,
-        version: order["_version"],
         qty: order[dayOfWeek],
         prodName: order["prodName"],
         custName: order["custName"],
@@ -81,12 +87,19 @@ const convertStandListtoStandArray = (
         delivDate: convertDatetoBPBDate(delivDate),
         timeStamp: order["timeStamp"],
         SO: order[dayOfWeek],
+        rate: 0,
+        route: '',
+        createdAt: '',
+        updatedAt: '',
+        PONote: '',
+        __typename: "Order",   
+       
     }));
     return convertedStandList;
 };
 
 
-export const compileFullOrderList = (cartList: any, standList: any) => {
+export const compileOrderList = (cartList: Order[], standList: Order[]) => {
     let orderList = cartList.concat(standList);
 
     // Remove old cart order from orders if it exists
@@ -106,20 +119,19 @@ export const compileFullOrderList = (cartList: any, standList: any) => {
 };
 
 
-export const sortAtoZDataByIndex = (data: any, index: any) => {
+export const sortAtoZDataByIndex = (data: any[], index: string) => {
     data.sort(function (a: any, b: any) {
       return a[index] > b[index] ? 1 : -1;
     });
     return data;
   };
 
-export const buildCustomerList = (fullOrder, customers) => {
-    fullOrder = fullOrder.filter(full => full.isWhole === true)
-    let customerList = fullOrder.map(ord => ord.custName)
-    customerList = new Set(customerList)
-    customerList = Array.from(customerList)
-    console.log(customers)
-    let customerListObj = customerList.map(custo => ({
+export const buildCustomerList = (Order: Order[], customers: Customer[]) => {
+    Order = Order.filter(full => full.isWhole === true)
+    let customerList: string[] = Order.map(ord => ord.custName)
+    let customerListSet = new Set(customerList)
+    let customerListArray = Array.from(customerListSet)
+    let customerListObj = customerListArray.map(custo => ({
         label: custo,
         value: customers[customers.findIndex(cust => cust.custName===custo)].nickName
     }))
