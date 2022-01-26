@@ -3,7 +3,7 @@
 
 const APIkey = "da2-qdistujpznfy5fl3u2onoimzmm";
 
-const awsmobile = {
+const awsmobile = {Amplify: {
   aws_project_region: "us-east-2",
   aws_appsync_graphqlEndpoint:
     "https://aceshl3krjg4rgtaxctab6f6je.appsync-api.us-east-2.amazonaws.com/graphql",
@@ -35,7 +35,7 @@ const awsmobile = {
   aws_cognito_region: "us-east-2",
   aws_user_pools_id: "us-east-2_BsLDGfO0R",
   aws_user_pools_web_client_id: "4hhvnta9vje0k9bimhagcjtrob",
-  oauth: {},
+  oauth: {}},
 
   Auth: {
     userPoolId: "us-east-2_BsLDGfO0R",
