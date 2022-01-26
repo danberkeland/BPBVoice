@@ -44,3 +44,5 @@ export const APISetup = {
     }),
   },
 };
+
+export default awsconfig
