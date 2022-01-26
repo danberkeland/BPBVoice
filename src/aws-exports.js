@@ -3,7 +3,7 @@
 
 const APIkey = "da2-qdistujpznfy5fl3u2onoimzmm"
 
-export const awsconfig = {
+const awsconfig = {
   aws_project_region: "us-east-2",
   aws_appsync_graphqlEndpoint:
     "https://aceshl3krjg4rgtaxctab6f6je.appsync-api.us-east-2.amazonaws.com/graphql",
