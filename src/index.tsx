@@ -7,8 +7,10 @@ import { Amplify, Auth }  from "aws-amplify";
 import awsconfig from "./aws-exports";
 
 
-let config = Amplify.configure(
-  awsconfig
+let config = Amplify.configure({
+  ...awsconfig
+}
+  
 )
 console.log("config", config)
 
