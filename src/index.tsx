@@ -4,13 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Amplify, Auth }  from "aws-amplify";
-import awsconfig, {AuthSetup, APISetup } from "./aws-exports";
+import awsExport from "./aws-exports";
 
 
-const ampConfig = Amplify.configure({
-  ...awsconfig,
-  Auth: AuthSetup,
-  API: APISetup})
+const ampConfig = Amplify.configure(awsExport)
 
 
 console.log("ampConfig", ampConfig)
