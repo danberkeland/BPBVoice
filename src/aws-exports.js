@@ -81,10 +81,6 @@ const awsmobile = {
   "oauth": {}
 };
 
-const awsExport = {
-    ...awsmobile,
-    Auth: AuthSetup,
-    API: APISetup}
 
 
-export default awsExport;
+export default awsmobile;

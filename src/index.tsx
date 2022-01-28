@@ -4,16 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Amplify, Auth }  from "aws-amplify";
-import awsExport from "./aws-exports";
+import awsexports, {AuthSetup, APISetup} from "./aws-exports";
 
 
-const ampConfig = Amplify.configure(awsExport)
-
-
-console.log("ampConfig", ampConfig)
+const ampConfig = Amplify.configure({
+  ...awsexports,
+  Auth: AuthSetup,
+  API: APISetup})
 
 const authConfig = Auth.configure();
-console.log("authConfig",authConfig)
 
 ReactDOM.render(
   <React.StrictMode>
