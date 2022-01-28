@@ -9,15 +9,17 @@ import {
 } from "./parser";
 
 import { promisedData } from "./helpers/databaseFetchers";
-import { convertDatetoBPBDate, getOrders } from "./helpers/getFullOrders"
+import { getOrders } from "./helpers/getFullOrders"
 
 import { PushToTalkButton } from "@speechly/react-ui";
 import { Auth } from "aws-amplify";
 
+import { PrimeIcons } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber';
 
 import styled from "styled-components";
 
@@ -31,13 +33,6 @@ const Title = styled.h2`
   margin: 40px 10px 5px 10px;
   color: rgb(66, 97, 201);
 `;
-
-const DateStyle = styled.h3`
-  padding: 0;
-  color: black;
-  margin: 5px 10px 25px 10px;
-`;
-
 
 const BasicContainer = styled.div`
   display: flex;
@@ -78,10 +73,6 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     const user = await Auth.currentAuthenticatedUser()
     setUserInfo(user)
   }
-
-  useEffect(() => {
-    console.log(delivDate)
-  },[delivDate])
 
   useEffect(() => {
     userInfoCheck()
@@ -137,6 +128,11 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   }
 
+  const quantityTemplate = (rowData) => {
+    console.log("rowData",rowData)
+    return <InputNumber value={rowData.qty} size={4} incrementButtonIcon='pi pi-plus' decrementButtonIcon='pi pi-minus' showButtons />;
+  }
+
   return (
     <div>
       {isLoading && <Loader />}
@@ -154,7 +150,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       <BasicContainer>
         <div className="card">
           <DataTable value={customers && order?.filter(or => (or.custName === custo  && or.qty > 0))} responsiveLayout="scroll">
-            <Column field="qty" header="Quantity"></Column>
+            <Column header="Quantity" body={quantityTemplate}></Column>
             <Column field="prodName" header="Product"></Column>
           </DataTable>
         </div>
