@@ -130,7 +130,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   const quantityTemplate = (rowData) => {
     console.log("rowData",rowData)
-    return <InputNumber value={rowData.qty} size={4} incrementButtonIcon='pi pi-plus' decrementButtonIcon='pi pi-minus' showButtons />;
+    return <InputNumber value={rowData.qty} size={4} buttonLayout="horizontal" incrementButtonIcon='pi pi-plus' decrementButtonIcon='pi pi-minus' showButtons />;
   }
 
   return (
