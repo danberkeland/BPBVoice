@@ -55,13 +55,13 @@ type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], D
 export const SpeechApp: React.FC = (): JSX.Element => {
 
   const [userInfo, setUserInfo] = useState()
-  const [customerList, setCustomerList ] = useState<{label: string; value: string;}[]>([])
+  const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>([])
   const [customer, setCustomer] = useState<string>('novo')
   const [delivDate, setDelivDate] = useState<string>(today)
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
 
-  const { isLoading, setIsLoading} = useContext(ToggleContext)
+  const { isLoading, setIsLoading } = useContext(ToggleContext)
 
 
   const [products, customers, routes, standing, orders] = database;
@@ -96,7 +96,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     if (segment === undefined) {
       return;
     }
-    
+
     const nextEntities: { type: EntityType; value: string; }[] = parseEntities(segment);
 
     for (let ent of nextEntities) {
@@ -110,7 +110,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segment]);
 
-  let custo = customers.length>0 && customers[customers.findIndex(custo => custo.nickName === customer)].custName
+  let custo = customers.length > 0 && customers[customers.findIndex(custo => custo.nickName === customer)].custName
 
   const calDateSetter = (e) => {
     var today = e.value
@@ -124,13 +124,21 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   const convertToDisplayDate = (d: string): Date => {
     var dateSplit = d.split('-')
-    return new Date(Number(dateSplit[0]),Number(dateSplit[1])-1,Number(dateSplit[2]),0,0)
+    return new Date(Number(dateSplit[0]), Number(dateSplit[1]) - 1, Number(dateSplit[2]), 0, 0)
 
   }
 
   const quantityTemplate = (rowData) => {
-    console.log("rowData",rowData)
-    return <InputNumber value={rowData.qty} size={4} buttonLayout="horizontal" incrementButtonIcon='pi pi-plus' decrementButtonIcon='pi pi-minus' showButtons />;
+    console.log("rowData", rowData)
+    return <InputNumber 
+      value={rowData.qty} 
+      size={4} 
+      buttonLayout="horizontal" 
+      incrementButtonIcon='pi pi-plus' 
+      decrementButtonIcon='pi pi-minus' 
+      onChange = {e => console.log(rowData,e)}
+      showButtons 
+      />;
   }
 
   return (
@@ -144,13 +152,13 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       </PushToTalkButton>
       <Title>{custo}</Title>
       <div className="field col-12 md:col-4">
-                        <Calendar id="touchUI" value ={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
-                    </div>
+        <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
+      </div>
       <Dropdown value={customer} options={customerList} onChange={e => setCustomer(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
         <div className="card">
-          <DataTable value={customers && order?.filter(or => (or.custName === custo  && or.qty > 0))} responsiveLayout="scroll">
-            <Column header="Quantity" body={quantityTemplate}></Column>
+          <DataTable value={customers && order?.filter(or => (or.custName === custo && or.qty > 0))} responsiveLayout="scroll">
+            <Column header="Quantity" body={e => quantityTemplate(e)}></Column>
             <Column field="prodName" header="Product"></Column>
           </DataTable>
         </div>
