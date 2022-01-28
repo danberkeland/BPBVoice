@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Amplify, Auth }  from "aws-amplify";
 import awsconfig from "./aws-exports";
 
-
+const APIkey = "da2-qdistujpznfy5fl3u2onoimzmm"
 
 const AuthSetup = {
   "userPoolId": "us-east-2_BsLDGfO0R",
@@ -19,7 +19,7 @@ const AuthSetup = {
   "aws_appsync_graphqlEndpoint": "https://aceshl3krjg4rgtaxctab6f6je.appsync-api.us-east-2.amazonaws.com/graphql",
   "aws_appsync_region": "us-east-2",
   "aws_appsync_authenticationType": "API_KEY",
-  "aws_appsync_apiKey": "da2-qdistujpznfy5fl3u2onoimzmm",
+  "aws_appsync_apiKey": APIkey,
   "aws_cloud_logic_custom": [
     {
       "name": "grabinfo",
@@ -54,7 +54,7 @@ const ampConfig = Amplify.configure({
   API: {
     graphql_endpoint: "https://aceshl3krjg4rgtaxctab6f6je.appsync-api.us-east-2.amazonaws.com/graphql",
     graphql_headers: async () => ({
-      'x-api-key': "da2-qdistujpznfy5fl3u2onoimzmm"
+      'x-api-key': APIkey
     })
 
   }
