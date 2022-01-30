@@ -25,12 +25,13 @@ import styled from "styled-components";
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "./API";
 import { ToggleContext } from "./Contexts/ToggleContexts";
 import Loader from "./Loader";
-import { JsxElement } from "typescript";
+
 
 const ProductTitle = styled.h2`
   font-family: "Montserrat", sans-serif;
   font-size: 1.3em;
   padding: 0;
+  margin 0;
   color: rgb(36, 31, 31);
 `;
 
