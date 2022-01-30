@@ -48,10 +48,10 @@ const BasicContainer = styled.div`
 
 const FulfillOptions = styled.div`
   display: grid;
-  grid-template-columns: 2fr .25fr 1fr .25fr 1fr .25fr 1fr;
+  grid-template-columns: 2fr .25fr 2fr .25fr 2fr .25fr;
   margin: 2px;
   align-items: center;
-  justify-items: left;
+  justify-items: right;
 `;
 
 const { DateTime } = require("luxon");
