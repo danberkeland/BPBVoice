@@ -54,6 +54,14 @@ const FulfillOptions = styled.div`
   justify-items: right;
 `;
 
+const TwoColumn = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 2px;
+  align-items: center;
+  justify-items: left;
+`;
+
 const { DateTime } = require("luxon");
 
 let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0]
@@ -70,7 +78,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const [delivDate, setDelivDate] = useState<string>(today)
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
-  const [route, setRoute] = useState();
+  const [route, setRoute] = useState<string>();
   const options = [
     { value: 'deliv', icon: 'pi pi-globe' },
     { value: 'slopick', icon: 'pi pi-lock-open' },
@@ -104,6 +112,8 @@ export const SpeechApp: React.FC = (): JSX.Element => {
             setDatabase(ords[1])
             setCustomerList(ords[2])
             setIsLoading(false)
+            let custo: string = ords[1][1][ords[1][1].findIndex(custo => custo.nickName === chosen)].custName
+            setRoute(ords[0].filter(ord => ord.custName === custo)[0].route)
           });
 
   }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -125,13 +135,8 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segment]);
-  let rt: string
+
   let custo: string = customers.length > 0 && customers[customers.findIndex(custo => custo.nickName === chosen)].custName
-  try {
-    rt = custo && order ? order.filter(ord => ord.custName === custo)[0].route : ''
-
-
-  } catch { }
 
 
   const calDateSetter = (e) => {
@@ -172,28 +177,31 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         intro="Push to talk"
         size="80px" >
       </PushToTalkButton>
-      <Title>{custo}</Title>
-      <div className="field col-12 md:col-4">
-        <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
-      </div>
+      <BasicContainer>
+      <TwoColumn>
+        <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
+        <div className="field col-12 md:col-4">
+          <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
+        </div>
+      </TwoColumn>
+      </BasicContainer>
+      
+
       <BasicContainer>
         <FulfillOptions>
-          <label htmlFor="city1">Delivery</label>
-          <RadioButton inputId="rt1" name="route" value="deliv" checked={rt === 'deliv'} />
+          <label htmlFor="fulfilldeliv">Delivery</label>
+          <RadioButton inputId="fulfilldeliv" name="route" value="deliv" checked={route === 'deliv'} onChange={(e) => setRoute(e.value)} />
 
 
-          <label htmlFor="city2">SLO</label>
-          <RadioButton inputId="rt2" name="route" value="slopick" checked={rt === 'slopick'} />
+          <label htmlFor="fulfillslo">SLO</label>
+          <RadioButton inputId="fulfillslo" name="route" value="slopick" checked={route === 'slopick'} onChange={(e) => setRoute(e.value)} />
 
-          <label htmlFor="city2">Atown</label>
-          <RadioButton inputId="rt3" name="route" value="atownpick" checked={rt === 'atownpick'} />
+          <label htmlFor="fulfillatown">Atown</label>
+          <RadioButton inputId="fulfillatown" name="route" value="atownpick" checked={route === 'atownpick'} onChange={(e) => setRoute(e.value)} />
 
         </FulfillOptions>
       </BasicContainer>
 
-
-
-      <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
         <div className="card">
           <DataTable value={customers && order?.filter(or => (or.custName === custo && or.qty > 0))} responsiveLayout="scroll">
