@@ -172,12 +172,13 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     return (
       <React.Fragment>
         <BasicContainer>
-        <TwoColumn>
-          <div style={{textAlign:"left"}}>
+        <div style={{textAlign:"left"}}>
           <ProductTitle>{item.prodName}</ProductTitle>
           <div>${item.rate}/ea.</div>
           </div>
-          <div></div>
+        <TwoColumn>
+          
+        
 
           
 
