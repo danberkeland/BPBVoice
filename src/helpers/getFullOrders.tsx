@@ -23,16 +23,16 @@ export const getOrders = (delivDate: string, database: Database): [Order[], Data
     value: string;
 }[]] => {
     const [products, customers, routes, standing, orders] = database;
-    let buildOrders: Order[] = buildCartList("*", delivDate, orders);
-    let buildStand: Order[] = buildStandList("*", delivDate, standing);
-    let Order: Order[] = compileOrderList(buildOrders, buildStand);
-    Order = Order.filter(full => full.qty>0)
+    let buildOrders: Order[] = buildCartList("*", delivDate, orders, customers);
+    let buildStand: Order[] = buildStandList("*", delivDate, standing, customers);
+    let Order: Order[] = compileOrderList(buildOrders, buildStand, customers);
+    Order = Order.filter(full => full.qty > 0)
     let customerList: { label: string, value: string }[] = buildCustomerList(Order, customers)
     return [Order, database, customerList];
 };
 
 
-export const buildCartList = (chosen: string, delivDate: string, orders: Order[]) => {
+export const buildCartList = (chosen: string, delivDate: string, orders: Order[], customers: Customer[]) => {
     let BPBDate = convertDatetoBPBDate(delivDate);
     let filteredOrders: Order[] = clonedeep(orders);
     let builtCartList: Order[] = [];
@@ -44,10 +44,11 @@ export const buildCartList = (chosen: string, delivDate: string, orders: Order[]
         );
     }
 
+
     return builtCartList;
 };
 
-export const buildStandList = (chosen: string, delivDate: string, standing: Standing[]): Order[] => {
+export const buildStandList = (chosen: string, delivDate: string, standing: Standing[], customers: Customer[]): Order[] => {
     let filteredStanding: Standing[] = clonedeep(standing);
     let builtStandList: Standing[] = [];
     builtStandList = filteredStanding.filter((stand: any) =>
@@ -58,7 +59,8 @@ export const buildStandList = (chosen: string, delivDate: string, standing: Stan
 
     let convertedStandList: Order[] = convertStandListtoStandArray(
         builtStandList,
-        delivDate
+        delivDate,
+        customers
 
     );
     return convertedStandList;
@@ -67,39 +69,55 @@ export const buildStandList = (chosen: string, delivDate: string, standing: Stan
 
 const convertStandListtoStandArray = (
     builtStandList: Standing[],
-    delivDate: string
+    delivDate: string,
+    customers: Customer[]
 
 ): Order[] => {
+    let rt: string
+
     let dateSplit = delivDate.split("-");
     let dayOfWeek = DateTime.local(
         Number(dateSplit[0]),
         Number(dateSplit[1]),
         Number(dateSplit[2])
     ).weekdayShort;
-    let convertedStandList: Order[] = builtStandList.map((order) => ({
-       
-        id: null,
-        qty: order[dayOfWeek],
-        prodName: order["prodName"],
-        custName: order["custName"],
+    let convertedStandList: Order[] = builtStandList.map((order) => {
+        rt = "deliv"
+        let zone: string = customers[customers.findIndex(cust => cust.custName === order["custName"])].zoneName
+        if (zone === "slopick" || zone === "Prado Retail") {
+            rt = "slopick"
+        }
+        if (zone === "atownpick" || zone === "Carlton Retail") {
+            rt = "atownpick"
+        }
+        return {
 
-        isWhole: true,
-        delivDate: convertDatetoBPBDate(delivDate),
-        timeStamp: order["timeStamp"],
-        SO: order[dayOfWeek],
-        rate: 0,
-        route: '',
-        createdAt: '',
-        updatedAt: '',
-        PONote: '',
-        __typename: "Order",   
-       
-    }));
-    return convertedStandList;
+
+
+            id: null,
+            qty: order[dayOfWeek],
+            prodName: order["prodName"],
+            custName: order["custName"],
+
+            isWhole: true,
+            delivDate: convertDatetoBPBDate(delivDate),
+            timeStamp: order["timeStamp"],
+            SO: order[dayOfWeek],
+            rate: 0,
+            route: rt,
+            createdAt: '',
+            updatedAt: '',
+            PONote: '',
+            __typename: "Order",
+
+        }
+    }
+    );
+return convertedStandList
 };
 
 
-export const compileOrderList = (cartList: Order[], standList: Order[]) => {
+export const compileOrderList = (cartList: Order[], standList: Order[], customers: Customer[]) => {
     let orderList = cartList.concat(standList);
 
     // Remove old cart order from orders if it exists
@@ -113,6 +131,25 @@ export const compileOrderList = (cartList: Order[], standList: Order[]) => {
             }
         }
     }
+
+    for (let ord of orderList){
+        try{
+            let zone: string = customers && customers[customers.findIndex(cust => cust.custName === ord["custName"])].zoneName
+       
+        if (ord.route === "deliv" && (zone === "slopick" || zone === "Prado Retail")) {
+            ord.route = "slopick"
+        }
+        if (ord.route === "deliv" && (zone === "atownpick" || zone === "Carlton Retail")) {
+            ord.route = "atownpick"
+        }
+       
+        } catch {}
+        
+    }
+
+    
+
+
 
     sortAtoZDataByIndex(orderList, "prodName");
     return orderList;

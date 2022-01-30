@@ -20,6 +20,7 @@ import { Column } from 'primereact/column';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
+import { RadioButton } from 'primereact/radiobutton';
 
 import styled from "styled-components";
 
@@ -60,6 +61,12 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const [delivDate, setDelivDate] = useState<string>(today)
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
+  const [route, setRoute] = useState();
+  const options = [
+    { value: 'deliv', icon: 'pi pi-globe' },
+    { value: 'slopick', icon: 'pi pi-lock-open' },
+    { value: 'atownpick', icon: 'pi pi-lock' }
+  ];
 
   const { isLoading, setIsLoading } = useContext(ToggleContext)
 
@@ -73,6 +80,10 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     const user = await Auth.currentAuthenticatedUser()
     setUserInfo(user)
   }
+
+  useEffect(() => {
+    console.log("order", order)
+  }, [order])
 
   useEffect(() => {
     userInfoCheck()
@@ -109,8 +120,14 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segment]);
+  let rt: string
+  let custo: string = customers.length > 0 && customers[customers.findIndex(custo => custo.nickName === customer)].custName
+  try {
+    rt = custo && order ? order.filter(ord => ord.custName === custo)[0].route : ''
 
-  let custo = customers.length > 0 && customers[customers.findIndex(custo => custo.nickName === customer)].custName
+
+  } catch { }
+
 
   const calDateSetter = (e) => {
     var today = e.value
@@ -130,15 +147,15 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   const quantityTemplate = (rowData) => {
     console.log("rowData", rowData)
-    return <InputNumber 
-      value={rowData.qty} 
-      size={4} 
-      buttonLayout="horizontal" 
-      incrementButtonIcon='pi pi-plus' 
-      decrementButtonIcon='pi pi-minus' 
-      onChange = {e => console.log(rowData,e)}
-      showButtons 
-      />;
+    return <InputNumber
+      value={rowData.qty}
+      size={4}
+      buttonLayout="horizontal"
+      incrementButtonIcon='pi pi-plus'
+      decrementButtonIcon='pi pi-minus'
+      onChange={e => console.log(rowData, e)}
+      showButtons
+    />;
   }
 
   return (
@@ -154,6 +171,20 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       <div className="field col-12 md:col-4">
         <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
       </div>
+
+      <div className="field-radiobutton">
+        <RadioButton inputId="rt1" name="route" value="deliv" checked={rt === 'deliv'} />
+        <label htmlFor="city1">Delivery</label>
+      </div>
+      <div className="field-radiobutton">
+        <RadioButton inputId="rt2" name="route" value="slopick" checked={rt === 'slopick'} />
+        <label htmlFor="city2">SLO Pickup</label>
+      </div>
+      <div className="field-radiobutton">
+        <RadioButton inputId="rt3" name="route" value="atownpick" checked={rt === 'atownpick'} />
+        <label htmlFor="city3">Carlton Pickup</label>
+      </div>
+
       <Dropdown value={customer} options={customerList} onChange={e => setCustomer(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
         <div className="card">
