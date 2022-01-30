@@ -171,9 +171,10 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const itemTemplate = (item: Order) => {
     return (
       <React.Fragment>
-        <TwoColumn>
-          <ProductTitle>{item.prodName}</ProductTitle>
+        <ProductTitle>{item.prodName}</ProductTitle>
           <div>${item.rate}/ea.</div>
+        <TwoColumn>
+          
           <div>{quantityTemplate(item)}</div>
 
           
