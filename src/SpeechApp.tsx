@@ -48,7 +48,7 @@ const BasicContainer = styled.div`
 
 const FulfillOptions = styled.div`
   display: grid;
-  grid-template-columns: 1fr .25fr 1fr .25fr 1fr .25fr;
+  grid-template-columns: 1fr .5fr 1fr .5fr 1fr .5fr;
   margin: 2px;
   align-items: center;
   justify-items: right;
