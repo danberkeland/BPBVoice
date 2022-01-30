@@ -25,12 +25,12 @@ import styled from "styled-components";
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "./API";
 import { ToggleContext } from "./Contexts/ToggleContexts";
 import Loader from "./Loader";
+import { JsxElement } from "typescript";
 
 const ProductTitle = styled.h2`
   font-family: "Montserrat", sans-serif;
   font-size: 1.3em;
   padding: 0;
-  margin: 20px 10px 5px 10px;
   color: rgb(36, 31, 31);
 `;
 
@@ -167,14 +167,21 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     />;
   }
 
-  
-const itemTemplate: any = (item: any) => {
-  return (
-    <React.Fragment>
-    <ProductTitle>{item.prodName}</ProductTitle>
-    <div>{quantityTemplate(item)}</div>
-  </React.Fragment>
-  )
+
+  const itemTemplate = (item: Order) => {
+    return (
+      <React.Fragment>
+        <TwoColumn>
+          <ProductTitle>{item.prodName}</ProductTitle>
+          <div>${item.rate}/ea.</div>
+          <div>{quantityTemplate(item)}</div>
+
+          
+          <ProductTitle>Total: ${item.rate * item.qty}</ProductTitle>
+        </TwoColumn>
+
+      </React.Fragment>
+    )
   
   
 }
