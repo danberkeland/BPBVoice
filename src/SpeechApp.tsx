@@ -49,7 +49,7 @@ const BasicContainer = styled.div`
 const FulfillOptions = styled.div`
   display: grid;
   grid-template-columns: 2fr .25fr 1fr .25fr 1fr .25fr 1fr;
-  margin: 10px;
+  margin: 2px;
   align-items: center;
   justify-items: left;
 `;
@@ -181,21 +181,21 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
       </div>
       <BasicContainer>
-      <FulfillOptions>
-      <label htmlFor="city1">Delivery</label>
-      <RadioButton inputId="rt1" name="route" value="deliv" checked={rt === 'deliv'} />
-        
-      
-      <label htmlFor="city2">SLO Pickup</label>
-        <RadioButton inputId="rt2" name="route" value="slopick" checked={rt === 'slopick'} />
-        
-        <label htmlFor="city2">SLO Pickup</label>
-        <RadioButton inputId="rt3" name="route" value="atownpick" checked={rt === 'atownpick'} />
-       
-      </FulfillOptions>
+        <FulfillOptions>
+          <label htmlFor="city1">Delivery</label>
+          <RadioButton inputId="rt1" name="route" value="deliv" checked={rt === 'deliv'} />
+
+
+          <label htmlFor="city2">SLO Pickup</label>
+          <RadioButton inputId="rt2" name="route" value="slopick" checked={rt === 'slopick'} />
+
+          <label htmlFor="city2">SLO Pickup</label>
+          <RadioButton inputId="rt3" name="route" value="atownpick" checked={rt === 'atownpick'} />
+
+        </FulfillOptions>
       </BasicContainer>
-      
-      
+
+
 
       <Dropdown value={customer} options={customerList} onChange={e => setCustomer(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
@@ -207,9 +207,9 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         </div>
       </BasicContainer>
     </React.Fragment>
-      
 
 
-    
+
+
   );
 };
