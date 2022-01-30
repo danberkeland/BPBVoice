@@ -186,10 +186,10 @@ export const SpeechApp: React.FC = (): JSX.Element => {
           <RadioButton inputId="rt1" name="route" value="deliv" checked={rt === 'deliv'} />
 
 
-          <label htmlFor="city2">SLO Pickup</label>
+          <label htmlFor="city2">SLO</label>
           <RadioButton inputId="rt2" name="route" value="slopick" checked={rt === 'slopick'} />
 
-          <label htmlFor="city2">SLO Pickup</label>
+          <label htmlFor="city2">Atown</label>
           <RadioButton inputId="rt3" name="route" value="atownpick" checked={rt === 'atownpick'} />
 
         </FulfillOptions>
