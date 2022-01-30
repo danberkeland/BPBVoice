@@ -56,7 +56,7 @@ const FulfillOptions = styled.div`
 const TwoColumn = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin: 2px;
+  margin: 2px 0px;
   align-items: center;
   justify-items: left;
 `;
@@ -171,21 +171,28 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const itemTemplate = (item: Order) => {
     return (
       <React.Fragment>
-        <ProductTitle>{item.prodName}</ProductTitle>
-          <div>${item.rate}/ea.</div>
+        <BasicContainer>
         <TwoColumn>
-          
-          <div>{quantityTemplate(item)}</div>
+          <div style={{textAlign:"left"}}>
+          <ProductTitle>{item.prodName}</ProductTitle>
+          <div>${item.rate}/ea.</div>
+          </div>
+          <div></div>
 
           
-          <ProductTitle>Total: ${item.rate * item.qty}</ProductTitle>
-        </TwoColumn>
+
+            <div>{quantityTemplate(item)}</div>
+
+
+            <ProductTitle>Total: ${item.rate * item.qty}</ProductTitle>
+          </TwoColumn>
+        </BasicContainer>
 
       </React.Fragment>
     )
-  
-  
-}
+
+
+  }
 
   return (
     <React.Fragment>
@@ -197,14 +204,14 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         size="80px" >
       </PushToTalkButton>
       <BasicContainer>
-      
+
         <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
         <div className="field col-12 md:col-4">
           <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
         </div>
-      
+
       </BasicContainer>
-      
+
 
       <BasicContainer>
         <FulfillOptions>
@@ -221,12 +228,12 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         </FulfillOptions>
       </BasicContainer>
 
-      <BasicContainer>
-        <div className="card">
+
+      <div className="card">
         <DataScroller value={customers && order?.filter(or => (or.custName === custo && or.qty > 0))} itemTemplate={itemTemplate} rows={10} inline></DataScroller>
-          
-        </div>
-      </BasicContainer>
+
+      </div>
+
     </React.Fragment>
 
 
