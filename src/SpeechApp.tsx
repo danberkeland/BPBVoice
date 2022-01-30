@@ -38,7 +38,7 @@ const Title = styled.h2`
 const BasicContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 90%;
   border: 1px solid lightgray;
   padding: 10px 10px;
   margin: 10px auto 10px auto;
@@ -159,7 +159,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     console.log("rowData", rowData)
     return <InputNumber
       value={rowData.qty}
-      size={4}
+      size={1}
       buttonLayout="horizontal"
       incrementButtonIcon='pi pi-plus'
       decrementButtonIcon='pi pi-minus'
