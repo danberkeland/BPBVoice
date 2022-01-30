@@ -66,7 +66,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   const [userInfo, setUserInfo] = useState()
   const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>([])
-  const [customer, setCustomer] = useState<string>('novo')
+  const [chosen, setChosen] = useState<string>('novo')
   const [delivDate, setDelivDate] = useState<string>(today)
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
@@ -117,7 +117,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
     for (let ent of nextEntities) {
       if (ent.type === "custName") {
-        setCustomer(ent.value)
+        setChosen(ent.value)
       }
       if (ent.type === "delivDate") {
         setDelivDate(ent.value)
@@ -126,7 +126,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segment]);
   let rt: string
-  let custo: string = customers.length > 0 && customers[customers.findIndex(custo => custo.nickName === customer)].custName
+  let custo: string = customers.length > 0 && customers[customers.findIndex(custo => custo.nickName === chosen)].custName
   try {
     rt = custo && order ? order.filter(ord => ord.custName === custo)[0].route : ''
 
@@ -193,7 +193,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
 
 
-      <Dropdown value={customer} options={customerList} onChange={e => setCustomer(e.value)} placeholder="Select a Customer" />
+      <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
         <div className="card">
           <DataTable value={customers && order?.filter(or => (or.custName === custo && or.qty > 0))} responsiveLayout="scroll">

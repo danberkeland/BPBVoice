@@ -43,8 +43,6 @@ export const buildCartList = (chosen: string, delivDate: string, orders: Order[]
                 order.custName.match(wildcardRegExp(`${chosen}`))
         );
     }
-
-
     return builtCartList;
 };
 
@@ -61,7 +59,6 @@ export const buildStandList = (chosen: string, delivDate: string, standing: Stan
         builtStandList,
         delivDate,
         customers
-
     );
     return convertedStandList;
 };
@@ -71,7 +68,6 @@ const convertStandListtoStandArray = (
     builtStandList: Standing[],
     delivDate: string,
     customers: Customer[]
-
 ): Order[] => {
     let rt: string
 
@@ -91,14 +87,10 @@ const convertStandListtoStandArray = (
             rt = "atownpick"
         }
         return {
-
-
-
             id: null,
             qty: order[dayOfWeek],
             prodName: order["prodName"],
             custName: order["custName"],
-
             isWhole: true,
             delivDate: convertDatetoBPBDate(delivDate),
             timeStamp: order["timeStamp"],
@@ -109,11 +101,10 @@ const convertStandListtoStandArray = (
             updatedAt: '',
             PONote: '',
             __typename: "Order",
-
         }
     }
     );
-return convertedStandList
+    return convertedStandList
 };
 
 
@@ -132,24 +123,18 @@ export const compileOrderList = (cartList: Order[], standList: Order[], customer
         }
     }
 
-    for (let ord of orderList){
-        try{
+    for (let ord of orderList) {
+        try {
             let zone: string = customers && customers[customers.findIndex(cust => cust.custName === ord["custName"])].zoneName
-       
-        if (ord.route === "deliv" && (zone === "slopick" || zone === "Prado Retail")) {
-            ord.route = "slopick"
-        }
-        if (ord.route === "deliv" && (zone === "atownpick" || zone === "Carlton Retail")) {
-            ord.route = "atownpick"
-        }
-       
-        } catch {}
-        
+
+            if (ord.route === "deliv" && (zone === "slopick" || zone === "Prado Retail")) {
+                ord.route = "slopick"
+            }
+            if (ord.route === "deliv" && (zone === "atownpick" || zone === "Carlton Retail")) {
+                ord.route = "atownpick"
+            }
+        } catch { }
     }
-
-    
-
-
 
     sortAtoZDataByIndex(orderList, "prodName");
     return orderList;
@@ -158,10 +143,10 @@ export const compileOrderList = (cartList: Order[], standList: Order[], customer
 
 export const sortAtoZDataByIndex = (data: any[], index: string) => {
     data.sort(function (a: any, b: any) {
-      return a[index] > b[index] ? 1 : -1;
+        return a[index] > b[index] ? 1 : -1;
     });
     return data;
-  };
+};
 
 export const buildCustomerList = (Order: Order[], customers: Customer[]) => {
     Order = Order.filter(full => full.isWhole === true)
@@ -170,9 +155,9 @@ export const buildCustomerList = (Order: Order[], customers: Customer[]) => {
     let customerListArray = Array.from(customerListSet)
     let customerListObj = customerListArray.map(custo => ({
         label: custo,
-        value: customers[customers.findIndex(cust => cust.custName===custo)].nickName
+        value: customers[customers.findIndex(cust => cust.custName === custo)].nickName
     }))
-    sortAtoZDataByIndex(customerListObj,"label")
+    sortAtoZDataByIndex(customerListObj, "label")
     return customerListObj
 }
 

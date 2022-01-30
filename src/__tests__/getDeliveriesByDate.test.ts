@@ -134,11 +134,18 @@ const Novo_Zero_Bag_Order: Order = {
   prodName: "Baguette",
 };
 
+const NovoOrder_atownpick: Order = {
+  ...NovoOrder,
+  route: "atownpick"
+}
+
 const Novo_order_5_bag: Order[] = [NovoOrder];
 
 const Novo_order_5_bag_0_croix: Order[] = [NovoOrder, Novo_Zero_Croix_Order];
 
 const Novo_order_0_bag: Order[] = [Novo_Zero_Bag_Order];
+
+const Novo_atownpick_order_5_bag: Order[]=[NovoOrder_atownpick]
 
 // Mock database setup
 
@@ -212,6 +219,18 @@ const DB_Novo_slopick_ORDER_5_BAG_W_STANDING: DB = [
   [],
 ];
 
+const DB_Novo_slopick_ORDER_atownpick_5_BAG_W_STANDING: DB = [
+  [],
+  Novo_w_zoneName_slopick,
+  [],
+  standing,
+  Novo_atownpick_order_5_bag,
+  [],
+  [],
+  [],
+  [],
+];
+
 type testResultFormat = [
   Order[],
   Database,
@@ -221,7 +240,10 @@ type testResultFormat = [
   }[]
 ];
 
-const mockCustResult = [{ label: "", value: "" }];
+const mockCustResult: {
+  label: string;
+  value: string;
+}[] = [{ label: "Novo", value: "novo" }];
 
 describe("Test getDeliveriesByDate", () => {
   test("Orders with quantites of zero should not be included in full orders", () => {
@@ -236,6 +258,7 @@ describe("Test getDeliveriesByDate", () => {
       DB_Order_5_bag_0_croix_NO_STANDING
     );
     expect(actualValue1[0]).toEqual(expected1[0]);
+    expect(actualValue1[2]).toEqual(expected1[2])
   });
 
   test("Cart orders take precedence over standing orders", () => {
@@ -281,7 +304,7 @@ describe("Test getDeliveriesByDate", () => {
   });
 });
 
-test("Standing orders with slopick route end up with slopick route", () => {
+test("Standing orders with slopick customer route end up with slopick route", () => {
   const expected4: testResultFormat = [
     [
       {
@@ -317,6 +340,25 @@ test("If Order is for delivery but zoneName is slopick, route is slopick, not de
     DB_Novo_slopick_ORDER_5_BAG_W_STANDING
   );
   expect(actualValue1[0]).toEqual(expected5[0]);
+});
+
+test("If Order is for atownpick but zoneName is slopick, route is atownpick", () => {
+  const expected6: testResultFormat = [
+    [
+      {
+        ...NovoOrder,
+        route: "atownpick",
+      },
+    ],
+    DB_Novo_slopick_ORDER_atownpick_5_BAG_W_STANDING,
+    mockCustResult,
+  ];
+
+  const actualValue1: testResultFormat = getDeliveriesByDate(
+    "2022-01-24",
+    DB_Novo_slopick_ORDER_atownpick_5_BAG_W_STANDING
+  );
+  expect(actualValue1[0]).toEqual(expected6[0]);
 });
 
 export {};
