@@ -178,12 +178,12 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         size="80px" >
       </PushToTalkButton>
       <BasicContainer>
-      <TwoColumn>
+      
         <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
         <div className="field col-12 md:col-4">
           <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
         </div>
-      </TwoColumn>
+      
       </BasicContainer>
       
 
