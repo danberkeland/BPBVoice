@@ -14,13 +14,11 @@ import { getDeliveriesByDate } from "./helpers/getDeliveriesByDate"
 import { PushToTalkButton } from "@speechly/react-ui";
 import { Auth } from "aws-amplify";
 
-import { PrimeIcons } from 'primereact/api';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { RadioButton } from 'primereact/radiobutton';
+import { DataScroller } from 'primereact/datascroller';
 
 import styled from "styled-components";
 
@@ -28,11 +26,12 @@ import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAut
 import { ToggleContext } from "./Contexts/ToggleContexts";
 import Loader from "./Loader";
 
-const Title = styled.h2`
+const ProductTitle = styled.h2`
   font-family: "Montserrat", sans-serif;
+  font-size: 1.3em;
   padding: 0;
   margin: 20px 10px 5px 10px;
-  color: rgb(66, 97, 201);
+  color: rgb(36, 31, 31);
 `;
 
 const BasicContainer = styled.div`
@@ -168,6 +167,18 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     />;
   }
 
+  
+const itemTemplate: any = (item: any) => {
+  return (
+    <React.Fragment>
+    <ProductTitle>{item.prodName}</ProductTitle>
+    <div>{quantityTemplate(item)}</div>
+  </React.Fragment>
+  )
+  
+  
+}
+
   return (
     <React.Fragment>
       {isLoading && <Loader />}
@@ -204,10 +215,8 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
       <BasicContainer>
         <div className="card">
-          <DataTable value={customers && order?.filter(or => (or.custName === custo && or.qty > 0))} responsiveLayout="scroll">
-            <Column header="Quantity" body={e => quantityTemplate(e)}></Column>
-            <Column field="prodName" header="Product"></Column>
-          </DataTable>
+        <DataScroller value={customers && order?.filter(or => (or.custName === custo && or.qty > 0))} itemTemplate={itemTemplate} rows={10} inline></DataScroller>
+          
         </div>
       </BasicContainer>
     </React.Fragment>
