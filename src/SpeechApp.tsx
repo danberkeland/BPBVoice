@@ -175,7 +175,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         <BasicContainer>
         <div style={{textAlign:"left"}}>
           <ProductTitle>{item.prodName}</ProductTitle>
-          <div>${item.rate}/ea.</div>
+          <div>${item.rate.toFixed(2)}/ea.</div>
           </div>
         <TwoColumn>
           
@@ -186,7 +186,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
             <div>{quantityTemplate(item)}</div>
 
 
-            <ProductTitle>Total: ${item.rate * item.qty}</ProductTitle>
+            <ProductTitle>Total: ${(item.rate * item.qty).toFixed(2)}</ProductTitle>
           </TwoColumn>
         </BasicContainer>
 

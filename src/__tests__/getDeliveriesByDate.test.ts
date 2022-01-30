@@ -105,7 +105,7 @@ const standingNovoOrder: Order = {
   timeStamp: "2021-05-26T14:03:32.388Z",
   createdAt: "",
   updatedAt: "",
-  rate: 0,
+  rate: 2,
   route: "deliv",
   PONote: "",
   __typename: "Order",
