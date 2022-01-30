@@ -9,7 +9,7 @@ import {
 } from "./parser";
 
 import { promisedData } from "./helpers/databaseFetchers";
-import { getOrders } from "./helpers/getFullOrders"
+import { getDeliveriesByDate } from "./helpers/getDeliveriesByDate"
 
 import { PushToTalkButton } from "@speechly/react-ui";
 import { Auth } from "aws-amplify";
@@ -91,10 +91,6 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   }
 
   useEffect(() => {
-    console.log("order", order)
-  }, [order])
-
-  useEffect(() => {
     userInfoCheck()
   }, [])
 
@@ -103,7 +99,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     userInfo &&
       promisedData()
         .then((db) =>
-          getOrders(delivDate, db)).then((ords) => {
+          getDeliveriesByDate(delivDate, db)).then((ords) => {
             setOrder(ords[0])
             setDatabase(ords[1])
             setCustomerList(ords[2])

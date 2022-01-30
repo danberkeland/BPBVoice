@@ -18,7 +18,7 @@ export const convertDatetoBPBDate = (ISODate: string) => {
 };
 
 
-export const getOrders = (delivDate: string, database: Database): [Order[], Database, {
+export const getDeliveriesByDate = (delivDate: string, database: Database): [Order[], Database, {
     label: string;
     value: string;
 }[]] => {
