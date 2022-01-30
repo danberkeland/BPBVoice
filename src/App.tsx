@@ -46,12 +46,13 @@ function App(props:AuthProps): JSX.Element {
      
       <>
       <Title>Back Porch Bakery</Title>
-      <UserStyle>Hello {props.user.username}</UserStyle>
-      <Button label="Sign Out" className="p-button-warning p-button-raised p-button-rounded" onClick={props.signOut}></Button>
+      
     </>
       <SpeechProvider appId="685bb1db-a418-4ff1-9a0c-dfcc888e23ec" language="en-US">
         <SpeechApp />
       </SpeechProvider>
+      <UserStyle>Hello {props.user.username}</UserStyle>
+      <Button label="Sign Out" className="p-button-warning p-button-raised p-button-rounded" onClick={props.signOut}></Button>
     </div>
     </ToggleProvider>
     

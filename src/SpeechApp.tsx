@@ -31,7 +31,7 @@ import Loader from "./Loader";
 const Title = styled.h2`
   font-family: "Montserrat", sans-serif;
   padding: 0;
-  margin: 40px 10px 5px 10px;
+  margin: 20px 10px 5px 10px;
   color: rgb(66, 97, 201);
 `;
 
@@ -41,8 +41,17 @@ const BasicContainer = styled.div`
   width: 80%;
   border: 1px solid lightgray;
   padding: 10px 10px;
-  margin: 10px auto 150px auto;
+  margin: 10px auto 10px auto;
   box-sizing: border-box;
+`;
+
+
+const FulfillOptions = styled.div`
+  display: grid;
+  grid-template-columns: 2fr .25fr 1fr .25fr 1fr .25fr 1fr;
+  margin: 10px;
+  align-items: center;
+  justify-items: left;
 `;
 
 const { DateTime } = require("luxon");
@@ -159,7 +168,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   }
 
   return (
-    <div>
+    <React.Fragment>
       {isLoading && <Loader />}
       <PushToTalkButton
         placement="bottom"
@@ -171,19 +180,22 @@ export const SpeechApp: React.FC = (): JSX.Element => {
       <div className="field col-12 md:col-4">
         <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
       </div>
-
-      <div className="field-radiobutton">
-        <RadioButton inputId="rt1" name="route" value="deliv" checked={rt === 'deliv'} />
-        <label htmlFor="city1">Delivery</label>
-      </div>
-      <div className="field-radiobutton">
+      <BasicContainer>
+      <FulfillOptions>
+      <label htmlFor="city1">Delivery</label>
+      <RadioButton inputId="rt1" name="route" value="deliv" checked={rt === 'deliv'} />
+        
+      
+      <label htmlFor="city2">SLO Pickup</label>
         <RadioButton inputId="rt2" name="route" value="slopick" checked={rt === 'slopick'} />
+        
         <label htmlFor="city2">SLO Pickup</label>
-      </div>
-      <div className="field-radiobutton">
         <RadioButton inputId="rt3" name="route" value="atownpick" checked={rt === 'atownpick'} />
-        <label htmlFor="city3">Carlton Pickup</label>
-      </div>
+       
+      </FulfillOptions>
+      </BasicContainer>
+      
+      
 
       <Dropdown value={customer} options={customerList} onChange={e => setCustomer(e.value)} placeholder="Select a Customer" />
       <BasicContainer>
@@ -194,8 +206,10 @@ export const SpeechApp: React.FC = (): JSX.Element => {
           </DataTable>
         </div>
       </BasicContainer>
+    </React.Fragment>
+      
 
 
-    </div>
+    
   );
 };
