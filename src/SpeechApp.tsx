@@ -1,6 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 
 import { Dropdown } from 'primereact/dropdown';
+import { Button } from "primereact/button";
+import { OverlayPanel } from 'primereact/overlaypanel';
 
 import { promisedData } from "./helpers/databaseFetchers";
 import { getDeliveriesByDate } from "./helpers/getDeliveriesByDate"
@@ -27,6 +29,17 @@ const BasicContainer = styled.div`
   box-sizing: border-box;
 `;
 
+
+const OrderButtonsFloat = styled.div`
+  display: flex;
+  position: fixed;
+  z-index: 100;
+  top: 30px;
+  justify-content: space-around;
+  width: 100%;
+  margin: 5px 0;
+`;
+
 const { DateTime } = require("luxon");
 
 let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0]
@@ -43,11 +56,18 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
   const [route, setRoute] = useState<string>();
+  const [addProduct, setAddProduct] = useState<boolean>(false)
+
+  const op = useRef(null);
 
   const userInfoCheck = async () => {
     const user = await Auth.currentAuthenticatedUser()
     setUserInfo(user)
   }
+
+  useEffect(() => {
+    console.log(addProduct)
+  },[addProduct])
 
   useEffect(() => {
     userInfoCheck()
@@ -70,12 +90,15 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
-
   const { isLoading, setIsLoading } = useContext(ToggleContext)
 
   return (
     <React.Fragment>
       {isLoading && <Loader />}
+      <OverlayPanel ref={op} showCloseIcon id="overlay_panel" style={{width: '450px'}} className="overlaypanel-demo">
+      <div>Add a Product</div>
+</OverlayPanel>
+      <OrderButtonsFloat><Button type="button" icon="pi pi-plus"  onClick={(e) => op.current.toggle(e)} aria-haspopup aria-controls="overlay_panel" className="p-button-rounded" /></OrderButtonsFloat>
       <PushToTalk setChosen={setChosen} setDelivDate={setDelivDate} />
       <BasicContainer>
         <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" /> 
