@@ -17,6 +17,7 @@ import { PushToTalk } from "./SpeechAppParts/PushToTalkButton";
 import { Fulfill } from "./SpeechAppParts/FulfillOptions";
 import { DataScroll } from "./SpeechAppParts/DataScroller";
 import { Cal } from "./SpeechAppParts/Calendar";
+import { AddProduct } from "./SpeechAppParts/AddProduct";
 
 import styled from "styled-components";
 
@@ -101,30 +102,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   return (
     <React.Fragment>
       {isLoading && <Loader />}
-      <OverlayPanel ref={op} showCloseIcon id="overlay_panel" style={{ width: '300px' }} className="overlaypanel-demo">
-        <BasicContainer>
-          <Spacer>Add a Product</Spacer>
-          <Spacer>
-          <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
-          </Spacer>
-          <Spacer>
-          <InputNumber
-            value={3}
-            size={3}
-            buttonLayout="horizontal"
-            incrementButtonIcon='pi pi-plus'
-            decrementButtonIcon='pi pi-minus'
-            showButtons
-          />
-          </Spacer>
-          <Spacer>TOTAL: $22.90</Spacer>
-          <Spacer>
-          <Button label="ADD" icon="pi pi-plus" iconPos="right" className="p-button-raised p-button-rounded p-button-success"/>
-          </Spacer>
-          
-        </BasicContainer>
-
-      </OverlayPanel>
+      <AddProduct chosen={chosen} setChosen={setChosen} customerList={customerList} op={op}/>
       <OrderButtonsFloat><Button type="button" icon="pi pi-plus" onClick={(e) => op.current.toggle(e)} aria-haspopup aria-controls="overlay_panel" className="p-button-rounded" /></OrderButtonsFloat>
       <PushToTalk setChosen={setChosen} setDelivDate={setDelivDate} />
       <BasicContainer>
