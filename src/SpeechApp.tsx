@@ -101,7 +101,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   return (
     <React.Fragment>
       {isLoading && <Loader />}
-      <OverlayPanel ref={op} showCloseIcon id="overlay_panel" style={{ width: '450px' }} className="overlaypanel-demo">
+      <OverlayPanel ref={op} showCloseIcon id="overlay_panel" style={{ width: '375px' }} className="overlaypanel-demo">
         <BasicContainer>
           <Spacer>Add a Product</Spacer>
           <Spacer>
