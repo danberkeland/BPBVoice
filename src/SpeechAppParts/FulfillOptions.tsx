@@ -24,29 +24,43 @@ const FulfillOptions = styled.div`
 `;
 
 type Props = {
-    route: string,
-    setRoute: React.Dispatch<React.SetStateAction<string>>
+  route: string,
+  setRoute: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const Fulfill: React.FC<Props> = ({ route, setRoute }): JSX.Element => {
 
   return (
-    
-
-      <BasicContainer>
-        <FulfillOptions>
-          <label htmlFor="fulfilldeliv">Delivery</label>
-          <RadioButton inputId="fulfilldeliv" name="route" value="deliv" checked={route === 'deliv'} onChange={(e) => setRoute(e.value)} />
 
 
-          <label htmlFor="fulfillslo">SLO</label>
-          <RadioButton inputId="fulfillslo" name="route" value="slopick" checked={route === 'slopick'} onChange={(e) => setRoute(e.value)} />
+    <BasicContainer>
+      <FulfillOptions>
+        <label htmlFor="fulfilldeliv">Delivery</label>
+        <RadioButton
+          inputId="fulfilldeliv"
+          name="route"
+          value="deliv"
+          checked={route === 'deliv'}
+          onChange={(e) => setRoute(e.value)} />
 
-          <label htmlFor="fulfillatown">Atown</label>
-          <RadioButton inputId="fulfillatown" name="route" value="atownpick" checked={route === 'atownpick'} onChange={(e) => setRoute(e.value)} />
+        <label htmlFor="fulfillslo">SLO</label>
+        <RadioButton
+          inputId="fulfillslo"
+          name="route"
+          value="slopick"
+          checked={route === 'slopick'}
+          onChange={(e) => setRoute(e.value)} />
 
-        </FulfillOptions>
-      </BasicContainer>
+        <label htmlFor="fulfillatown">Atown</label>
+        <RadioButton
+          inputId="fulfillatown"
+          name="route"
+          value="atownpick"
+          checked={route === 'atownpick'}
+          onChange={(e) => setRoute(e.value)} />
+
+      </FulfillOptions>
+    </BasicContainer>
 
   );
 };

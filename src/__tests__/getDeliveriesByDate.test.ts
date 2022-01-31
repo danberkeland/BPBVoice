@@ -111,6 +111,70 @@ const standingNovoOrder: Order = {
   __typename: "Order",
 };
 
+const standingNovoOrderWAlt: Order = {
+  ...standingNovoOrder,
+  rate: 1.98
+}
+
+const baguette: Product = {
+  __typename: "Product",
+  id: "3d84f944-196c-402c-9ed5-a2e16496ce04",
+  prodName: "Baguette",
+  nickName: "bag",
+  packGroup: "rustic breads",
+  packSize: 1,
+  doughType: "Baguette",
+  freezerThaw: false,
+  eodCount: null,
+  packGroupOrder: 0,
+  readyTime: 5,
+  bakedWhere: ["Carlton"],
+  wholePrice: 2,
+  retailPrice: 4.5,
+  isWhole: true,
+  depends: "NONE",
+  weight: 1.14,
+  descrip: "23in. rustic baguette",
+  picURL: "",
+  squareID: "BPB Baguette",
+  currentStock: null,
+  whoCountedLast: null,
+  forBake: "Baguette",
+  bakeExtra: null,
+  batchSize: null,
+  preshaped: 133,
+  prepreshaped: 133,
+  updatePreDate: "2022-02-01",
+  updateFreezerDate: null,
+  backporchbakerypre: null,
+  backporchbakery: null,
+  bpbextrapre: null,
+  bpbextra: null,
+  bpbssetoutpre: null,
+  bpbssetout: null,
+  defaultInclude: true,
+  leadTime: 2,
+  qbID: "240",
+  freezerCount: null,
+  freezerClosing: null,
+  sheetMake: null,
+  freezerNorth: null,
+  freezerNorthClosing: 12,
+  freezerNorthFlag: "2021-12-06",
+  createdAt: "2021-03-12T14:37:10.761Z",
+  updatedAt: "2022-01-31T09:36:03.869Z",
+};
+
+const altNovoPricing: AltPricing = {
+  __typename: "AltPricing",
+  id: "9",
+  custName: "Novo",
+  prodName: "Baguette",
+  wholePrice: 1.98,
+  createdAt: "2021-03-16T12:25:29.874Z",
+  updatedAt: "2021-03-16T12:25:29.874Z",
+};
+
 const Novo_w_zoneName_slopick: Customer[] = [
   {
     ...Novo,
@@ -119,6 +183,10 @@ const Novo_w_zoneName_slopick: Customer[] = [
 ];
 
 const customer: Customer[] = [Novo];
+
+const product: Product[] = [baguette]
+
+const altpricing: AltPricing[] = [altNovoPricing]
 
 // Mock Order set up
 
@@ -163,7 +231,7 @@ type DB = [
 
 
 const DB_Order_5_bag_0_croix_NO_STANDING: DB = [
-  [],
+  product,
   customer,
   [],
   [],
@@ -174,7 +242,7 @@ const DB_Order_5_bag_0_croix_NO_STANDING: DB = [
   [],
 ];
 const DB_Order_5_bag_W_STANDING: DB = [
-  [],
+  product,
   customer,
   [],
   standing,
@@ -184,9 +252,10 @@ const DB_Order_5_bag_W_STANDING: DB = [
   [],
   [],
 ];
-const DB_ONLY_STANDING: DB = [[], customer, [], standing, [], [], [], [], []];
+const DB_ONLY_STANDING: DB = [product, customer, [], standing, [], [], [], [], []];
+const DB_ONLY_STANDING_W_ALT: DB = [product, customer, [], standing, [], [], [], altpricing, []];
 const DB_Order_0_bag_W_STANDING: DB = [
-  [],
+  product,
   customer,
   [],
   standing,
@@ -197,7 +266,7 @@ const DB_Order_0_bag_W_STANDING: DB = [
   [],
 ];
 const DB_Novo_slopick_NO_ORDER_W_STANDING: DB = [
-  [],
+  product,
   Novo_w_zoneName_slopick,
   [],
   standing,
@@ -208,7 +277,7 @@ const DB_Novo_slopick_NO_ORDER_W_STANDING: DB = [
   [],
 ];
 const DB_Novo_slopick_ORDER_5_BAG_W_STANDING: DB = [
-  [],
+  product,
   Novo_w_zoneName_slopick,
   [],
   standing,
@@ -220,7 +289,7 @@ const DB_Novo_slopick_ORDER_5_BAG_W_STANDING: DB = [
 ];
 
 const DB_Novo_slopick_ORDER_atownpick_5_BAG_W_STANDING: DB = [
-  [],
+  product,
   Novo_w_zoneName_slopick,
   [],
   standing,
@@ -275,7 +344,7 @@ describe("Test getDeliveriesByDate", () => {
     expect(actualValue1[0]).toEqual(expected2[0]);
   });
 
-  test("Standing orders go to full order if no cart order exists", () => {
+  test("Standing orders go to full order if no cart order exists AND proper rates are attached", () => {
     const expected3: testResultFormat = [
       [standingNovoOrder],
       DB_ONLY_STANDING,
@@ -360,5 +429,20 @@ test("If Order is for atownpick but zoneName is slopick, route is atownpick", ()
   );
   expect(actualValue1[0]).toEqual(expected6[0]);
 });
+
+test("Standing orders go to full order if no cart order exists AND proper alternate pricing rates are attached", () => {
+  const expected3: testResultFormat = [
+    [standingNovoOrderWAlt],
+    DB_ONLY_STANDING_W_ALT,
+    mockCustResult,
+  ];
+
+  const actualValue1: testResultFormat = getDeliveriesByDate(
+    "2022-01-24",
+    DB_ONLY_STANDING_W_ALT
+  );
+  expect(actualValue1[0]).toEqual(expected3[0]);
+});
+
 
 export {};
