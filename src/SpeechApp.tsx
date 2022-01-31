@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from "primereact/button";
 import { OverlayPanel } from 'primereact/overlaypanel';
+import { InputNumber } from "primereact/inputnumber";
 
 import { promisedData } from "./helpers/databaseFetchers";
 import { getDeliveriesByDate } from "./helpers/getDeliveriesByDate"
@@ -27,6 +28,11 @@ const BasicContainer = styled.div`
   padding: 10px 10px;
   margin: 10px auto 10px auto;
   box-sizing: border-box;
+`;
+
+const Spacer = styled.div`
+  padding: 5px 5px;
+  margin: auto;
 `;
 
 
@@ -67,7 +73,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     console.log(addProduct)
-  },[addProduct])
+  }, [addProduct])
 
   useEffect(() => {
     userInfoCheck()
@@ -95,17 +101,38 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   return (
     <React.Fragment>
       {isLoading && <Loader />}
-      <OverlayPanel ref={op} showCloseIcon id="overlay_panel" style={{width: '450px'}} className="overlaypanel-demo">
-      <div>Add a Product</div>
-</OverlayPanel>
-      <OrderButtonsFloat><Button type="button" icon="pi pi-plus"  onClick={(e) => op.current.toggle(e)} aria-haspopup aria-controls="overlay_panel" className="p-button-rounded" /></OrderButtonsFloat>
+      <OverlayPanel ref={op} showCloseIcon id="overlay_panel" style={{ width: '450px' }} className="overlaypanel-demo">
+        <BasicContainer>
+          <Spacer>Add a Product</Spacer>
+          <Spacer>
+          <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
+          </Spacer>
+          <Spacer>
+          <InputNumber
+            value={3}
+            size={3}
+            buttonLayout="horizontal"
+            incrementButtonIcon='pi pi-plus'
+            decrementButtonIcon='pi pi-minus'
+            showButtons
+          />
+          </Spacer>
+          <Spacer>TOTAL: $22.90</Spacer>
+          <Spacer>
+          <Button label="ADD" icon="pi pi-plus" iconPos="right" className="p-button-raised p-button-rounded p-button-success"/>
+          </Spacer>
+          
+        </BasicContainer>
+
+      </OverlayPanel>
+      <OrderButtonsFloat><Button type="button" icon="pi pi-plus" onClick={(e) => op.current.toggle(e)} aria-haspopup aria-controls="overlay_panel" className="p-button-rounded" /></OrderButtonsFloat>
       <PushToTalk setChosen={setChosen} setDelivDate={setDelivDate} />
       <BasicContainer>
-        <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" /> 
+        <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
         <Cal delivDate={delivDate} setDelivDate={setDelivDate} />
       </BasicContainer>
       <Fulfill route={route} setRoute={setRoute} />
-      <DataScroll chosen={chosen} database={database} order={order}/>
+      <DataScroll chosen={chosen} database={database} order={order} />
     </React.Fragment>
   );
 };
