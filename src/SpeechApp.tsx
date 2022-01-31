@@ -40,7 +40,7 @@ const OrderButtonsFloat = styled.div`
   display: flex;
   position: fixed;
   z-index: 100;
-  top: 30px;
+  top: 40px;
   justify-content: space-around;
   width: 100%;
   margin: 5px 0;

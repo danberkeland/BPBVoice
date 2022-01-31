@@ -22,7 +22,8 @@ import styled from "styled-components";
 const Title = styled.h1`
   font-family: "Montserrat", sans-serif;
   padding: 0;
-  margin: 5px 10px;
+  margin: auto;
+  margin-bottom: 60px;
   color: rgb(66, 97, 201);
 `;
 
