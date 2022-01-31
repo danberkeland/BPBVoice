@@ -41,12 +41,6 @@ const TwoColumn = styled.div`
   justify-items: left;
 `;
 
-const { DateTime } = require("luxon");
-
-let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0]
-console.log(today)
-
-
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
 type Props = {
@@ -59,10 +53,7 @@ export const DataScroll: React.FC<Props> = ({ chosen, database, order }): JSX.El
 
   const [products, customers, routes, standing, orders] = database;
 
-
-
   let custo: string = customers.length > 0 && customers[customers.findIndex(custo => custo.nickName === chosen)].custName
-
 
   const quantityTemplate = (rowData) => {
     console.log("rowData", rowData)
@@ -76,7 +67,6 @@ export const DataScroll: React.FC<Props> = ({ chosen, database, order }): JSX.El
       showButtons
     />;
   }
-
 
   const itemTemplate = (item: Order) => {
     return (

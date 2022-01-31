@@ -1,15 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 
 import { Dropdown } from 'primereact/dropdown';
-import { Calendar } from 'primereact/calendar';
-
 
 import { promisedData } from "./helpers/databaseFetchers";
 import { getDeliveriesByDate } from "./helpers/getDeliveriesByDate"
 
 import { Auth } from "aws-amplify";
-
-import styled from "styled-components";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "./API";
 import { ToggleContext } from "./Contexts/ToggleContexts";
@@ -17,6 +13,9 @@ import Loader from "./Loader";
 import { PushToTalk } from "./SpeechAppParts/PushToTalkButton";
 import { Fulfill } from "./SpeechAppParts/FulfillOptions";
 import { DataScroll } from "./SpeechAppParts/DataScroller";
+import { Cal } from "./SpeechAppParts/Calendar";
+
+import styled from "styled-components";
 
 const BasicContainer = styled.div`
   display: flex;
@@ -74,34 +73,13 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   const { isLoading, setIsLoading } = useContext(ToggleContext)
 
-
-  const calDateSetter = (e) => {
-    var today = e.value
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-
-    today = yyyy + '-' + mm + '-' + dd;
-    setDelivDate(today)
-  }
-
-  const convertToDisplayDate = (d: string): Date => {
-    var dateSplit = d.split('-')
-    return new Date(Number(dateSplit[0]), Number(dateSplit[1]) - 1, Number(dateSplit[2]), 0, 0)
-
-  }
-
   return (
     <React.Fragment>
       {isLoading && <Loader />}
       <PushToTalk setChosen={setChosen} setDelivDate={setDelivDate} />
       <BasicContainer>
-
-        <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
-        <div className="field col-12 md:col-4">
-          <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
-        </div>
-
+        <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" /> 
+        <Cal delivDate={delivDate} setDelivDate={setDelivDate} />
       </BasicContainer>
       <Fulfill route={route} setRoute={setRoute} />
       <DataScroll chosen={chosen} database={database} order={order}/>

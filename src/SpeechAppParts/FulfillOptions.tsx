@@ -23,12 +23,6 @@ const FulfillOptions = styled.div`
   justify-items: right;
 `;
 
-
-const { DateTime } = require("luxon");
-
-let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0]
-console.log(today)
-
 type Props = {
     route: string,
     setRoute: React.Dispatch<React.SetStateAction<string>>

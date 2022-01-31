@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSpeechContext } from "@speechly/react-client";
 
 import { PushToTalkButton } from "@speechly/react-ui";
@@ -9,13 +9,6 @@ import {
   parseIntent,
   parseEntities
 } from "../parser";
-
-import { Auth } from "aws-amplify";
-
-const { DateTime } = require("luxon");
-
-let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0]
-console.log(today)
 
 type Props = {
     setChosen: React.Dispatch<React.SetStateAction<string>>,
