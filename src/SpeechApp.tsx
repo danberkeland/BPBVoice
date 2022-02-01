@@ -109,12 +109,6 @@ export const SpeechApp: React.FC = (): JSX.Element => {
 
   const { isLoading, setIsLoading } = useContext<ToggleInterface>(ToggleContext)
 
-  const applyNewChosen = (cust: string, customers: Customer[]): void => {
-    let custo: string = customers[customers.findIndex(custo => custo.nickName === cust)].custName
-    let thisOrder: Order[] = order?.filter(or => (or.custName === custo && or.qty > 0))
-    setCurrentOrder(thisOrder)
-    setChosen(cust)
-  }
 
   const getThisOrder = (ords: [Order[], Database, {
     label: string;
@@ -150,7 +144,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
         <Dropdown 
           value={chosen} 
           options={customerList} 
-          onChange={e => applyNewChosen(e.value, database[1])} 
+          onChange={e => setChosen(e.value)} 
           placeholder="Select a Customer" />
         <Cal delivDate={delivDate} setDelivDate={setDelivDate} />
       </BasicContainer>
