@@ -44,19 +44,13 @@ const TwoColumn = styled.div`
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
 type Props = {
-    chosen: string,
-    database: Database,
-    order: Order[]
+    thisOrder: Order[]
 }
 
-export const DataScroll: React.FC<Props> = ({ chosen, database, order }): JSX.Element => {
-
-  const [products, customers, routes, standing, orders] = database;
-
-  let custo: string = customers.length > 0 && customers[customers.findIndex(custo => custo.nickName === chosen)].custName
+export const DataScroll: React.FC<Props> = ({ thisOrder }): JSX.Element => {
 
   const quantityTemplate = (rowData) => {
-    console.log("rowData", rowData)
+    
     return <InputNumber
       value={rowData.qty}
       size={3}
@@ -86,6 +80,6 @@ export const DataScroll: React.FC<Props> = ({ chosen, database, order }): JSX.El
   }
 
     return (
-        <DataScroller value={customers && order?.filter(or => (or.custName === custo && or.qty > 0))} itemTemplate={itemTemplate} rows={10} inline></DataScroller>
+        <DataScroller value={thisOrder} itemTemplate={itemTemplate} rows={10} inline></DataScroller>
     );
 };

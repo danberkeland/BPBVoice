@@ -2,8 +2,6 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from "primereact/button";
-import { OverlayPanel } from 'primereact/overlaypanel';
-import { InputNumber } from "primereact/inputnumber";
 
 import { promisedData } from "./helpers/databaseFetchers";
 import { getDeliveriesByDate } from "./helpers/getDeliveriesByDate"
@@ -31,12 +29,6 @@ const BasicContainer = styled.div`
   box-sizing: border-box;
 `;
 
-const Spacer = styled.div`
-  padding: 5px 5px;
-  margin: auto;
-`;
-
-
 const OrderButtonsFloat = styled.div`
   display: flex;
   position: fixed;
@@ -63,6 +55,7 @@ export const SpeechApp: React.FC = (): JSX.Element => {
   const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
   const [order, setOrder] = useState<Order[]>()
   const [route, setRoute] = useState<string>();
+  const [currentOrder, setCurrentOrder] = useState<Order[]>()
   const [addProduct, setAddProduct] = useState<boolean>(false)
 
   const op = useRef(null);
@@ -91,26 +84,49 @@ export const SpeechApp: React.FC = (): JSX.Element => {
             setCustomerList(ords[2])
             setIsLoading(false)
             let custo: string = ords[1][1][ords[1][1].findIndex(custo => custo.nickName === chosen)].custName
+            let thisOrder: Order[] = ords[0].filter(or => (or.custName === custo && or.qty > 0))
             setRoute(ords[0].filter(ord => ord.custName === custo)[0].route)
+            setCurrentOrder(thisOrder)
           });
 
   }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  interface ToggleInterface {
+    isLoading: boolean,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-  const { isLoading, setIsLoading } = useContext(ToggleContext)
+  const { isLoading, setIsLoading } = useContext<ToggleInterface>(ToggleContext)
+
+  const applyNewChosen = (cust: string, customers: Customer[]): void => {
+    let custo: string = customers[customers.findIndex(custo => custo.nickName === cust)].custName
+    let thisOrder: Order[] = order?.filter(or => (or.custName === custo && or.qty > 0))
+    setCurrentOrder(thisOrder)
+    setChosen(cust)
+  }
 
   return (
     <React.Fragment>
       {isLoading && <Loader />}
-      <AddProduct chosen={chosen} setChosen={setChosen} customerList={customerList} op={op}/>
-      <OrderButtonsFloat><Button type="button" icon="pi pi-plus" onClick={(e) => op.current.toggle(e)} aria-haspopup aria-controls="overlay_panel" className="p-button-rounded" /></OrderButtonsFloat>
+      <AddProduct chosen={chosen} setChosen={setChosen} customerList={customerList} op={op} />
+      <OrderButtonsFloat>
+        <Button 
+          type="button" 
+          icon="pi pi-plus" 
+          onClick={(e) => op.current.toggle(e)} 
+          className="p-button-rounded" />
+      </OrderButtonsFloat>
       <PushToTalk setChosen={setChosen} setDelivDate={setDelivDate} />
       <BasicContainer>
-        <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
+        <Dropdown 
+          value={chosen} 
+          options={customerList} 
+          onChange={e => applyNewChosen(e.value, database[1])} 
+          placeholder="Select a Customer" />
         <Cal delivDate={delivDate} setDelivDate={setDelivDate} />
       </BasicContainer>
       <Fulfill route={route} setRoute={setRoute} />
-      <DataScroll chosen={chosen} database={database} order={order} />
+      <DataScroll thisOrder={currentOrder} />
     </React.Fragment>
   );
 };
