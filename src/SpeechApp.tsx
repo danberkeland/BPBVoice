@@ -83,13 +83,24 @@ export const SpeechApp: React.FC = (): JSX.Element => {
             setDatabase(ords[1])
             setCustomerList(ords[2])
             setIsLoading(false)
-            let custo: string = ords[1][1][ords[1][1].findIndex(custo => custo.nickName === chosen)].custName
-            let thisOrder: Order[] = ords[0].filter(or => (or.custName === custo && or.qty > 0))
-            setRoute(ords[0].filter(ord => ord.custName === custo)[0].route)
-            setCurrentOrder(thisOrder)
+            setRoute(getThisRoute(ords))
+            setCurrentOrder(getThisOrder(ords))
           });
 
   }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    let ords: [Order[], Database, {
+      label: string;
+      value: string;
+  }[]] = [order, database, customerList]
+  try{
+    setRoute(getThisRoute(ords))
+    setCurrentOrder(getThisOrder(ords))
+  } catch {}
+    
+  },[chosen])
+
 
   interface ToggleInterface {
     isLoading: boolean,
@@ -103,6 +114,24 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     let thisOrder: Order[] = order?.filter(or => (or.custName === custo && or.qty > 0))
     setCurrentOrder(thisOrder)
     setChosen(cust)
+  }
+
+  const getThisOrder = (ords: [Order[], Database, {
+    label: string;
+    value: string;
+  }[]]): Order[] => {
+    let custo: string = ords[1][1][ords[1][1].findIndex(custo => custo.nickName === chosen)].custName
+    let thisOrder: Order[] = ords[0].filter(or => (or.custName === custo && or.qty > 0))
+    return thisOrder
+  }
+
+  const getThisRoute = (ords: [Order[], Database, {
+    label: string;
+    value: string;
+  }[]]): string => {
+    let custo: string = ords[1][1][ords[1][1].findIndex(custo => custo.nickName === chosen)].custName
+    let route = ords[0].filter(ord => ord.custName === custo)[0].route
+    return route
   }
 
   return (
