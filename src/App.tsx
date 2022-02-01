@@ -38,7 +38,7 @@ interface AuthProps {
   user: any
 }
 
-function App(props:AuthProps): JSX.Element {
+export function App(props:AuthProps): JSX.Element {
 
   
   return (

@@ -46,7 +46,7 @@ console.log(today)
 
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
-export const SpeechApp: React.FC = (): JSX.Element => {
+export const SpeechApp: React.FC<{}> = (): JSX.Element => {
 
   const [userInfo, setUserInfo] = useState()
   const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>([])
@@ -65,9 +65,11 @@ export const SpeechApp: React.FC = (): JSX.Element => {
     setUserInfo(user)
   }
 
+  
+
   useEffect(() => {
-    console.log(addProduct)
-  }, [addProduct])
+    console.log("op",op)
+  }, [op])
 
   useEffect(() => {
     userInfoCheck()
