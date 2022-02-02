@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import { Ordering } from './Ordering/Ordering'
 
-function AppRoutes({ authType, userNum }) {
+function AppRoutes() {
 
 
   return (

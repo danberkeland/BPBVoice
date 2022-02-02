@@ -51,7 +51,7 @@ export function App(props: AuthProps): JSX.Element {
         <Title>Back Porch Bakery</Title>
 
         <SpeechProvider appId="685bb1db-a418-4ff1-9a0c-dfcc888e23ec" language="en-US">
-          <AppRoutes authType='' userNum='' />
+          <AppRoutes />
         </SpeechProvider>
         <UserStyle>Hello {props.user.username}</UserStyle>
         <Button label="Sign Out" className="p-button-warning p-button-raised p-button-rounded" onClick={props.signOut}></Button>
