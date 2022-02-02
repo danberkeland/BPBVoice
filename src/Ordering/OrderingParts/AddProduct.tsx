@@ -33,7 +33,7 @@ export const AddProduct: React.FC<Props> = ({ op, customerList, chosen, setChose
 
   return (
    
-      <OverlayPanel ref={op} showCloseIcon id="overlay_panel" style={{ width: '300px' }} className="overlaypanel-demo">
+      <OverlayPanel ref={op} id="overlay_panel" style={{ width: '300px' }} className="overlaypanel-demo">
         
         <BasicContainer>
           <AddProdOverlayBody customerList={customerList} chosen={chosen} setChosen={setChosen}/>    
