@@ -79,7 +79,7 @@ const AuthSetup = {
   }
 }
 
-const ampConfig = Amplify.configure({
+Amplify.configure({
   ...awsconfig,
   Auth: AuthSetup,
   API: {
@@ -91,10 +91,7 @@ const ampConfig = Amplify.configure({
   }
 })
 
-console.log("ampConfig", ampConfig)
-
-const authConfig = Auth.configure();
-console.log("authConfig",authConfig)
+Auth.configure();
 
 ReactDOM.render(
   <React.StrictMode>

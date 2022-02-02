@@ -3,19 +3,19 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from "primereact/button";
 
-import { promisedData } from "./helpers/databaseFetchers";
-import { getDeliveriesByDate } from "./helpers/getDeliveriesByDate"
+import { promisedData } from "../helpers/databaseFetchers";
+import { getDeliveriesByDate } from "../helpers/getDeliveriesByDate"
 
 import { Auth } from "aws-amplify";
 
-import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "./API";
-import { ToggleContext } from "./Contexts/ToggleContexts";
-import Loader from "./Loader";
-import { PushToTalk } from "./SpeechAppParts/PushToTalkButton";
-import { Fulfill } from "./SpeechAppParts/FulfillOptions";
-import { DataScroll } from "./SpeechAppParts/DataScroller";
-import { Cal } from "./SpeechAppParts/Calendar";
-import { AddProduct } from "./SpeechAppParts/AddProduct";
+import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
+import { ToggleContext } from "../Contexts/ToggleContexts";
+import Loader from "../Loader";
+import { PushToTalk } from "./OrderingParts/PushToTalkButton";
+import { Fulfill } from "./OrderingParts/FulfillOptions";
+import { DataScroll } from "./OrderingParts/DataScroller";
+import { Cal } from "./OrderingParts/Calendar";
+import { AddProduct } from "./OrderingParts/AddProduct";
 
 import styled from "styled-components";
 
@@ -33,7 +33,7 @@ const OrderButtonsFloat = styled.div`
   display: flex;
   position: fixed;
   z-index: 100;
-  top: 40px;
+  top: 100px;
   justify-content: space-around;
   width: 100%;
   margin: 5px 0;
@@ -42,11 +42,12 @@ const OrderButtonsFloat = styled.div`
 const { DateTime } = require("luxon");
 
 let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0]
-console.log(today)
 
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
-export const SpeechApp: React.FC<{}> = (): JSX.Element => {
+
+
+export const Ordering: React.FC<{}> = (): JSX.Element => {
 
   const [userInfo, setUserInfo] = useState()
   const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>([])
@@ -58,21 +59,25 @@ export const SpeechApp: React.FC<{}> = (): JSX.Element => {
   const [currentOrder, setCurrentOrder] = useState<Order[]>()
   const [addProduct, setAddProduct] = useState<boolean>(false)
 
+  
+  interface ToggleInterface {
+    isLoading: boolean,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const { isLoading, setIsLoading } = useContext<ToggleInterface>(ToggleContext)
+
+
   const op = useRef(null);
 
   const userInfoCheck = async () => {
     const user = await Auth.currentAuthenticatedUser()
-    setUserInfo(user)
+    console.log("user",user)
+    return user
   }
 
-  
-
   useEffect(() => {
-    console.log("op",op)
-  }, [op])
-
-  useEffect(() => {
-    userInfoCheck()
+    userInfoCheck().then(user => setUserInfo(user))
   }, [])
 
   useEffect(() => {
@@ -102,14 +107,6 @@ export const SpeechApp: React.FC<{}> = (): JSX.Element => {
   } catch {}
     
   },[chosen])
-
-
-  interface ToggleInterface {
-    isLoading: boolean,
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-  const { isLoading, setIsLoading } = useContext<ToggleInterface>(ToggleContext)
 
 
   const getThisOrder = (ords: [Order[], Database, {

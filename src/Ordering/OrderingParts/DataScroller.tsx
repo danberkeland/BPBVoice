@@ -5,7 +5,7 @@ import { DataScroller } from 'primereact/datascroller';
 
 import styled from "styled-components";
 
-import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
+import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../../API";
 
 const ProductTitle = styled.h2`
   font-family: "Montserrat", sans-serif;

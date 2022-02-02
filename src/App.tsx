@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { SpeechProvider } from "@speechly/react-client";
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
@@ -6,10 +6,11 @@ import '@aws-amplify/ui-react/styles.css';
 
 import "./App.css";
 
-import Loader from "./Loader";
 import { ToggleProvider } from "./Contexts/ToggleContexts"
 
-import { SpeechApp } from "./SpeechApp";
+import AppRoutes from "./AppRoutes";
+
+import Nav from "./Nav";
 
 import { Button } from 'primereact/button';
 
@@ -38,25 +39,25 @@ interface AuthProps {
   user: any
 }
 
-export function App(props:AuthProps): JSX.Element {
+export function App(props: AuthProps): JSX.Element {
 
-  
+
   return (
     <ToggleProvider>
+
+      <Nav />
+
       <div className="App">
-     
-      <>
-      <Title>Back Porch Bakery</Title>
-      
-    </>
-      <SpeechProvider appId="685bb1db-a418-4ff1-9a0c-dfcc888e23ec" language="en-US">
-        <SpeechApp />
-      </SpeechProvider>
-      <UserStyle>Hello {props.user.username}</UserStyle>
-      <Button label="Sign Out" className="p-button-warning p-button-raised p-button-rounded" onClick={props.signOut}></Button>
-    </div>
+        <Title>Back Porch Bakery</Title>
+
+        <SpeechProvider appId="685bb1db-a418-4ff1-9a0c-dfcc888e23ec" language="en-US">
+          <AppRoutes authType='' userNum='' />
+        </SpeechProvider>
+        <UserStyle>Hello {props.user.username}</UserStyle>
+        <Button label="Sign Out" className="p-button-warning p-button-raised p-button-rounded" onClick={props.signOut}></Button>
+      </div>
     </ToggleProvider>
-    
+
   );
 }
 

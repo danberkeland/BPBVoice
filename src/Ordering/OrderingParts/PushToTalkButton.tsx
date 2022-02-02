@@ -8,7 +8,7 @@ import {
   EntityType,
   parseIntent,
   parseEntities
-} from "../parser";
+} from "../../parser";
 
 type Props = {
     setChosen: React.Dispatch<React.SetStateAction<string>>,
