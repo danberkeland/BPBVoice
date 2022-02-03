@@ -4,9 +4,12 @@ import { InputNumber } from 'primereact/inputnumber';
 import { DataScroller } from 'primereact/datascroller';
 import { Button } from "primereact/button";
 
+import { addOrder } from "../../helpers/addOrder";
+
 import styled from "styled-components";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../../API";
+import { AddProduct } from "./AddProduct";
 
 const ProductTitle = styled.h2`
   font-family: "Montserrat", sans-serif;
@@ -74,9 +77,14 @@ const Rate = (item): JSX.Element => {
   )
 }
   
-const TrashCan = (item): JSX.Element => {
+const TrashCan = (item: Order): JSX.Element => {
   return (
-    <React.Fragment><Button icon="pi pi-trash" className="p-button-rounded p-button-help p-button-outlined" /></React.Fragment>
+    <React.Fragment>
+      <Button 
+        icon="pi pi-trash" 
+        className="p-button-rounded p-button-help p-button-outlined" 
+        onClick = {e => addOrder(item, 0)}/>
+      </React.Fragment>
   )
 }
 
@@ -89,13 +97,13 @@ const itemTemplate = (item: Order) => {
         <TwoColumn>
         <div style={{ textAlign: "left" }}>
           <ProductTitle>{item.prodName}</ProductTitle>
-          <Rate item={item} />
+          <Rate {...item} />
         </div>
-        <TrashCan item={item}/>
+        <TrashCan {...item}/>
         </TwoColumn>
         
         <TwoColumn>
-          <Quantity item={item} />
+          <Quantity {...item} />
           <Previous />
           <ProductTotal>Total: ${(item.rate * item.qty).toFixed(2)}</ProductTotal>
         </TwoColumn>

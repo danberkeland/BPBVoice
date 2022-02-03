@@ -57,7 +57,6 @@ export const Ordering: React.FC<{}> = (): JSX.Element => {
   const [order, setOrder] = useState<Order[]>()
   const [route, setRoute] = useState<string>();
   const [currentOrder, setCurrentOrder] = useState<Order[]>()
-  const [addProduct, setAddProduct] = useState<boolean>(false)
 
   
   interface ToggleInterface {
