@@ -42,7 +42,13 @@ const TwoColumn = styled.div`
   grid-template-columns: 1fr 1fr;
   margin: 2px 0px;
   align-items: center;
-  justify-items: left;
+  
+`;
+
+const AlignRight = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: right;
 `;
 
 
@@ -79,12 +85,15 @@ const Rate = (item): JSX.Element => {
   
 const TrashCan = (item: Order): JSX.Element => {
   return (
-    <React.Fragment>
+    <AlignRight>
+      
       <Button 
         icon="pi pi-trash" 
         className="p-button-rounded p-button-help p-button-outlined" 
         onClick = {e => addOrder(item, 0)}/>
-      </React.Fragment>
+      
+      
+    </AlignRight>
   )
 }
 
@@ -99,7 +108,10 @@ const itemTemplate = (item: Order) => {
           <ProductTitle>{item.prodName}</ProductTitle>
           <Rate {...item} />
         </div>
-        <TrashCan {...item}/>
+        
+          <TrashCan {...item}/>
+        
+        
         </TwoColumn>
         
         <TwoColumn>
