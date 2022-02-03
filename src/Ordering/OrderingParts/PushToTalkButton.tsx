@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useSpeechContext } from "@speechly/react-client";
+import { ToggleContext, ToggleInterface } from '../../Contexts/ToggleContexts'
 
 import { PushToTalkButton } from "@speechly/react-ui";
 
@@ -10,13 +11,13 @@ import {
   parseEntities
 } from "../../parser";
 
-type Props = {
-    setChosen: React.Dispatch<React.SetStateAction<string>>,
-    setDelivDate: React.Dispatch<React.SetStateAction<string>>
-}
 
+export const PushToTalk: React.FC = (): JSX.Element => {
 
-export const PushToTalk: React.FC<Props> = ({ setChosen, setDelivDate }): JSX.Element => {
+  const {
+    setChosen,
+    setDelivDate,
+  } = useContext<ToggleInterface>(ToggleContext)
 
   const { segment } = useSpeechContext();
 
@@ -41,14 +42,14 @@ export const PushToTalk: React.FC<Props> = ({ setChosen, setDelivDate }): JSX.El
 
 
   return (
-    
-      <PushToTalkButton
-        placement="bottom"
-        captureKey=" "
-        intro="Push to talk"
-        size="80px" >
-      </PushToTalkButton>
-     
+
+    <PushToTalkButton
+      placement="bottom"
+      captureKey=" "
+      intro="Push to talk"
+      size="80px" >
+    </PushToTalkButton>
+
 
 
 

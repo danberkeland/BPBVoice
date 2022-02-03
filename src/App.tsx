@@ -39,6 +39,16 @@ interface AuthProps {
   user: any
 }
 
+
+const BigBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  padding: 10px 10px;
+  margin: 10px auto 200px auto;
+  box-sizing: border-box;
+`;
+
 export function App(props: AuthProps): JSX.Element {
 
 
@@ -53,8 +63,11 @@ export function App(props: AuthProps): JSX.Element {
         <SpeechProvider appId="685bb1db-a418-4ff1-9a0c-dfcc888e23ec" language="en-US">
           <AppRoutes />
         </SpeechProvider>
-        <UserStyle>Hello {props.user.username}</UserStyle>
-        <Button label="Sign Out" className="p-button-warning p-button-raised p-button-rounded" onClick={props.signOut}></Button>
+        <BigBottom>
+          <UserStyle>Hello {props.user.username}</UserStyle>
+          <Button label="Sign Out" className="p-button-warning p-button-raised p-button-rounded" onClick={props.signOut}></Button>
+        </BigBottom>
+        
       </div>
     </ToggleProvider>
 

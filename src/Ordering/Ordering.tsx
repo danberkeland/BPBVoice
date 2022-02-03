@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { Fragment, useContext, useEffect, useRef } from "react";
 
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from "primereact/button";
@@ -9,13 +9,14 @@ import { getDeliveriesByDate } from "../helpers/getDeliveriesByDate"
 import { Auth } from "aws-amplify";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
-import { ToggleContext } from "../Contexts/ToggleContexts";
+import { ToggleContext, ToggleInterface } from "../Contexts/ToggleContexts";
 import Loader from "../Loader";
 import { PushToTalk } from "./OrderingParts/PushToTalkButton";
 import { Fulfill } from "./OrderingParts/FulfillOptions";
 import { DataScroll } from "./OrderingParts/DataScroller";
 import { Cal } from "./OrderingParts/Calendar";
 import { AddProduct } from "./OrderingParts/AddProduct";
+
 
 import styled from "styled-components";
 
@@ -29,6 +30,17 @@ const BasicContainer = styled.div`
   box-sizing: border-box;
 `;
 
+
+const BigBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  border: 1px solid lightgray;
+  padding: 10px 10px;
+  margin: 10px auto 1000px auto;
+  box-sizing: border-box;
+`;
+
 const OrderButtonsFloat = styled.div`
   display: flex;
   position: fixed;
@@ -39,32 +51,22 @@ const OrderButtonsFloat = styled.div`
   margin: 5px 0;
 `;
 
-const { DateTime } = require("luxon");
-
-let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[0]
-
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
-
-
 
 export const Ordering: React.FC<{}> = (): JSX.Element => {
 
-  const [userInfo, setUserInfo] = useState()
-  const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>([])
-  const [chosen, setChosen] = useState<string>('novo')
-  const [delivDate, setDelivDate] = useState<string>(today)
-  const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
-  const [order, setOrder] = useState<Order[]>()
-  const [route, setRoute] = useState<string>();
-  const [currentOrder, setCurrentOrder] = useState<Order[]>()
+const { 
+  isLoading, setIsLoading, 
+  userInfo, setUserInfo, 
+  customerList, setCustomerList, 
+  chosen, setChosen, 
+  delivDate, setDelivDate,
+  database, setDatabase,
+  order, setOrder,
+  route, setRoute,
+  currentOrder, setCurrentOrder
 
-  
-  interface ToggleInterface {
-    isLoading: boolean,
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-const { isLoading, setIsLoading } = useContext<ToggleInterface>(ToggleContext)
+} = useContext<ToggleInterface>(ToggleContext)
 
 
   const op = useRef(null);
@@ -129,7 +131,7 @@ const { isLoading, setIsLoading } = useContext<ToggleInterface>(ToggleContext)
   const AddProdMod = () => {
     return (
       <React.Fragment>
-        <AddProduct chosen={chosen} setChosen={setChosen} customerList={customerList} op={op} />
+        <AddProduct op={op} />
         <OrderButtonsFloat>
           <Button
             type="button"
@@ -151,18 +153,6 @@ const { isLoading, setIsLoading } = useContext<ToggleInterface>(ToggleContext)
     )
   }
 
-  const DateSelect = () => {
-    return (
-      <Cal delivDate={delivDate} setDelivDate={setDelivDate} />
-    )
-  }
-
-  const Fulfillment = () => {
-    return (
-      <Fulfill route={route} setRoute={setRoute} />
-    )
-  }
-
   const PONote = () => {
     return (
       <React.Fragment></React.Fragment>
@@ -181,22 +171,17 @@ const { isLoading, setIsLoading } = useContext<ToggleInterface>(ToggleContext)
     )
   }
 
-  const Microphone = () => {
-    return (
-      <PushToTalk setChosen={setChosen} setDelivDate={setDelivDate} />
-    )
-  }
 
   return (
     <React.Fragment>
-      <Microphone />
+      <PushToTalk />
       {isLoading && <Loader />}
       <AddProdMod />
       <BasicContainer>
         <CustList />
-        <DateSelect />
+        <Cal />
       </BasicContainer>
-      <Fulfillment />
+      <Fulfill />
       <PONote />
       <ThisOrder />
       <ControlPanel />

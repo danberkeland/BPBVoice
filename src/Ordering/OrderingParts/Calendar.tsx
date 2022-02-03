@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Calendar } from 'primereact/calendar';
+import { ToggleContext, ToggleInterface } from "../../Contexts/ToggleContexts";
 
-type Props = {
-    delivDate: string,
-    setDelivDate: React.Dispatch<React.SetStateAction<string>>
-}
+export const Cal: React.FC = (): JSX.Element => {
 
-export const Cal: React.FC<Props> = ({ delivDate, setDelivDate}): JSX.Element => {
+
+  const {
+    delivDate, setDelivDate,
+  } = useContext<ToggleInterface>(ToggleContext)
 
   const calDateSetter = (e) => {
     var today = e.value
@@ -25,8 +26,8 @@ export const Cal: React.FC<Props> = ({ delivDate, setDelivDate}): JSX.Element =>
   }
 
   return (
-        <div className="field col-12 md:col-4">
-          <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
-        </div>
+    <div className="field col-12 md:col-4">
+      <Calendar id="touchUI" value={convertToDisplayDate(delivDate)} onChange={(e) => calDateSetter(e)} touchUI />
+    </div>
   );
 };

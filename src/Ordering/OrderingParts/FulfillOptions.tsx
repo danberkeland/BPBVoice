@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext} from "react";
 
 import { RadioButton } from 'primereact/radiobutton';
+import { ToggleContext, ToggleInterface } from "../../Contexts/ToggleContexts";
 
 import styled from "styled-components";
 
@@ -23,12 +24,13 @@ const FulfillOptions = styled.div`
   justify-items: right;
 `;
 
-type Props = {
-  route: string,
-  setRoute: React.Dispatch<React.SetStateAction<string>>
-}
 
-export const Fulfill: React.FC<Props> = ({ route, setRoute }): JSX.Element => {
+export const Fulfill: React.FC = (): JSX.Element => {
+
+
+  const {
+    route, setRoute
+  } = useContext<ToggleInterface>(ToggleContext)
 
   return (
 

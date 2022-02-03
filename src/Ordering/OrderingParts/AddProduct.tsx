@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { OverlayPanel } from 'primereact/overlaypanel';
 
 import { AddProdOverlayBody } from './AddProdOverlayBody'
+import { ToggleContext, ToggleInterface } from "../../Contexts/ToggleContexts";
 
 
 import styled from "styled-components";
@@ -19,28 +20,28 @@ const BasicContainer = styled.div`
 
 
 type Props = {
-    op: React.MutableRefObject<any>
-    customerList: {
-        label: string;
-        value: string;
-    }[],
-    chosen: string,
-    setChosen: React.Dispatch<React.SetStateAction<string>>,
+  op: React.LegacyRef<OverlayPanel>
 }
 
-export const AddProduct: React.FC<Props> = ({ op, customerList, chosen, setChosen }): JSX.Element => {
+export const AddProduct: React.FC<Props> = ({ op }): JSX.Element => {
+
+
+  const {
+    customerList,
+    chosen, setChosen,
+  } = useContext<ToggleInterface>(ToggleContext)
 
 
   return (
-   
-      <OverlayPanel ref={op} id="overlay_panel" style={{ width: '300px' }} className="overlaypanel-demo">
-        
-        <BasicContainer>
-          <AddProdOverlayBody customerList={customerList} chosen={chosen} setChosen={setChosen}/>    
-        </BasicContainer>
 
-      </OverlayPanel>
-    
-     
+    <OverlayPanel ref={op} id="overlay_panel" style={{ width: '300px' }} className="overlaypanel-demo">
+
+      <BasicContainer>
+        <AddProdOverlayBody customerList={customerList} chosen={chosen} setChosen={setChosen} />
+      </BasicContainer>
+
+    </OverlayPanel>
+
+
   );
 };
