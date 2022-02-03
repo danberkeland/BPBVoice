@@ -2,6 +2,7 @@ import React from "react";
 
 import { InputNumber } from 'primereact/inputnumber';
 import { DataScroller } from 'primereact/datascroller';
+import { Button } from "primereact/button";
 
 import styled from "styled-components";
 
@@ -41,45 +42,73 @@ const TwoColumn = styled.div`
   justify-items: left;
 `;
 
-type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
 type Props = {
     thisOrder: Order[]
 }
 
-export const DataScroll: React.FC<Props> = ({ thisOrder }): JSX.Element => {
+const Quantity = (item): JSX.Element => {
 
-  const quantityTemplate = (rowData) => {
-    
-    return <InputNumber
-      value={rowData.qty}
+  return (
+    <InputNumber
+      value={item.qty}
       size={3}
       buttonLayout="horizontal"
       incrementButtonIcon='pi pi-plus'
       decrementButtonIcon='pi pi-minus'
-      onChange={e => console.log(rowData, e)}
+      onChange={e => console.log(item, e)}
       showButtons
-    />;
-  }
-
-  const itemTemplate = (item: Order) => {
-    return (
-      <React.Fragment>
-        <BasicContainer>
-          <div style={{ textAlign: "left" }}>
-            <ProductTitle>{item.prodName}</ProductTitle>
-            <div>${item.rate.toFixed(2)}/ea.</div>
-          </div>
-          <TwoColumn>
-            <div>{quantityTemplate(item)}</div>
-            <ProductTotal>Total: ${(item.rate * item.qty).toFixed(2)}</ProductTotal>
-          </TwoColumn>
-        </BasicContainer>
-      </React.Fragment>
+    />
     )
-  }
+}
+
+const Previous = (item): JSX.Element => {
+  return (
+    <React.Fragment></React.Fragment>
+  )
+}
+
+const Rate = (item): JSX.Element => {
+  return (
+    <div>${item.rate}/ea.</div>
+  )
+}
+  
+const TrashCan = (item): JSX.Element => {
+  return (
+    <React.Fragment><Button icon="pi pi-trash" className="p-button-rounded p-button-help p-button-outlined" /></React.Fragment>
+  )
+}
+
+const itemTemplate = (item: Order) => {
+
+  console.log("item", item)
+  return (
+    <React.Fragment>
+      <BasicContainer>
+        <TwoColumn>
+        <div style={{ textAlign: "left" }}>
+          <ProductTitle>{item.prodName}</ProductTitle>
+          <Rate item={item} />
+        </div>
+        <TrashCan item={item}/>
+        </TwoColumn>
+        
+        <TwoColumn>
+          <Quantity item={item} />
+          <Previous />
+          <ProductTotal>Total: ${(item.rate * item.qty).toFixed(2)}</ProductTotal>
+        </TwoColumn>
+      </BasicContainer>
+    </React.Fragment>
+  )
+}
+
+export const DataScroll: React.FC<Props> = ({ thisOrder }): JSX.Element => {
+
+  
 
     return (
-        <DataScroller value={thisOrder} itemTemplate={itemTemplate} rows={10} inline></DataScroller>
+        <DataScroller value={thisOrder} itemTemplate={item => itemTemplate(item)} rows={10} inline></DataScroller>
     );
 };

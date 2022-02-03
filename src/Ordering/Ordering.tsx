@@ -127,28 +127,81 @@ const { isLoading, setIsLoading } = useContext<ToggleInterface>(ToggleContext)
     return route
   }
 
-  return (
-    <React.Fragment>
-      {isLoading && <Loader />}
-      <AddProduct chosen={chosen} setChosen={setChosen} customerList={customerList} op={op} />
-      <OrderButtonsFloat>
-        <Button 
-          type="button" 
-          icon="pi pi-plus" 
-          onClick={(e) => op.current.toggle(e)} 
-          className="p-button-rounded" />
-      </OrderButtonsFloat>
-      <PushToTalk setChosen={setChosen} setDelivDate={setDelivDate} />
-      <BasicContainer>
-        <Dropdown 
+  const AddProdMod = () => {
+    return (
+      <React.Fragment>
+        <AddProduct chosen={chosen} setChosen={setChosen} customerList={customerList} op={op} />
+        <OrderButtonsFloat>
+          <Button
+            type="button"
+            icon="pi pi-plus"
+            onClick={(e) => op.current.toggle(e)}
+            className="p-button-rounded" />
+        </OrderButtonsFloat>
+      </React.Fragment>
+    )
+  }
+
+  const CustList = () => {
+    return (
+      <Dropdown 
           value={chosen} 
           options={customerList} 
           onChange={e => setChosen(e.value)} 
           placeholder="Select a Customer" />
-        <Cal delivDate={delivDate} setDelivDate={setDelivDate} />
-      </BasicContainer>
+    )
+  }
+
+  const DateSelect = () => {
+    return (
+      <Cal delivDate={delivDate} setDelivDate={setDelivDate} />
+    )
+  }
+
+  const Fulfillment = () => {
+    return (
       <Fulfill route={route} setRoute={setRoute} />
+    )
+  }
+
+  const PONote = () => {
+    return (
+      <React.Fragment></React.Fragment>
+    )
+  }
+
+  const ThisOrder = () => {
+    return (
       <DataScroll thisOrder={currentOrder} />
+    )
+  }
+
+  const ControlPanel = () => {
+    return (
+      <React.Fragment></React.Fragment>
+    )
+  }
+
+  const Microphone = () => {
+    return (
+      <PushToTalk setChosen={setChosen} setDelivDate={setDelivDate} />
+    )
+  }
+
+  return (
+    <React.Fragment>
+      <Microphone />
+      {isLoading && <Loader />}
+      <AddProdMod />
+      <BasicContainer>
+        <CustList />
+        <DateSelect />
+      </BasicContainer>
+      <Fulfillment />
+      <PONote />
+      <ThisOrder />
+      <ControlPanel />
+      
     </React.Fragment>
   );
 };

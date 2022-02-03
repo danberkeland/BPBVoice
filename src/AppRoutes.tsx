@@ -12,8 +12,10 @@ function AppRoutes() {
       
       <div className="bigPicture">
         <Routes>
-        <Route path="/" element={<Ordering />} />
+        
         <Route path="/Ordering" element={<Ordering />} />
+        <Route path="/" element={<Ordering />} />
+        
         </Routes>
           
          
