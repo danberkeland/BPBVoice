@@ -10,9 +10,7 @@ import { ToggleContext, ToggleInterface } from "../../Contexts/ToggleContexts";
 import styled from "styled-components";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../../API";
-import { AddProduct } from "./AddProduct";
-import { createMethodSignature } from "typescript";
-import { stringify } from "querystring";
+
 
 const ProductTitle = styled.h2`
   font-family: "Montserrat", sans-serif;
@@ -61,6 +59,7 @@ const {
 
   setCurrentOrder,
   database,
+  setIsModified,
   currentOrder,
   chosen,
   delivDate,
@@ -69,16 +68,19 @@ const {
   
 
 } = useContext<ToggleInterface>(ToggleContext)
+
+let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
+
+
+const makeChange = (e, simpleItem) => {
+  setIsModified(true)
+  let newOrder = addOrder(database, curr, simpleItem, e)
+  setCurrentOrder(newOrder)
+}
     
 const Quantity = (item): JSX.Element => {
+  
   let simpleItem = item.prodName
-  let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
-
-  const makeChange = (e) => {
-    console.log(e)
-    let newOrder = addOrder(database, curr, simpleItem, e.value)
-    setCurrentOrder(newOrder)
-  }
 
   return (
     <InputNumber
@@ -86,7 +88,7 @@ const Quantity = (item): JSX.Element => {
       value={item.qty}
       size={3}
       buttonLayout="horizontal"
-      onValueChange= {e => makeChange(e)}
+      onValueChange= {e => makeChange(e.value, simpleItem)}
       
     />
     )
@@ -107,14 +109,14 @@ const Rate = (item): JSX.Element => {
 const TrashCan = (item: Order): JSX.Element => {
   
   let simpleItem = item.prodName
-  let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
+  
   return (
     <AlignRight>
       
       <Button 
         icon="pi pi-trash" 
         className="p-button-rounded p-button-help p-button-outlined" 
-        onClick = {e => setCurrentOrder(addOrder(database, curr, simpleItem, 0))}/>
+        onClick = {e => makeChange(0, simpleItem)}/>
       
       
     </AlignRight>

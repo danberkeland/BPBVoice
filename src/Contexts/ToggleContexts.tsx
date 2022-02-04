@@ -9,6 +9,8 @@ let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[
 export interface ToggleInterface {
     isLoading: boolean,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    isModified: boolean,
+    setIsModified: React.Dispatch<React.SetStateAction<boolean>>,
     userInfo: string,
     setUserInfo: React.Dispatch<React.SetStateAction<string>>,
     customerList: { label: string; value: string; }[],
@@ -41,6 +43,7 @@ export const ToggleContext = createContext<ToggleInterface | undefined>(undefine
 export const ToggleProvider = (props: any) => {
 
     const [isLoading, setIsLoading] = useState(false)
+    const [isModified, setIsModified] = useState(false)
     const [userInfo, setUserInfo] = useState()
     const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>([])
     const [chosen, setChosen] = useState<string>('novo')
@@ -56,6 +59,7 @@ export const ToggleProvider = (props: any) => {
             value={{
 
                 isLoading, setIsLoading,
+                isModified, setIsModified,
                 userInfo, setUserInfo,
                 customerList, setCustomerList,
                 chosen, setChosen,

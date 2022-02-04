@@ -57,6 +57,7 @@ export const Ordering: React.FC<{}> = (): JSX.Element => {
 
 const { 
   isLoading, setIsLoading, 
+  isModified, setIsModified,
   userInfo, setUserInfo, 
   customerList, setCustomerList, 
   chosen, setChosen, 
@@ -133,6 +134,7 @@ const {
       <React.Fragment>
         <AddProduct op={op} />
         <OrderButtonsFloat>
+          {isModified && <Submit />}
           <Button
             type="button"
             icon="pi pi-plus"
@@ -142,6 +144,15 @@ const {
       </React.Fragment>
     )
   }
+
+  const Submit = () => {
+    return (
+      <React.Fragment>
+        <div><Button label="SUBMIT ORDER" className="p-button-raised p-button-rounded p-button-danger" /></div>
+      </React.Fragment>
+    )
+  }
+
 
   const CustList = () => {
     return (
@@ -170,7 +181,9 @@ const {
   return (
     <React.Fragment>
       <PushToTalk />
+
       {isLoading && <Loader />}
+      
       <AddProdMod />
       <BasicContainer>
         <CustList />
