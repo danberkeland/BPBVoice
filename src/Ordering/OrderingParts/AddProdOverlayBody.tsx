@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useContext} from "react";
 
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from "primereact/button";
@@ -6,6 +6,8 @@ import { InputNumber } from "primereact/inputnumber";
 
 
 import styled from "styled-components";
+import { ToggleContext } from "../../Contexts/ToggleContexts";
+import { addOrder } from "../../helpers/addOrder";
 
 const BasicContainer = styled.div`
   display: flex;
@@ -23,24 +25,37 @@ const Spacer = styled.div`
 `;
 
 
-type Props = {
-    customerList: {
-        label: string;
-        value: string;
-    }[],
-    chosen: string,
-    setChosen: React.Dispatch<React.SetStateAction<string>>,
-}
 
-export const AddProdOverlayBody: React.FC<Props> = ({ customerList, chosen, setChosen }): JSX.Element => {
 
+export const AddProdOverlayBody: React.FC = (): JSX.Element => {
+
+  const { database, setIsModified, currentOrder, setCurrentOrder, chosen, delivDate, route, ponote } = useContext(ToggleContext)
+
+  const [pickedProd, setPickedProd] = useState('')
+
+  const products = database[0]
+  const productList: { label: string, value: string }[] = products.map(prod => {
+    return {label: prod.prodName, value: prod.prodName}})
+
+    let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
+
+
+    const makeChange = (e, simpleItem) => {
+
+      if (e === 0){
+        setIsModified(true)
+        let newOrder = addOrder(database, curr, simpleItem, e)
+        setCurrentOrder(newOrder)
+     
+      }
+    }
 
   return (
     
         <BasicContainer>
           <Spacer>Add a Product</Spacer>
           <Spacer>
-          <Dropdown value={chosen} options={customerList} onChange={e => setChosen(e.value)} placeholder="Select a Customer" />
+          <Dropdown value={pickedProd} options={productList} onChange={e => setPickedProd(e.value)} placeholder="Select a Customer" />
           </Spacer>
           <Spacer>
           <InputNumber
@@ -54,7 +69,7 @@ export const AddProdOverlayBody: React.FC<Props> = ({ customerList, chosen, setC
           </Spacer>
           <Spacer>TOTAL: $22.90</Spacer>
           <Spacer>
-          <Button label="ADD" icon="pi pi-plus" iconPos="right" className="p-button-raised p-button-rounded p-button-success"/>
+          <Button label="ADD" icon="pi pi-plus" iconPos="right" onClick={e => console.log(e)} className="p-button-raised p-button-rounded p-button-success"/>
           </Spacer>
           
         </BasicContainer>

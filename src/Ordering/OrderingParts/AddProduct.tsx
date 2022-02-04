@@ -37,7 +37,7 @@ export const AddProduct: React.FC<Props> = ({ op }): JSX.Element => {
     <OverlayPanel ref={op} id="overlay_panel" style={{ width: '300px' }} className="overlaypanel-demo">
 
       <BasicContainer>
-        <AddProdOverlayBody customerList={customerList} chosen={chosen} setChosen={setChosen} />
+        <AddProdOverlayBody />
       </BasicContainer>
 
     </OverlayPanel>
