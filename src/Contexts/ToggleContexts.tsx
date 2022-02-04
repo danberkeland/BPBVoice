@@ -24,6 +24,8 @@ export interface ToggleInterface {
     route: string,
     setRoute: React.Dispatch<React.SetStateAction<string>>,
     currentOrder: Order[],
+    ponote: string,
+    setPonote: React.Dispatch<React.SetStateAction<string>>,
     setCurrentOrder: React.Dispatch<React.SetStateAction<Order[]>>
 
 }
@@ -46,6 +48,7 @@ export const ToggleProvider = (props: any) => {
     const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
     const [order, setOrder] = useState<Order[]>()
     const [route, setRoute] = useState<string>();
+    const [ponote, setPonote] = useState<string>();
     const [currentOrder, setCurrentOrder] = useState<Order[]>()
 
     return (
@@ -60,6 +63,7 @@ export const ToggleProvider = (props: any) => {
                 database, setDatabase,
                 order, setOrder,
                 route, setRoute,
+                ponote, setPonote,
                 currentOrder, setCurrentOrder
 
             }}>

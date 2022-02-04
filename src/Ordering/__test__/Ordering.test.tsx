@@ -11,7 +11,7 @@ import { SpeechProvider } from "@speechly/react-client";
 
 
 const Speech= require('../Ordering');
-Speech.userInfoCheck = jest.fn(() => { return {username:'Dan'} })
+Speech.userInfoCheck = jest.fn(() => { return {user:{username:'Dan'}} })
 
 
 jest.mock('../OrderingParts/PushToTalkButton.tsx', () => ({ PushToTalk: () => '' }));

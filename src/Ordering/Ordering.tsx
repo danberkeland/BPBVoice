@@ -159,11 +159,6 @@ const {
     )
   }
 
-  const ThisOrder = () => {
-    return (
-      <DataScroll thisOrder={currentOrder} />
-    )
-  }
 
   const ControlPanel = () => {
     return (
@@ -183,7 +178,7 @@ const {
       </BasicContainer>
       <Fulfill />
       <PONote />
-      <ThisOrder />
+      <DataScroll />
       <ControlPanel />
       
     </React.Fragment>

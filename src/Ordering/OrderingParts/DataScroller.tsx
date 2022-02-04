@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { InputNumber } from 'primereact/inputnumber';
 import { DataScroller } from 'primereact/datascroller';
 import { Button } from "primereact/button";
 
 import { addOrder } from "../../helpers/addOrder";
+import { ToggleContext, ToggleInterface } from "../../Contexts/ToggleContexts";
 
 import styled from "styled-components";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../../API";
 import { AddProduct } from "./AddProduct";
+import { createMethodSignature } from "typescript";
+import { stringify } from "querystring";
 
 const ProductTitle = styled.h2`
   font-family: "Montserrat", sans-serif;
@@ -52,21 +55,39 @@ const AlignRight = styled.div`
 `;
 
 
-type Props = {
-    thisOrder: Order[]
-}
+export const DataScroll: React.FC = (): JSX.Element => {
 
+const { 
+
+  setCurrentOrder,
+  database,
+  currentOrder,
+  chosen,
+  delivDate,
+  route,
+  ponote
+  
+
+} = useContext<ToggleInterface>(ToggleContext)
+    
 const Quantity = (item): JSX.Element => {
+  let simpleItem = item.prodName
+  let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
+
+  const makeChange = (e) => {
+    console.log(e)
+    let newOrder = addOrder(database, curr, simpleItem, e.value)
+    setCurrentOrder(newOrder)
+  }
 
   return (
     <InputNumber
+      key={simpleItem}
       value={item.qty}
       size={3}
       buttonLayout="horizontal"
-      incrementButtonIcon='pi pi-plus'
-      decrementButtonIcon='pi pi-minus'
-      onChange={e => console.log(item, e)}
-      showButtons
+      onValueChange= {e => makeChange(e)}
+      
     />
     )
 }
@@ -84,13 +105,16 @@ const Rate = (item): JSX.Element => {
 }
   
 const TrashCan = (item: Order): JSX.Element => {
+  
+  let simpleItem = item.prodName
+  let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
   return (
     <AlignRight>
       
       <Button 
         icon="pi pi-trash" 
         className="p-button-rounded p-button-help p-button-outlined" 
-        onClick = {e => addOrder(item, 0)}/>
+        onClick = {e => setCurrentOrder(addOrder(database, curr, simpleItem, 0))}/>
       
       
     </AlignRight>
@@ -124,11 +148,8 @@ const itemTemplate = (item: Order) => {
   )
 }
 
-export const DataScroll: React.FC<Props> = ({ thisOrder }): JSX.Element => {
-
-  
 
     return (
-        <DataScroller value={thisOrder} itemTemplate={item => itemTemplate(item)} rows={10} inline></DataScroller>
+        <DataScroller value={currentOrder} itemTemplate={item => itemTemplate(item)} rows={10} inline></DataScroller>
     );
 };
