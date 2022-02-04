@@ -161,6 +161,6 @@ const itemTemplate = (item: Order) => {
 
 
     return (
-        <DataScroller value={currentOrder} itemTemplate={item => itemTemplate(item)} rows={10} inline></DataScroller>
+        <DataScroller value={currentOrder && currentOrder.filter(curr => curr.qty !== 0)} itemTemplate={item => itemTemplate(item)} rows={10} inline></DataScroller>
     );
 };
