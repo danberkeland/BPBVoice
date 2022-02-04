@@ -115,8 +115,8 @@ const {
     label: string;
     value: string;
   }[]]): Order[] => {
-    let custo: string = ords[1][1][ords[1][1].findIndex(custo => custo.nickName === chosen)].custName
-    let thisOrder: Order[] = ords[0].filter(or => (or.custName === custo && or.qty > 0))
+    
+    let thisOrder: Order[] = ords[0].filter(or => (or.custName === chosen && or.qty > 0))
     return thisOrder
   }
 
@@ -124,8 +124,8 @@ const {
     label: string;
     value: string;
   }[]]): string => {
-    let custo: string = ords[1][1][ords[1][1].findIndex(custo => custo.nickName === chosen)].custName
-    let route = ords[0].filter(ord => ord.custName === custo)[0].route
+ 
+    let route = ords[0].filter(ord => ord.custName === chosen)[0].route
     return route
   }
 

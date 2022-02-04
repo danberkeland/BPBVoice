@@ -52,11 +52,11 @@ export const addOrder = (
         "updatedAt": ""
     }
 
-    console.log("newItem", newItem)
+   
 
     let altpricing = database[7]
     let rate = getRate(products, newItem, altpricing)
-    console.log("gottenRate", rate)
+    
 
     let ratedOrder = { ...newItem, "rate": rate }
     ordersToUpdate.push(ratedOrder)

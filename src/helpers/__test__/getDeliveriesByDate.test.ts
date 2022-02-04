@@ -312,7 +312,7 @@ type testResultFormat = [
 const mockCustResult: {
   label: string;
   value: string;
-}[] = [{ label: "Novo", value: "novo" }];
+}[] = [{ label: "Novo", value: "Novo" }];
 
 describe("Test getDeliveriesByDate", () => {
   test("Orders with quantites of zero should not be included in full orders", () => {

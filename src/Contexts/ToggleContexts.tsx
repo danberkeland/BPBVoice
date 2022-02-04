@@ -46,7 +46,7 @@ export const ToggleProvider = (props: any) => {
     const [isModified, setIsModified] = useState(false)
     const [userInfo, setUserInfo] = useState()
     const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>([])
-    const [chosen, setChosen] = useState<string>('novo')
+    const [chosen, setChosen] = useState<string>('Novo')
     const [delivDate, setDelivDate] = useState<string>(today)
     const [database, setDatabase] = useState<Database>([[], [], [], [], [], [], [], [], []])
     const [order, setOrder] = useState<Order[]>()

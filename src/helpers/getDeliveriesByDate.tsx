@@ -169,7 +169,7 @@ export const buildCustomerList = (Order: Order[], customers: Customer[]): {
     let customerListArray = Array.from(customerListSet)
     let customerListObj = customerListArray.map(custo => ({
         label: custo,
-        value: customers[customers.findIndex(cust => cust.custName === custo)].nickName
+        value: custo,
     }))
     sortAtoZDataByIndex(customerListObj, "label")
     return customerListObj

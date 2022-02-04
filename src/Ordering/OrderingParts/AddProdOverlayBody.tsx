@@ -32,6 +32,7 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
   const { database, setIsModified, currentOrder, setCurrentOrder, chosen, delivDate, route, ponote } = useContext(ToggleContext)
 
   const [pickedProd, setPickedProd] = useState('')
+  const [qty, setQty] = useState(0)
 
   const products = database[0]
   const productList: { label: string, value: string }[] = products.map(prod => {
@@ -42,9 +43,12 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
 
     const makeChange = (e, simpleItem) => {
 
-      if (e === 0){
+      if (e !== 0){
         setIsModified(true)
+        console.log("simple",simpleItem)
+        console.log("curr", curr)
         let newOrder = addOrder(database, curr, simpleItem, e)
+        console.log("newOrder",newOrder)
         setCurrentOrder(newOrder)
      
       }
@@ -55,21 +59,20 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
         <BasicContainer>
           <Spacer>Add a Product</Spacer>
           <Spacer>
-          <Dropdown value={pickedProd} options={productList} onChange={e => setPickedProd(e.value)} placeholder="Select a Customer" />
+          <Dropdown value={pickedProd} options={productList} onChange={e => setPickedProd(e.value)} placeholder="Select a Product" />
           </Spacer>
           <Spacer>
           <InputNumber
-            value={3}
+            value={qty}
             size={3}
             buttonLayout="horizontal"
-            incrementButtonIcon='pi pi-plus'
-            decrementButtonIcon='pi pi-minus'
+            onValueChange = {e => setQty(e.value)}
             showButtons
           />
           </Spacer>
           <Spacer>TOTAL: $22.90</Spacer>
           <Spacer>
-          <Button label="ADD" icon="pi pi-plus" iconPos="right" onClick={e => console.log(e)} className="p-button-raised p-button-rounded p-button-success"/>
+          <Button label="ADD" icon="pi pi-plus" iconPos="right" onClick={e => makeChange(qty, pickedProd)} className="p-button-raised p-button-rounded p-button-success"/>
           </Spacer>
           
         </BasicContainer>
