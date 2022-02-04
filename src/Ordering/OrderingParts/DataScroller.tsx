@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { InputNumber } from 'primereact/inputnumber';
 import { DataScroller } from 'primereact/datascroller';
 import { Button } from "primereact/button";
+import { confirmPopup } from 'primereact/confirmpopup';
 
 import { addOrder } from "../../helpers/addOrder";
 import { ToggleContext, ToggleInterface } from "../../Contexts/ToggleContexts";
@@ -73,9 +74,17 @@ let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: rou
 
 
 const makeChange = (e, simpleItem) => {
-  setIsModified(true)
-  let newOrder = addOrder(database, curr, simpleItem, e)
-  setCurrentOrder(newOrder)
+
+  if (e === 0){
+    confirmPopup({
+      message: 'Are you sure you want to delete this item?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {setIsModified(true)
+        let newOrder = addOrder(database, curr, simpleItem, e)
+        setCurrentOrder(newOrder)},
+      reject: () => {return}
+  });
+  }
 }
     
 const Quantity = (item): JSX.Element => {
