@@ -41,7 +41,7 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
     let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
 
 
-    const makeChange = (e, simpleItem) => {
+    const makeChange = (e: number, simpleItem: string) => {
 
       if (e !== 0){
         setIsModified(true)

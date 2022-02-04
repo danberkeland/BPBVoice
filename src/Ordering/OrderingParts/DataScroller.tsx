@@ -41,7 +41,7 @@ const BasicContainer = styled.div`
 
 const TwoColumn = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.5fr 1fr;
   margin: 2px 0px;
   align-items: center;
   
@@ -152,7 +152,7 @@ const itemTemplate = (item: Order) => {
         <TwoColumn>
           <Quantity {...item} />
           <Previous />
-          <ProductTotal>Total: ${(item.rate * item.qty).toFixed(2)}</ProductTotal>
+          <ProductTotal>${(item.rate * item.qty).toFixed(2)}</ProductTotal>
         </TwoColumn>
       </BasicContainer>
     </React.Fragment>
