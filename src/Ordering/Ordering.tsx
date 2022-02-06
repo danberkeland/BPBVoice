@@ -53,7 +53,13 @@ const OrderButtonsFloat = styled.div`
 
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
-export const Ordering: React.FC<{}> = (): JSX.Element => {
+export const userInfoCheck = async () => {
+  const user = await Auth.currentAuthenticatedUser()
+  console.log("user",user)
+  return user
+}
+
+export const Ordering: React.FC = (): JSX.Element => {
 
 const { 
   isLoading, setIsLoading, 
@@ -72,14 +78,8 @@ const {
 
   const op = useRef(null);
 
-  const userInfoCheck = async () => {
-    const user = await Auth.currentAuthenticatedUser()
-    console.log("user",user)
-    return user
-  }
-
   useEffect(() => {
-    userInfoCheck().then(user => setUserInfo(user))
+    userInfoCheck().then(user => setUserInfo(user)).catch(err => console.log("Uh oh",err))
   }, [])
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const {
             setIsLoading(false)
             setRoute(getThisRoute(ords))
             setCurrentOrder(getThisOrder(ords))
-          });
+          }).catch(err => console.log("Uh oh",err));
 
   }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -129,7 +129,7 @@ const {
     return route
   }
 
-  const AddProdMod = () => {
+  const AddProdMod: React.FC = ():JSX.Element => {
     return (
       <React.Fragment>
         <AddProduct op={op} />
@@ -145,33 +145,42 @@ const {
     )
   }
 
-  const Submit = () => {
+  const Submit: React.FC = ():JSX.Element => {
     return (
       <React.Fragment>
-        <div><Button label="SUBMIT ORDER" className="p-button-raised p-button-rounded p-button-danger" /></div>
+        <div>
+          <Button 
+            label="SUBMIT ORDER" 
+            className="p-button-raised p-button-rounded p-button-danger" 
+            onClick = {e => setIsModified(false)}
+            /></div>
       </React.Fragment>
     )
   }
 
 
-  const CustList = () => {
+  const CustList: React.FC = ():JSX.Element => {
     return (
       <Dropdown 
           value={chosen} 
+          name="custDropDown"
           options={customerList} 
-          onChange={e => setChosen(e.value)} 
+          onChange={e => {
+            setIsModified(false);
+            setChosen(e.value)} 
+          }
           placeholder="Select a Customer" />
     )
   }
 
-  const PONote = () => {
+  const PONote: React.FC = ():JSX.Element => {
     return (
       <React.Fragment></React.Fragment>
     )
   }
 
 
-  const ControlPanel = () => {
+  const ControlPanel: React.FC = ():JSX.Element => {
     return (
       <React.Fragment></React.Fragment>
     )
@@ -197,3 +206,4 @@ const {
     </React.Fragment>
   );
 };
+

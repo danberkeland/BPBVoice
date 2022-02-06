@@ -73,7 +73,7 @@ const {
 let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
 
 
-const makeChange = (e, simpleItem) => {
+const makeChange = (e: number, simpleItem: string) => {
 
   if (e === 0){
     confirmPopup({
@@ -84,10 +84,14 @@ const makeChange = (e, simpleItem) => {
         setCurrentOrder(newOrder)},
       reject: () => {return}
   });
-  }
+  } else {
+    setIsModified(true)
+    let newOrder = addOrder(database, curr, simpleItem, e)
+    setCurrentOrder(newOrder)}
+
 }
     
-const Quantity = (item): JSX.Element => {
+const Quantity: React.FC<Order> = (item: Order): JSX.Element => {
   
   let simpleItem = item.prodName
 
@@ -103,19 +107,19 @@ const Quantity = (item): JSX.Element => {
     )
 }
 
-const Previous = (item): JSX.Element => {
+const Previous: React.FC<Order> = (item: Order): JSX.Element => {
   return (
     <React.Fragment></React.Fragment>
   )
 }
 
-const Rate = (item): JSX.Element => {
+const Rate: React.FC<Order> = (item: Order): JSX.Element => {
   return (
     <div>${item.rate}/ea.</div>
   )
 }
   
-const TrashCan = (item: Order): JSX.Element => {
+const TrashCan: React.FC<Order> = (item: Order): JSX.Element => {
   
   let simpleItem = item.prodName
   
@@ -132,7 +136,7 @@ const TrashCan = (item: Order): JSX.Element => {
   )
 }
 
-const itemTemplate = (item: Order) => {
+const itemTemplate: React.FC<Order> = (item: Order): JSX.Element => {
 
   console.log("item", item)
   return (
@@ -151,7 +155,7 @@ const itemTemplate = (item: Order) => {
         
         <TwoColumn>
           <Quantity {...item} />
-          <Previous />
+          <Previous {...item} />
           <ProductTotal>${(item.rate * item.qty).toFixed(2)}</ProductTotal>
         </TwoColumn>
       </BasicContainer>

@@ -4,19 +4,20 @@ import { ToggleContext, ToggleInterface } from "../../Contexts/ToggleContexts";
 
 export const Cal: React.FC = (): JSX.Element => {
 
-
   const {
-    delivDate, setDelivDate,
+    delivDate, setDelivDate, setIsModified
   } = useContext<ToggleInterface>(ToggleContext)
 
   const calDateSetter = (e) => {
-    var today = e.value
+
+    var today: Date = e.value
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
 
-    today = yyyy + '-' + mm + '-' + dd;
-    setDelivDate(today)
+    let newToday: string = yyyy + '-' + mm + '-' + dd;
+    setIsModified(false)
+    setDelivDate(newToday)
   }
 
   const convertToDisplayDate = (d: string): Date => {

@@ -38,7 +38,7 @@ export const getDeliveriesByDate = (delivDate: string, database: Database): [Ord
     }
 
     )
-    let customerList: { label: string, value: string }[] = buildCustomerList(Order, customers)
+    let customerList: { label: string, value: string }[] = buildCustomerList(customers)
     return [Order, database, customerList];
 };
 
@@ -159,12 +159,12 @@ export const sortAtoZDataByIndex = (data: any[], index: string):any[] => {
     return data;
 };
 
-export const buildCustomerList = (Order: Order[], customers: Customer[]): {
+export const buildCustomerList = (customers: Customer[]): {
     label: string;
     value: string;
 }[] => {
-    Order = Order.filter(full => full.isWhole === true)
-    let customerList: string[] = Order.map(ord => ord.custName)
+    
+    let customerList: string[] = customers.map(cust => cust.custName)
     let customerListSet = new Set(customerList)
     let customerListArray = Array.from(customerListSet)
     let customerListObj = customerListArray.map(custo => ({

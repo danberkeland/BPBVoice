@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { OverlayPanel } from 'primereact/overlaypanel';
 
 import { AddProdOverlayBody } from './AddProdOverlayBody'
-import { ToggleContext, ToggleInterface } from "../../Contexts/ToggleContexts";
-
 
 import styled from "styled-components";
 
@@ -24,12 +22,6 @@ type Props = {
 }
 
 export const AddProduct: React.FC<Props> = ({ op }): JSX.Element => {
-
-
-  const {
-    customerList,
-    chosen, setChosen,
-  } = useContext<ToggleInterface>(ToggleContext)
 
 
   return (

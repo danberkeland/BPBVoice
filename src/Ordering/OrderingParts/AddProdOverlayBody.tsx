@@ -31,8 +31,10 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
 
   const { database, setIsModified, currentOrder, setCurrentOrder, chosen, delivDate, route, ponote } = useContext(ToggleContext)
 
-  const [pickedProd, setPickedProd] = useState('')
-  const [qty, setQty] = useState(0)
+  
+
+  const [pickedProd, setPickedProd] = useState<string>('')
+  const [qty, setQty] = useState<number>(0)
 
   const products = database[0]
   const productList: { label: string, value: string }[] = products.map(prod => {
@@ -45,10 +47,7 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
 
       if (e !== 0){
         setIsModified(true)
-        console.log("simple",simpleItem)
-        console.log("curr", curr)
         let newOrder = addOrder(database, curr, simpleItem, e)
-        console.log("newOrder",newOrder)
         setCurrentOrder(newOrder)
      
       }
