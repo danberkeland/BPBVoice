@@ -50,9 +50,5 @@ export const PushToTalk: React.FC = (): JSX.Element => {
       size="80px" >
     </PushToTalkButton>
 
-
-
-
-
   );
 };

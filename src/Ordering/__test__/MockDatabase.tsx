@@ -180,9 +180,11 @@ const altPricing: AltPricing[] = [
 
 
 
-export const MockDatabase: Promise<(Database)> = new Promise(( resolve,reject) => {
+export const MockDatabasePromise: Promise<(Database)> = new Promise(( resolve,reject) => {
     setTimeout(() => {
         resolve([product, customer, [], standing, order, [], [], altPricing, []])
     }, 300)
     
 });
+
+export const MockDatabase: Database = [product, customer, [], standing, order, [], [], altPricing, []]

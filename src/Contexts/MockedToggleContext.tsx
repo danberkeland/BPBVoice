@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
-import { openingState as init } from './openingState';
+import { MockDatabase } from '../Ordering/__test__/MockDatabase';
 
 
 const { DateTime } = require("luxon");
@@ -43,17 +43,19 @@ export const ToggleContext = createContext<ToggleInterface | undefined>(undefine
 
 export const ToggleProvider = (props: any) => {
 
-    const [isLoading, setIsLoading] = useState(init.isLoading)
-    const [isModified, setIsModified] = useState(init.isModified)
-    const [userInfo, setUserInfo] = useState(init.userInfo)
-    const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>(init.customerList)
-    const [chosen, setChosen] = useState<string>(init.chosen)
-    const [delivDate, setDelivDate] = useState<string>(init.delivDate)
-    const [database, setDatabase] = useState<Database>(init.database)
-    const [order, setOrder] = useState<Order[]>(init.order)
-    const [route, setRoute] = useState<string>(init.route);
-    const [ponote, setPonote] = useState<string>(init.ponote);
-    const [currentOrder, setCurrentOrder] = useState<Order[]>(init.currentOrder)
+    console.log("mock",MockDatabase[4])
+
+    const [isLoading, setIsLoading] = useState(false)
+    const [isModified, setIsModified] = useState(false)
+    const [userInfo, setUserInfo] = useState()
+    const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>([])
+    const [chosen, setChosen] = useState<string>('Novo')
+    const [delivDate, setDelivDate] = useState<string>("2022-01-24")
+    const [database, setDatabase] = useState<Database>(MockDatabase)
+    const [order, setOrder] = useState<Order[]>(MockDatabase[4])
+    const [route, setRoute] = useState<string>("deliv");
+    const [ponote, setPonote] = useState<string>("");
+    const [currentOrder, setCurrentOrder] = useState<Order[]>(MockDatabase[4])
 
     return (
         <ToggleContext.Provider

@@ -17,7 +17,7 @@ import { convertDatetoBPBDate } from "../../../helpers/getDeliveriesByDate";
  let newFifteen = newToday.split('/')[0]+'/15/'+newToday.split('/')[2]
  
  
- describe("Testing Fulfillment Component", () => {
+ describe("Testing Calendar Component", () => {
      it("When date is picked, it shows properly in display (mm/dd/yyyy)", async () => {
          render(
              <ToggleProvider>

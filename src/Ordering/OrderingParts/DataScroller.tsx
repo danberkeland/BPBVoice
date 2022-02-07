@@ -21,7 +21,7 @@ const ProductTitle = styled.h2`
   color: rgb(36, 31, 31);
 `;
 
-const ProductTotal = styled.div`
+const ProductTotal = styled.h3`
   font-family: "Montserrat", sans-serif;
   font-size: 1.3em;
   padding: 0;
@@ -72,8 +72,8 @@ const {
 
 let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
 
-
 const makeChange = (e: number, simpleItem: string) => {
+  console.log("e",e)
 
   if (e === 0){
     confirmPopup({
@@ -97,6 +97,7 @@ const Quantity: React.FC<Order> = (item: Order): JSX.Element => {
 
   return (
     <InputNumber
+      name="changeQty"
       key={simpleItem}
       value={item.qty}
       size={3}
@@ -115,7 +116,7 @@ const Previous: React.FC<Order> = (item: Order): JSX.Element => {
 
 const Rate: React.FC<Order> = (item: Order): JSX.Element => {
   return (
-    <div>${item.rate}/ea.</div>
+    <div>${item.rate.toFixed(2)}/ea.</div>
   )
 }
   
@@ -137,8 +138,8 @@ const TrashCan: React.FC<Order> = (item: Order): JSX.Element => {
 }
 
 const itemTemplate: React.FC<Order> = (item: Order): JSX.Element => {
-
-  console.log("item", item)
+  console.log("I am here:", item)
+ 
   return (
     <React.Fragment>
       <BasicContainer>
@@ -156,7 +157,7 @@ const itemTemplate: React.FC<Order> = (item: Order): JSX.Element => {
         <TwoColumn>
           <Quantity {...item} />
           <Previous {...item} />
-          <ProductTotal>${(item.rate * item.qty).toFixed(2)}</ProductTotal>
+          <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
         </TwoColumn>
       </BasicContainer>
     </React.Fragment>
