@@ -4,18 +4,26 @@
  */
 
 import React from "react";
-/*
-import { render, screen } from "@testing-library/react";
+
+import { render, screen, act } from "@testing-library/react";
 import { Ordering } from "../Ordering";
+
 import { ToggleProvider } from "../../Contexts/ToggleContexts";
-import { SpeechProvider } from "@speechly/react-client";
+import { MockDatabase } from "../../Contexts/MockDatabase";
 
-import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../../API";
-
-import { MockDatabase } from "./MockDatabase";
-
+import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../../API"
+import { userInfoCheck } from "../../helpers/userInfoCheck";
 
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
+
+
+jest.mock('../../helpers/databaseFetchers', () => ({ 
+    promisedData: async (): Promise<(Database)> => {
+        return new Promise((resolve, reject) => {      
+                resolve(MockDatabase)     
+        })
+    } 
+}));
 
 jest.mock("../OrderingParts/PushToTalkButton.tsx", () => ({
     PushToTalk: () => {
@@ -26,38 +34,31 @@ jest.mock("../OrderingParts/PushToTalkButton.tsx", () => ({
     },
   }));
 
-
-jest.mock('../../helpers/databaseFetchers', () => ({ promisedData: async (): Promise<(Database)> => await MockDatabase }));
-jest.mock('aws-amplify', () => ({ Auth: jest.fn() }))
-jest.mock('../Ordering', () => ({
+jest.mock('../../helpers/userInfoCheck', () => ({
     userInfoCheck: async (): Promise<(string)> => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve('Dan')
-            }, 300)
+        return new Promise((resolve, reject) => {      
+                resolve('Dan')     
         })
-
     }
 }))
 
 
-
-
 describe("Testing Ordering Component", () => {
-    it("should offer the correct amount of customers equal to length of customer database", () => {
-        render(
+    it("should offer the correct amount of customers equal to length of customer database", async () => {
 
-            <ToggleProvider>
-                <SpeechProvider appId="685bb1db-a418-4ff1-9a0c-dfcc888e23ec" language="en-US">
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
                     <Ordering />
-                </SpeechProvider>
-            </ToggleProvider>)
+                </ToggleProvider>
+            );
+        })
+        
+
+        // eslint-disable-next-line testing-library/no-debugging-utils
+        screen.debug()
+
 
     });
-});
-*/
-
-it("should pass with this filler test", () => {
-   
-
 });

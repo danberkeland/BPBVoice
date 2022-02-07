@@ -22,6 +22,7 @@ export const getDeliveriesByDate = (delivDate: string, database: Database): [Ord
     label: string;
     value: string;
 }[]] => {
+    console.log(database[4])
     const [products, customers, routes, standing, orders, d, dd, altpricing] = database;
     let buildOrders: Order[] = buildCartList("*", delivDate, orders, customers);
     let buildStand: Order[] = buildStandList("*", delivDate, standing, customers);

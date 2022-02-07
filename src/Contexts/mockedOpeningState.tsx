@@ -1,4 +1,4 @@
-import { MockDatabase } from '../Ordering/__test__/MockDatabase';
+import { MockDatabase } from './MockDatabase';
 
 const { DateTime } = require("luxon");
 
@@ -9,7 +9,7 @@ export const mockedOpeningState = {
     isModified: false,
     userInfo: null,
     customerList: [],
-    chosen: "Kraken",
+    chosen: "Novo",
     delivDate: today,
     database: MockDatabase,
     order: MockDatabase[4],

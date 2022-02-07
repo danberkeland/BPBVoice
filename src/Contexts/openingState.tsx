@@ -22,10 +22,10 @@ export interface Opening {
     ponote: string,
 }
 
-export const openingState: Opening ={
+export const openingState: Opening = {
     isLoading: false,
     isModified: false,
-    userInfo: null,
+    userInfo: "Dan",
     customerList: [],
     chosen: "Novo",
     delivDate: today,

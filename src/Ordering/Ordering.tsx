@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import { promisedData } from "../helpers/databaseFetchers";
 import { getDeliveriesByDate } from "../helpers/getDeliveriesByDate"
 
-import { Auth } from "aws-amplify";
+import { userInfoCheck } from "../helpers/userInfoCheck";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
 import { ToggleContext, ToggleInterface } from "../Contexts/ToggleContexts";
@@ -53,11 +53,6 @@ const OrderButtonsFloat = styled.div`
 
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
-export const userInfoCheck = async () => {
-  const user = await Auth.currentAuthenticatedUser()
-  console.log("user",user)
-  return user
-}
 
 export const Ordering: React.FC = (): JSX.Element => {
 
@@ -71,6 +66,7 @@ const {
   database, setDatabase,
   order, setOrder,
   route, setRoute,
+  ponote, setPonote,
   currentOrder, setCurrentOrder
 
 } = useContext<ToggleInterface>(ToggleContext)
@@ -84,10 +80,12 @@ const {
 
   useEffect(() => {
     setIsLoading(true)
+    console.log("userInfo",userInfo)
+    let info = promisedData().then(pr => console.log("pr",pr))
     userInfo &&
       promisedData()
-        .then((db) =>
-          getDeliveriesByDate(delivDate, db)).then((ords) => {
+        .then((db) =>getDeliveriesByDate(delivDate, db)
+          ).then((ords) => {
             setOrder(ords[0])
             setDatabase(ords[1])
             setCustomerList(ords[2])

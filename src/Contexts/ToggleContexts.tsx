@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
-import { openingState as init } from './openingState';
+import { openingState } from './openingState';
 
 
 const { DateTime } = require("luxon");
@@ -43,17 +43,17 @@ export const ToggleContext = createContext<ToggleInterface | undefined>(undefine
 
 export const ToggleProvider = (props: any) => {
 
-    const [isLoading, setIsLoading] = useState(init.isLoading)
-    const [isModified, setIsModified] = useState(init.isModified)
-    const [userInfo, setUserInfo] = useState(init.userInfo)
-    const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>(init.customerList)
-    const [chosen, setChosen] = useState<string>(init.chosen)
-    const [delivDate, setDelivDate] = useState<string>(init.delivDate)
-    const [database, setDatabase] = useState<Database>(init.database)
-    const [order, setOrder] = useState<Order[]>(init.order)
-    const [route, setRoute] = useState<string>(init.route);
-    const [ponote, setPonote] = useState<string>(init.ponote);
-    const [currentOrder, setCurrentOrder] = useState<Order[]>(init.currentOrder)
+    const [isLoading, setIsLoading] = useState(openingState.isLoading)
+    const [isModified, setIsModified] = useState(openingState.isModified)
+    const [userInfo, setUserInfo] = useState(openingState.userInfo)
+    const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>(openingState.customerList)
+    const [chosen, setChosen] = useState<string>(openingState.chosen)
+    const [delivDate, setDelivDate] = useState<string>(openingState.delivDate)
+    const [database, setDatabase] = useState<Database>(openingState.database)
+    const [order, setOrder] = useState<Order[]>(openingState.order)
+    const [route, setRoute] = useState<string>(openingState.route);
+    const [ponote, setPonote] = useState<string>(openingState.ponote);
+    const [currentOrder, setCurrentOrder] = useState<Order[]>(openingState.currentOrder)
 
     return (
         <ToggleContext.Provider
