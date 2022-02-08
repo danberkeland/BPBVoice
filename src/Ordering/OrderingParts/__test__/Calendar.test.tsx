@@ -28,10 +28,6 @@ import { convertDatetoBPBDate } from "../../../helpers/getDeliveriesByDate";
         // eslint-disable-next-line testing-library/await-async-query
         let findDate = await screen.findByDisplayValue(newToday)
 
-
-        // eslint-disable-next-line testing-library/no-debugging-utils
-        screen.debug(findDate)
-
          let cal = screen.getByRole("textbox")
          fireEvent.focus(cal)
          let fifteenth = screen.getByText("15")

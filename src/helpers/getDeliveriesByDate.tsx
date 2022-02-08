@@ -22,13 +22,13 @@ export const getDeliveriesByDate = (delivDate: string, database: Database): [Ord
     label: string;
     value: string;
 }[]] => {
-    console.log(database[4])
+
     const [products, customers, routes, standing, orders, d, dd, altpricing] = database;
     let buildOrders: Order[] = buildCartList("*", delivDate, orders, customers);
     let buildStand: Order[] = buildStandList("*", delivDate, standing, customers);
     let Order: Order[] = compileOrderList(buildOrders, buildStand, customers);
     Order = Order.filter(full => full.qty > 0)
-    console.log(altpricing)
+
     Order.forEach(ord => {
         try {
             if (ord.rate === -1) {
@@ -153,7 +153,7 @@ export const compileOrderList = (cartList: Order[], standList: Order[], customer
 };
 
 
-export const sortAtoZDataByIndex = (data: any[], index: string):any[] => {
+export const sortAtoZDataByIndex = (data: any[], index: string): any[] => {
     data.sort(function (a: any, b: any) {
         return a[index] > b[index] ? 1 : -1;
     });
@@ -164,7 +164,7 @@ export const buildCustomerList = (customers: Customer[]): {
     label: string;
     value: string;
 }[] => {
-    
+
     let customerList: string[] = customers.map(cust => cust.custName)
     let customerListSet = new Set(customerList)
     let customerListArray = Array.from(customerListSet)
@@ -178,24 +178,24 @@ export const buildCustomerList = (customers: Customer[]): {
 
 export const getRate = (products: Product[], order: Order, altPricing: AltPricing[]): number => {
     let checkInd: number = altPricing.findIndex(
-      (alt) => alt.custName === order.custName && alt.prodName === order.prodName
+        (alt) => alt.custName === order.custName && alt.prodName === order.prodName
     );
     if (checkInd > -1) {
-      return altPricing[checkInd].wholePrice;
+        return altPricing[checkInd].wholePrice;
     }
     let ind: number = products.findIndex((prod) => prod.prodName === order.prodName);
     let price: number;
     if (order.rate >= 0) {
-      price = order.rate;
+        price = order.rate;
     } else {
-      price = products[ind].wholePrice;
+        price = products[ind].wholePrice;
     }
-  
-    if (!price){
-      price =0
+
+    if (!price) {
+        price = 0
     }
-  
+
     return price;
-  };
+};
 
 

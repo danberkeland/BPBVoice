@@ -37,10 +37,6 @@ describe("Testing DataScroll Component", () => {
         const productTotal = screen.getByText("$8.00")
         
 
-        
-         // eslint-disable-next-line testing-library/no-debugging-utils
-         screen.debug(productTotal)
-
         expect(productName).toBeInTheDocument()
         expect(productRate).toBeInTheDocument()
         expect(productTotal).toBeInTheDocument()

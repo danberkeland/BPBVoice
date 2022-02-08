@@ -73,7 +73,6 @@ const {
 let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
 
 const makeChange = (e: number, simpleItem: string) => {
-  console.log("e",e)
 
   if (e === 0){
     confirmPopup({
@@ -138,8 +137,7 @@ const TrashCan: React.FC<Order> = (item: Order): JSX.Element => {
 }
 
 const itemTemplate: React.FC<Order> = (item: Order): JSX.Element => {
-  console.log("I am here:", item)
- 
+  
   return (
     <React.Fragment>
       <BasicContainer>

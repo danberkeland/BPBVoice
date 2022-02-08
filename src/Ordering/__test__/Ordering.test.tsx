@@ -7,12 +7,12 @@ import React from "react";
 
 import { render, screen, act } from "@testing-library/react";
 import { Ordering } from "../Ordering";
+import UserEvent from '@testing-library/user-event'
 
 import { ToggleProvider } from "../../Contexts/ToggleContexts";
 import { MockDatabase } from "../../Contexts/MockDatabase";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../../API"
-import { userInfoCheck } from "../../helpers/userInfoCheck";
 
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
@@ -44,7 +44,7 @@ jest.mock('../../helpers/userInfoCheck', () => ({
 
 
 describe("Testing Ordering Component", () => {
-    it("should offer the correct amount of customers equal to length of customer database", async () => {
+    test("should display product name.", async () => {
 
         // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
@@ -54,11 +54,74 @@ describe("Testing Ordering Component", () => {
                 </ToggleProvider>
             );
         })
-        
+
+        const productName = screen.getByText("Baguette")
+        expect(productName).toBeInTheDocument()
+    });
+
+    test("should display product price", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+
+        const productRate = screen.getByText("$1.98/ea.")
+        expect(productRate).toBeInTheDocument()
+    });
+
+    test("should display product qty", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+ 
+        const qtyInput = screen.getByRole("spinbutton")      
+        UserEvent.type(qtyInput, '{backspace}4{enter}')
+        expect(qtyInput).toHaveDisplayValue('4')
+    });
+
+
+    test("should display product total", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+
+        const productTotal = screen.getByText("$3.96")
+        expect(productTotal).toBeInTheDocument()
+    });
+
+
+    test("should have delivery fulfillment checked", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+
+        const checkDeliv = screen.getByLabelText("Delivery")
 
         // eslint-disable-next-line testing-library/no-debugging-utils
-        screen.debug()
-
-
+        expect(checkDeliv).toBeChecked()
     });
+
 });

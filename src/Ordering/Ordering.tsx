@@ -80,8 +80,7 @@ const {
 
   useEffect(() => {
     setIsLoading(true)
-    console.log("userInfo",userInfo)
-    let info = promisedData().then(pr => console.log("pr",pr))
+    
     userInfo &&
       promisedData()
         .then((db) =>getDeliveriesByDate(delivDate, db)
