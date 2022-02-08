@@ -24,22 +24,22 @@ describe("Testing DataScroll Component", () => {
             </ToggleProvider>
         )
 
-        const qtyInput = screen.getByRole("spinbutton") 
+        const qtyInput = screen.getAllByRole("spinbutton") 
 
         
-        UserEvent.type(qtyInput, '{backspace}4{enter}')
-        expect(qtyInput).toHaveDisplayValue('4')
+        UserEvent.type(qtyInput[0], '{backspace}4{enter}')
+        expect(qtyInput[0]).toHaveDisplayValue('4')
         
 
 
-        const productName = screen.getByText("Baguette")
-        const productRate = screen.getByText("$2.00/ea.")
-        const productTotal = screen.getByText("$8.00")
+        const productName = screen.getAllByText("Baguette")
+        const productRate = screen.getAllByText("$2.00/ea.")
+        const productTotal = screen.getAllByText("$8.00")
         
 
-        expect(productName).toBeInTheDocument()
-        expect(productRate).toBeInTheDocument()
-        expect(productTotal).toBeInTheDocument()
+        expect(productName[0]).toBeInTheDocument()
+        expect(productRate[0]).toBeInTheDocument()
+        expect(productTotal[0]).toBeInTheDocument()
 
 
 

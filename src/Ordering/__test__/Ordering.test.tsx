@@ -13,6 +13,7 @@ import { ToggleProvider } from "../../Contexts/ToggleContexts";
 import { MockDatabase } from "../../Contexts/MockDatabase";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../../API"
+import userEvent from "@testing-library/user-event";
 
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
@@ -44,7 +45,7 @@ jest.mock('../../helpers/userInfoCheck', () => ({
 
 
 describe("Testing Ordering Component", () => {
-    test("should display product name.", async () => {
+    test("should display standing order product name.", async () => {
 
         // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
@@ -59,7 +60,7 @@ describe("Testing Ordering Component", () => {
         expect(productName).toBeInTheDocument()
     });
 
-    test("should display product price", async () => {
+    test("should display standing order product price", async () => {
 
         // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
@@ -74,7 +75,7 @@ describe("Testing Ordering Component", () => {
         expect(productRate).toBeInTheDocument()
     });
 
-    test("should display product qty", async () => {
+    test("should display standing order product qty", async () => {
 
         // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
@@ -91,7 +92,7 @@ describe("Testing Ordering Component", () => {
     });
 
 
-    test("should display product total", async () => {
+    test("should display standing order product total", async () => {
 
         // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
@@ -107,7 +108,7 @@ describe("Testing Ordering Component", () => {
     });
 
 
-    test("should have delivery fulfillment checked", async () => {
+    test("should have defualt fulfillment (Delivery) checked", async () => {
 
         // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
@@ -122,6 +123,89 @@ describe("Testing Ordering Component", () => {
 
         // eslint-disable-next-line testing-library/no-debugging-utils
         expect(checkDeliv).toBeChecked()
+    });
+
+    test("when qty changes, SUBMIT button appears", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+
+        
+        const qtyInput = screen.getByRole("spinbutton")      
+        UserEvent.type(qtyInput, '{backspace}4{enter}')
+
+        const submitButton = screen.getByRole("button", { name: /SUBMIT ORDER/i})
+        
+        // eslint-disable-next-line testing-library/no-debugging-utils
+        expect(submitButton).toBeVisible()
+    });
+
+    test("when SUBMIT button clicked, it disappears", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+
+        
+        const qtyInput = screen.getByRole("spinbutton")      
+        UserEvent.type(qtyInput, '{backspace}4{enter}')
+
+        const submitButton = screen.getByRole("button", { name: /SUBMIT ORDER/i})
+        userEvent.click(submitButton)
+
+        // eslint-disable-next-line testing-library/no-debugging-utils
+        expect(submitButton).not.toBeVisible()
+    });
+
+    test("When fulfillment changes, SUBMIT button appears", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+
+        const checkDeliv = screen.getByLabelText("Atown")
+        userEvent.click(checkDeliv)
+
+        const submitButton = screen.queryByRole("button", { name: /SUBMIT ORDER/i})
+
+        // eslint-disable-next-line testing-library/no-debugging-utils
+        expect(submitButton).toBeInTheDocument()
+    });
+
+    test("When fulfillment DOES NOT change, SUBMIT button DOES NOT appears", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+
+        const checkDeliv = screen.getByLabelText("Delivery")
+        userEvent.click(checkDeliv)
+
+        const submitButton = screen.queryByRole("button", { name: /SUBMIT ORDER/i})
+
+        // eslint-disable-next-line testing-library/no-debugging-utils
+        expect(submitButton).not.toBeInTheDocument()
     });
 
 });

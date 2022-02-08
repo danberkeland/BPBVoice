@@ -3,6 +3,25 @@ import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAut
 
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
+
+const { DateTime } = require("luxon");
+
+let month = DateTime.now().setZone("America/Los_Angeles").get('month');
+let year = DateTime.now().setZone("America/Los_Angeles").get('year');
+let day = DateTime.now().setZone("America/Los_Angeles").get('day');
+let testDay = 15
+
+if (day === 15){
+    testDay = 16
+}
+
+let testMonth = month.toString()
+if (testMonth.length === 1){
+    testMonth = "0"+testMonth
+}
+
+let orderDate = testMonth + "/" + testDay + "/" + year
+
 const Novo: Customer = {
     __typename: "Customer",
     id: "2b7f374c-fe23-4892-918e-dd2cb1499092",
@@ -62,6 +81,11 @@ const NovoOrder: Order = {
     createdAt: "123",
     updatedAt: "123",
 };
+
+const NovoOrder2: Order = {
+    ...NovoOrder,
+    delivDate: orderDate
+}
 
 const standingNovoBag: Standing = {
     __typename: "Standing",
@@ -171,7 +195,8 @@ const standing: Standing[] = [
 ]
 
 const order: Order[] = [
-    NovoOrder
+    NovoOrder,
+    NovoOrder2
 ]
 
 const altPricing: AltPricing[] = [

@@ -29,8 +29,15 @@ export const Fulfill: React.FC = (): JSX.Element => {
 
 
   const {
-    route, setRoute
+    route, setRoute, setIsModified
   } = useContext<ToggleInterface>(ToggleContext)
+
+  const handleChange = (val) => {
+    if (val !== route){
+      setIsModified(true)
+      setRoute(val)
+    }
+  }
 
   return (
 
@@ -43,7 +50,7 @@ export const Fulfill: React.FC = (): JSX.Element => {
           name="route"
           value="deliv"
           checked={route === 'deliv'}
-          onChange={(e) => setRoute(e.value)} />
+          onChange={(e) => handleChange(e.value)} />
 
         <label htmlFor="fulfillslo">SLO</label>
         <RadioButton
@@ -51,7 +58,7 @@ export const Fulfill: React.FC = (): JSX.Element => {
           name="route"
           value="slopick"
           checked={route === 'slopick'}
-          onChange={(e) => setRoute(e.value)} />
+          onChange={(e) => handleChange(e.value)} />
 
         <label htmlFor="fulfillatown">Atown</label>
         <RadioButton
@@ -59,7 +66,7 @@ export const Fulfill: React.FC = (): JSX.Element => {
           name="route"
           value="atownpick"
           checked={route === 'atownpick'}
-          onChange={(e) => setRoute(e.value)} />
+          onChange={(e) => handleChange(e.value)} />
 
       </FulfillOptions>
     </BasicContainer>
