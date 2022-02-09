@@ -134,7 +134,7 @@ const order4oli: Order = {
 
 const order3bag: Order = {
   "__typename": "Order",
-  "id": "02032022novo3bag",
+  "id": null,
   "qty": 3,
   "prodName": "Baguette",
   "custName": "Novo",

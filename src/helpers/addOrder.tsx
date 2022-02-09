@@ -28,16 +28,13 @@ export const addOrder = (
         return ordersToUpdate
     }
 
-    let delivDate = currentOrder.delivDate.split('/')[0] + currentOrder.delivDate.split('/')[1] + currentOrder.delivDate.split('/')[2]
+    
     let customers = database[1]
     let products = database[0]
-    let custNick = customers[customers.findIndex(cust => cust.custName === currentOrder.chosen)].nickName
-    let prodNick = products[products.findIndex(prod => prod.prodName === simpleItem)].nickName
-    let id = delivDate + custNick + qty + prodNick
-
+   
     let newItem: Order = {
         "__typename": "Order",
-        "id": id,
+        "id": null,
         "qty": qty,
         "prodName": simpleItem,
         "custName": currentOrder.chosen,

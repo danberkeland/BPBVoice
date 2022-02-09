@@ -45,6 +45,8 @@ type updateDetails = {
         
       };
 
+      console.log("ord", ord)
+
       if (ord["id"]) {
         console.log("trying update");
         updateDetails.id = ord["id"];
@@ -56,7 +58,7 @@ type updateDetails = {
           
           console.log(updateDetails.prodName, "Successful update");
         } catch (error) {
-          console.log(updateDetails.prodName, "Failed Update");
+          console.log(updateDetails.prodName, "Failed Update", error);
         }
       } else {
         console.log("trying create");

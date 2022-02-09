@@ -439,7 +439,7 @@ export type ModelOrderConditionInput = {
 
 export type Order = {
   __typename: "Order",
-  id: string,
+  id?: string,
   qty?: number | null,
   prodName: string,
   custName?: string | null,
