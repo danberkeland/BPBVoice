@@ -20,6 +20,7 @@ import { AddProduct } from "./OrderingParts/AddProduct";
 
 
 import styled from "styled-components";
+import { handleCartUpdate } from "../helpers/handleCartUpdate";
 
 const BasicContainer = styled.div`
   display: flex;
@@ -118,6 +119,14 @@ const {
     return thisOrder
   }
 
+  const handleSubmit = async () => {
+    setIsLoading(true)
+    let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
+    await handleCartUpdate(curr, database)
+    setIsModified(false)
+    setIsLoading(false)
+  }
+
   const AddProdMod: React.FC = ():JSX.Element => {
     return (
       <React.Fragment>
@@ -143,7 +152,7 @@ const {
           <Button 
             label="SUBMIT ORDER" 
             className="p-button-raised p-button-rounded p-button-danger" 
-            onClick = {e => setIsModified(false)}
+            onClick = {e => handleSubmit()}
             /></div>
       </React.Fragment>
     )
