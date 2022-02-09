@@ -4,6 +4,7 @@ import { convertDatetoBPBDate } from "./getDeliveriesByDate";
 import { graphqlOperation, API } from "aws-amplify";
 import { updateOrder, createOrder } from "../graphql/mutations";
 import { Order } from "../API";
+import { confirmDialog } from 'primereact/confirmdialog'; 
 
 type curr = {curr: Order[], chosen: string, delivDate: string, route: string, ponote: string }
 type updateDetails = {
@@ -58,7 +59,11 @@ type updateDetails = {
           
           console.log(updateDetails.prodName, "Successful update");
         } catch (error) {
-          console.log(updateDetails.prodName, "Failed Update", error);
+          confirmDialog({
+            message: `It seems there was a problem updating ${updateDetails.prodName}`,
+            header: 'Heads up!',
+            icon: 'pi pi-exclamation-triangle',
+        });
         }
       } else {
         console.log("trying create");
@@ -69,7 +74,11 @@ type updateDetails = {
           
           console.log(updateDetails.prodName, "Successful create");
         } catch (error) {
-          console.log(updateDetails.prodName, "Failed create", error);
+          confirmDialog({
+            message: `It seems there was a problem creating ${updateDetails.prodName}`,
+            header: 'Heads up!',
+            icon: 'pi pi-exclamation-triangle',
+        });
         }
       }
     }
