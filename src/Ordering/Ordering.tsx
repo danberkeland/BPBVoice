@@ -115,7 +115,6 @@ const {
   }[]]): Order[] => {
     
     let thisOrder: Order[] = ords[0].filter(or => (or.custName === chosen && or.qty > 0))
-    console.log("updated order", thisOrder)
     return thisOrder
   }
 

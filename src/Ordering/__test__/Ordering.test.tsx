@@ -226,11 +226,9 @@ describe("Testing Ordering Component", () => {
         userEvent.click(chooseProduct[0])
         const prodDrop = screen.getAllByText(/baguette/i)
         userEvent.click(prodDrop[1])
-        const allBags = screen.getAllByRole("button")
+        
         
        
-        // eslint-disable-next-line testing-library/no-debugging-utils
-        screen.debug(allBags)
       
         
 

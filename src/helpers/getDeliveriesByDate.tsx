@@ -91,15 +91,8 @@ const convertStandListtoStandArray = (
         Number(dateSplit[2])
     ).weekdayShort;
     let convertedStandList: Order[] = builtStandList.map((order) => {
-        rt = "deliv"
-        let zone: string = customers[customers.findIndex(cust => cust.custName === order["custName"])].zoneName
-        if (zone === "slopick" || zone === "Prado Retail") {
-            rt = "slopick"
-        }
-        if (zone === "atownpick" || zone === "Carlton Retail") {
-            rt = "atownpick"
-        }
-       
+        rt = getThisRoute(order["custName"], [], customers)
+        
         return {
             id: null,
             qty: order[dayOfWeek],
