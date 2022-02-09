@@ -1,6 +1,7 @@
 import { wildcardRegExp } from "wildcard-regex";
 
 import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
+import { getThisRoute } from "./getThisRoute";
 
 const clonedeep = require("lodash.clonedeep");
 
@@ -98,6 +99,7 @@ const convertStandListtoStandArray = (
         if (zone === "atownpick" || zone === "Carlton Retail") {
             rt = "atownpick"
         }
+       
         return {
             id: null,
             qty: order[dayOfWeek],

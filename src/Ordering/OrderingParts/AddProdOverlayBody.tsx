@@ -58,7 +58,8 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
         <BasicContainer>
           <Spacer>Add a Product</Spacer>
           <Spacer>
-          <Dropdown value={pickedProd} options={productList} onChange={e => setPickedProd(e.value)} placeholder="Select a Product" />
+          <label htmlFor="prodDrop" hidden>prodDrop</label>
+          <Dropdown name="prodDrop" inputId="prodDrop" value={pickedProd} options={productList} onChange={e => setPickedProd(e.value)} placeholder="Select a Product" />
           </Spacer>
           <Spacer>
           <InputNumber

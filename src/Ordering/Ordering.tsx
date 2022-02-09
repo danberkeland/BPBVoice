@@ -5,6 +5,7 @@ import { Button } from "primereact/button";
 
 import { promisedData } from "../helpers/databaseFetchers";
 import { getDeliveriesByDate } from "../helpers/getDeliveriesByDate"
+import { getThisRoute } from "../helpers/getThisRoute";
 
 import { userInfoCheck } from "../helpers/userInfoCheck";
 
@@ -89,7 +90,7 @@ const {
             setDatabase(ords[1])
             setCustomerList(ords[2])
             setIsLoading(false)
-            setRoute(getThisRoute(ords))
+            setRoute(getThisRoute(chosen, ords[0],ords[1][1]))
             setCurrentOrder(getThisOrder(ords))
           }).catch(err => console.log("Uh oh",err));
 
@@ -101,7 +102,7 @@ const {
       value: string;
   }[]] = [order, database, customerList]
   try{
-    setRoute(getThisRoute(ords))
+    setRoute(getThisRoute(chosen, ords[0],ords[1][1]))
     setCurrentOrder(getThisOrder(ords))
   } catch {}
     
@@ -114,16 +115,8 @@ const {
   }[]]): Order[] => {
     
     let thisOrder: Order[] = ords[0].filter(or => (or.custName === chosen && or.qty > 0))
+    console.log("updated order", thisOrder)
     return thisOrder
-  }
-
-  const getThisRoute = (ords: [Order[], Database, {
-    label: string;
-    value: string;
-  }[]]): string => {
- 
-    let route = ords[0].filter(ord => ord.custName === chosen)[0].route
-    return route
   }
 
   const AddProdMod: React.FC = ():JSX.Element => {
@@ -132,8 +125,10 @@ const {
         <AddProduct op={op} />
         <OrderButtonsFloat>
           {isModified && <Submit />}
+          <label htmlFor="addProd" hidden>addProd</label>
           <Button
             type="button"
+            id = "addProd"
             icon="pi pi-plus"
             onClick={(e) => op.current.toggle(e)}
             className="p-button-rounded" />

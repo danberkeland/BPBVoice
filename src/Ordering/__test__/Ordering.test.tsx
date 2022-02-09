@@ -208,4 +208,32 @@ describe("Testing Ordering Component", () => {
         expect(submitButton).not.toBeInTheDocument()
     });
 
+    test("Popup for Product selection", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+
+        const addProduct = screen.getByLabelText("addProd")
+        userEvent.click(addProduct)
+        const chooseProduct = screen.getAllByText(/select a product/i)
+        
+        userEvent.click(chooseProduct[0])
+        const prodDrop = screen.getAllByText(/baguette/i)
+        userEvent.click(prodDrop[1])
+        const allBags = screen.getAllByRole("button")
+        
+       
+        // eslint-disable-next-line testing-library/no-debugging-utils
+        screen.debug(allBags)
+      
+        
+
+    });
+
 });
