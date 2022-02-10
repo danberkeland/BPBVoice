@@ -8,6 +8,7 @@ import React from "react";
 import { render, screen, act } from "@testing-library/react";
 import { Ordering } from "../Ordering";
 import UserEvent from '@testing-library/user-event'
+import { handleCartUpdate } from "../../helpers/handleCartUpdate";
 
 import { ToggleProvider } from "../../Contexts/ToggleContexts";
 import { MockDatabase } from "../../Contexts/MockDatabase";
@@ -42,6 +43,13 @@ jest.mock('../../helpers/userInfoCheck', () => ({
         })
     }
 }))
+
+jest.mock('../../helpers/handleCartUpdate', () => ({
+    handleCartUpdate: async () => {
+        console.log("mocking function");
+        return
+
+}}))
 
 
 describe("Testing Ordering Component", () => {
@@ -162,7 +170,11 @@ describe("Testing Ordering Component", () => {
         UserEvent.type(qtyInput, '{backspace}4{enter}')
 
         const submitButton = screen.getByRole("button", { name: /SUBMIT ORDER/i})
-        userEvent.click(submitButton)
+        await act(async () => {
+            userEvent.click(submitButton)
+        })
+
+        //userEvent.click(submitButton)
 
         // eslint-disable-next-line testing-library/no-debugging-utils
         expect(submitButton).not.toBeVisible()

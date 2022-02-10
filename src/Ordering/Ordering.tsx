@@ -58,9 +58,121 @@ const OrderButtonsFloat = styled.div`
 type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
 
 
+const PONote: React.FC<{
+  ponote: string,
+  setPonote: React.Dispatch<React.SetStateAction<string>>
+}> = ({ ponote, setPonote }): JSX.Element => {
+  return (
+    <React.Fragment>
+     
+      <InputText value={ponote} onChange={(e) => setPonote(e.target.value)} placeholder="PO#/Special Instructions..." />
+      
+    </React.Fragment>
+  )
+}
+
+
+const AddProdMod: React.FC<{
+    op:any,  
+    isModified:boolean, 
+    setIsLoading:React.Dispatch<React.SetStateAction<boolean>>
+    curr: any,
+    database: Database,
+    setIsModified:React.Dispatch<React.SetStateAction<boolean>>
+  }> = ({ op, isModified, setIsLoading, curr, database, setIsModified }):JSX.Element => {
+  return (
+    <React.Fragment>
+      <AddProduct op={op} />
+      <OrderButtonsFloat>
+        {isModified && 
+          <Submit 
+            handleSubmit={handleSubmit} 
+            setIsLoading={setIsLoading} 
+            curr={curr} 
+            database={database} 
+            setIsModified={setIsModified}
+          />
+        }
+        <label htmlFor="addProd" hidden>addProd</label>
+        <Button
+          type="button"
+          id = "addProd"
+          icon="pi pi-plus"
+          onClick={(e) => op.current.toggle(e)}
+          className="p-button-rounded" />
+      </OrderButtonsFloat>
+    </React.Fragment>
+  )
+}
+
+
+const Submit: React.FC<{
+    handleSubmit: any,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+    curr: any,
+    database: Database,
+    setIsModified: React.Dispatch<React.SetStateAction<boolean>>  
+  }> = ({ handleSubmit, setIsLoading, curr, database, setIsModified }):JSX.Element => {
+  return (
+    <React.Fragment>
+      <div>
+        <Button 
+          label="SUBMIT ORDER" 
+          className="p-button-raised p-button-rounded p-button-danger" 
+          onClick = {e => handleSubmit(setIsLoading, curr, database, setIsModified)}
+          /></div>
+    </React.Fragment>
+  )
+}
+
+
+
+const CustList: React.FC<{
+    chosen: string,
+    setChosen: React.Dispatch<React.SetStateAction<string>>
+    customerList: any,
+    setIsModified: React.Dispatch<React.SetStateAction<boolean>>
+  }>  = ({ chosen, setChosen, customerList, setIsModified }):JSX.Element => {
+  return (
+    <Dropdown 
+        value={chosen} 
+        name="custDropDown"
+        options={customerList} 
+        onChange={e => {
+          setIsModified(false);
+          setChosen(e.value)} 
+        }
+        placeholder="Select a Customer" />
+  )
+}
+
+
+const getThisOrder = (chosen: string, ords: [Order[], Database, {
+  label: string;
+  value: string;
+}[]]): Order[] => {
+  
+  let thisOrder: Order[] = ords[0].filter(or => (or.custName === chosen && or.qty > 0))
+  return thisOrder
+}
+
+const handleSubmit = async ( 
+  setIsLoading:React.Dispatch<React.SetStateAction<boolean>>, 
+  curr:any,
+  database:Database, 
+  setIsModified:React.Dispatch<React.SetStateAction<boolean>> ) => {
+  setIsLoading(true)
+  
+  await handleCartUpdate(curr, database)
+  setIsModified(false)
+  setIsLoading(false)
+}
+
+
+
+
 export const Ordering: React.FC = (): JSX.Element => {
 
-  const [ povalue, setPovalue ] = useState<any | null>('')
 
 const { 
   isLoading, setIsLoading, 
@@ -79,6 +191,7 @@ const {
 
 
   const op = useRef(null);
+  let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
 
   useEffect(() => {
     userInfoCheck().then(user => setUserInfo(user)).catch(err => console.log("Uh oh",err))
@@ -96,7 +209,7 @@ const {
             setCustomerList(ords[2])
             setIsLoading(false)
             setRoute(getThisRoute(chosen, ords[0],ords[1][1]))
-            setCurrentOrder(getThisOrder(ords))
+            setCurrentOrder(getThisOrder(chosen, ords))
           }).catch(err => console.log("Uh oh",err));
 
   }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -108,82 +221,10 @@ const {
   }[]] = [order, database, customerList]
   try{
     setRoute(getThisRoute(chosen, ords[0],ords[1][1]))
-    setCurrentOrder(getThisOrder(ords))
+    setCurrentOrder(getThisOrder(chosen, ords))
   } catch {}
     
   },[chosen])
-
-
-  const getThisOrder = (ords: [Order[], Database, {
-    label: string;
-    value: string;
-  }[]]): Order[] => {
-    
-    let thisOrder: Order[] = ords[0].filter(or => (or.custName === chosen && or.qty > 0))
-    return thisOrder
-  }
-
-  const handleSubmit = async () => {
-    setIsLoading(true)
-    let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
-    await handleCartUpdate(curr, database)
-    setIsModified(false)
-    setIsLoading(false)
-  }
-
-  const AddProdMod: React.FC = ():JSX.Element => {
-    return (
-      <React.Fragment>
-        <AddProduct op={op} />
-        <OrderButtonsFloat>
-          {isModified && <Submit />}
-          <label htmlFor="addProd" hidden>addProd</label>
-          <Button
-            type="button"
-            id = "addProd"
-            icon="pi pi-plus"
-            onClick={(e) => op.current.toggle(e)}
-            className="p-button-rounded" />
-        </OrderButtonsFloat>
-      </React.Fragment>
-    )
-  }
-
-  const Submit: React.FC = ():JSX.Element => {
-    return (
-      <React.Fragment>
-        <div>
-          <Button 
-            label="SUBMIT ORDER" 
-            className="p-button-raised p-button-rounded p-button-danger" 
-            onClick = {e => handleSubmit()}
-            /></div>
-      </React.Fragment>
-    )
-  }
-
-
-  const CustList: React.FC = ():JSX.Element => {
-    return (
-      <Dropdown 
-          value={chosen} 
-          name="custDropDown"
-          options={customerList} 
-          onChange={e => {
-            setIsModified(false);
-            setChosen(e.value)} 
-          }
-          placeholder="Select a Customer" />
-    )
-  }
-
-  const PONote: React.FC = ():JSX.Element => {
-    return (
-      <React.Fragment>
-        <InputText placeholder={povalue} onBlur={e => {setPovalue(e.target.value)}}/>
-        </React.Fragment>
-    )
-  }
 
 
   const ControlPanel: React.FC = ():JSX.Element => {
@@ -192,20 +233,26 @@ const {
     )
   }
 
-
   return (
     <React.Fragment>
       <PushToTalk />
 
       {isLoading && <Loader />}
       
-      <AddProdMod />
+      <AddProdMod 
+        op={op} 
+        isModified={isModified} 
+        setIsLoading={setIsLoading}
+        curr={curr}
+        database={database}
+        setIsModified={setIsModified}
+      />
       <BasicContainer>
-        <CustList />
+        <CustList chosen={chosen} setChosen={setChosen} customerList={customerList} setIsModified={setIsModified}/>
         <Cal />
       </BasicContainer>
       <Fulfill />
-      <PONote />
+      <PONote ponote={ponote} setPonote={setPonote}/>
       <DataScroll />
       <ControlPanel />
       
