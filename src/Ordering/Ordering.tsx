@@ -1,7 +1,8 @@
-import React, { Fragment, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from "primereact/button";
+import { InputText } from 'primereact/inputtext';
 
 import { promisedData } from "../helpers/databaseFetchers";
 import { getDeliveriesByDate } from "../helpers/getDeliveriesByDate"
@@ -17,6 +18,7 @@ import { Fulfill } from "./OrderingParts/FulfillOptions";
 import { DataScroll } from "./OrderingParts/DataScroller";
 import { Cal } from "./OrderingParts/Calendar";
 import { AddProduct } from "./OrderingParts/AddProduct";
+
 
 
 import styled from "styled-components";
@@ -57,6 +59,8 @@ type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], D
 
 
 export const Ordering: React.FC = (): JSX.Element => {
+
+  const [ povalue, setPovalue ] = useState<any | null>('')
 
 const { 
   isLoading, setIsLoading, 
@@ -175,7 +179,9 @@ const {
 
   const PONote: React.FC = ():JSX.Element => {
     return (
-      <React.Fragment></React.Fragment>
+      <React.Fragment>
+        <InputText placeholder={povalue} onBlur={e => {setPovalue(e.target.value)}}/>
+        </React.Fragment>
     )
   }
 
