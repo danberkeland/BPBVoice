@@ -23,6 +23,7 @@ import { AddProduct } from "./OrderingParts/AddProduct";
 
 import styled from "styled-components";
 import { handleCartUpdate } from "../helpers/handleCartUpdate";
+import { getThisPONote } from "../helpers/getThisPONote";
 
 const BasicContainer = styled.div`
   display: flex;
@@ -61,14 +62,23 @@ type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], D
 const PONote: React.FC<{
   ponote: string,
   setPonote: React.Dispatch<React.SetStateAction<string>>
-}> = ({ ponote, setPonote }): JSX.Element => {
+  setIsModified: React.Dispatch<React.SetStateAction<boolean>>
+}> = ({ ponote, setPonote, setIsModified }): JSX.Element => {
   return (
     <React.Fragment>
      
-      <InputText value={ponote} onChange={(e) => setPonote(e.target.value)} placeholder="PO#/Special Instructions..." />
+      <InputText value={ponote} onChange={(e) => handlePonote(e.target.value, setPonote, setIsModified)} placeholder="PO#/Special Instructions..." />
       
     </React.Fragment>
   )
+}
+
+const handlePonote = (
+  val: string, 
+  setPonote:React.Dispatch<React.SetStateAction<string>>, 
+  setIsModified:React.Dispatch<React.SetStateAction<boolean>>) => {
+  setPonote(val)
+  setIsModified(true)
 }
 
 
@@ -202,13 +212,14 @@ const {
     
     userInfo &&
       promisedData()
-        .then((db) =>getDeliveriesByDate(delivDate, db)
+        .then((db) =>getDeliveriesByDate(delivDate, db, userInfo)
           ).then((ords) => {
             setOrder(ords[0])
             setDatabase(ords[1])
             setCustomerList(ords[2])
             setIsLoading(false)
             setRoute(getThisRoute(chosen, ords[0],ords[1][1]))
+            setPonote(getThisPONote(chosen, ords[0]))
             setCurrentOrder(getThisOrder(chosen, ords))
           }).catch(err => console.log("Uh oh",err));
 
@@ -221,6 +232,7 @@ const {
   }[]] = [order, database, customerList]
   try{
     setRoute(getThisRoute(chosen, ords[0],ords[1][1]))
+    setPonote(getThisPONote(chosen, ords[0]))
     setCurrentOrder(getThisOrder(chosen, ords))
   } catch {}
     
@@ -252,7 +264,7 @@ const {
         <Cal />
       </BasicContainer>
       <Fulfill />
-      <PONote ponote={ponote} setPonote={setPonote}/>
+      <PONote ponote={ponote} setPonote={setPonote} setIsModified={setIsModified}/>
       <DataScroll />
       <ControlPanel />
       

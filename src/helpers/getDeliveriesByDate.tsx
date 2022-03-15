@@ -9,6 +9,7 @@ const { DateTime } = require("luxon");
 
 
 export type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], DoughComponent[], AltPricing[], InfoQBAuth[]]
+interface UserInfo { sub: string, userName: string, authType: string}
 
 export const convertDatetoBPBDate = (ISODate: string): string => {
     let splitDate = ISODate.split("-");
@@ -19,7 +20,7 @@ export const convertDatetoBPBDate = (ISODate: string): string => {
 };
 
 
-export const getDeliveriesByDate = (delivDate: string, database: Database): [Order[], Database, {
+export const getDeliveriesByDate = (delivDate: string, database: Database, userInfo: UserInfo): [Order[], Database, {
     label: string;
     value: string;
 }[]] => {

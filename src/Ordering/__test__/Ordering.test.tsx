@@ -239,10 +239,25 @@ describe("Testing Ordering Component", () => {
         const prodDrop = screen.getAllByText(/baguette/i)
         userEvent.click(prodDrop[1])
         
+    });
+
+    test("when PONote is typed, it appears in textbox", async () => {
+
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            render(
+                <ToggleProvider>
+                    <Ordering />
+                </ToggleProvider>
+            );
+        })
+
         
-       
-      
-        
+        const poNote = screen.getByPlaceholderText("PO#/Special Instructions...")  
+        UserEvent.type(poNote, '12345')    
+        // eslint-disable-next-line testing-library/no-debugging-utils
+        screen.debug()
+        expect(poNote).toHaveValue('12345')
 
     });
 

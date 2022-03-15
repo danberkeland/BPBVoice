@@ -11,7 +11,7 @@ let today = DateTime.now().setZone("America/Los_Angeles").toString().split("T")[
 export interface Opening {
     isLoading: boolean, 
     isModified: boolean,  
-    userInfo: string, 
+    userInfo: { sub: string, userName: string, authType: string}, 
     customerList: { label: string; value: string; }[],
     chosen: string,  
     delivDate: string, 
@@ -25,7 +25,7 @@ export interface Opening {
 export const openingState: Opening = {
     isLoading: false,
     isModified: false,
-    userInfo: "Dan",
+    userInfo: { sub: '', userName: '', authType: ''},
     customerList: [],
     chosen: "Novo",
     delivDate: today,

@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { SpeechProvider } from "@speechly/react-client";
-
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
 
@@ -9,8 +8,9 @@ import "./App.css";
 import { ToggleProvider } from "./Contexts/ToggleContexts"
 
 import AppRoutes from "./AppRoutes";
-
 import Nav from "./Nav";
+
+import { userInfoCheck } from "./helpers/userInfoCheck";
 
 import { Button } from 'primereact/button';
 
@@ -39,7 +39,6 @@ interface AuthProps {
   user: any
 }
 
-
 const BigBottom = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,7 +48,22 @@ const BigBottom = styled.div`
   box-sizing: border-box;
 `;
 
+interface UserInfo { sub: string, userName: string, authType: string}
+
 export function App(props: AuthProps): JSX.Element {
+
+  const [ navUser, setNavUser ] = useState<UserInfo>({sub:'',userName: '', authType: ''})
+
+
+  useEffect(() =>{
+    console.log("user",props.user.attributes.sub)
+  },[])
+
+  
+  useEffect(() => {
+    userInfoCheck().then(user => setNavUser(user)).catch(err => console.log("Uh oh",err))
+  }, [])
+  
 
 
   return (

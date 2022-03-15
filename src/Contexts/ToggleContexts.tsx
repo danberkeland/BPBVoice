@@ -12,8 +12,8 @@ export interface ToggleInterface {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
     isModified: boolean,
     setIsModified: React.Dispatch<React.SetStateAction<boolean>>,
-    userInfo: string,
-    setUserInfo: React.Dispatch<React.SetStateAction<string>>,
+    userInfo: { sub: string, userName: string, authType: string},
+    setUserInfo: React.Dispatch<React.SetStateAction<{ sub: string, userName: string, authType: String}>>,
     customerList: { label: string; value: string; }[],
     setCustomerList: React.Dispatch<React.SetStateAction<{ label: string; value: string; }[]>>,
     chosen: string,
@@ -45,7 +45,7 @@ export const ToggleProvider = (props: any) => {
 
     const [isLoading, setIsLoading] = useState(openingState.isLoading)
     const [isModified, setIsModified] = useState(openingState.isModified)
-    const [userInfo, setUserInfo] = useState(openingState.userInfo)
+    const [userInfo, setUserInfo] = useState<{ sub: string, userName: string, authType: string}>(openingState.userInfo)
     const [customerList, setCustomerList] = useState<{ label: string; value: string; }[]>(openingState.customerList)
     const [chosen, setChosen] = useState<string>(openingState.chosen)
     const [delivDate, setDelivDate] = useState<string>(openingState.delivDate)

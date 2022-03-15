@@ -314,6 +314,8 @@ const mockCustResult: {
   value: string;
 }[] = [{ label: "Novo", value: "Novo" }];
 
+const mockUser:{ sub: string, userName: string, authType: string} = {sub:'',userName:'',authType:''}
+
 describe("Test getDeliveriesByDate", () => {
   test("Orders with quantites of zero should not be included in full orders", () => {
     const expected1: testResultFormat = [
@@ -324,7 +326,8 @@ describe("Test getDeliveriesByDate", () => {
 
     const actualValue1: testResultFormat = getDeliveriesByDate(
       "2022-01-24",
-      DB_Order_5_bag_0_croix_NO_STANDING
+      DB_Order_5_bag_0_croix_NO_STANDING,
+      mockUser
     );
     expect(actualValue1[0]).toEqual(expected1[0]);
     expect(actualValue1[2]).toEqual(expected1[2])
@@ -339,7 +342,8 @@ describe("Test getDeliveriesByDate", () => {
 
     const actualValue1: testResultFormat = getDeliveriesByDate(
       "2022-01-24",
-      DB_Order_5_bag_W_STANDING
+      DB_Order_5_bag_W_STANDING,
+      mockUser
     );
     expect(actualValue1[0]).toEqual(expected2[0]);
   });
@@ -353,7 +357,8 @@ describe("Test getDeliveriesByDate", () => {
 
     const actualValue1: testResultFormat = getDeliveriesByDate(
       "2022-01-24",
-      DB_ONLY_STANDING
+      DB_ONLY_STANDING,
+      mockUser
     );
     expect(actualValue1[0]).toEqual(expected3[0]);
   });
@@ -367,7 +372,8 @@ describe("Test getDeliveriesByDate", () => {
 
     const actualValue1: testResultFormat = getDeliveriesByDate(
       "2022-01-24",
-      DB_Order_0_bag_W_STANDING
+      DB_Order_0_bag_W_STANDING,
+      mockUser
     );
     expect(actualValue1[0]).toEqual(expected4[0]);
   });
@@ -387,7 +393,8 @@ test("Standing orders with slopick customer route end up with slopick route", ()
 
   const actualValue1: testResultFormat = getDeliveriesByDate(
     "2022-01-24",
-    DB_Novo_slopick_NO_ORDER_W_STANDING
+    DB_Novo_slopick_NO_ORDER_W_STANDING,
+    mockUser
   );
   expect(actualValue1[0]).toEqual(expected4[0]);
 });
@@ -406,7 +413,8 @@ test("If Order is for delivery but zoneName is slopick, route is slopick, not de
 
   const actualValue1: testResultFormat = getDeliveriesByDate(
     "2022-01-24",
-    DB_Novo_slopick_ORDER_5_BAG_W_STANDING
+    DB_Novo_slopick_ORDER_5_BAG_W_STANDING,
+    mockUser
   );
   expect(actualValue1[0]).toEqual(expected5[0]);
 });
@@ -425,7 +433,8 @@ test("If Order is for atownpick but zoneName is slopick, route is atownpick", ()
 
   const actualValue1: testResultFormat = getDeliveriesByDate(
     "2022-01-24",
-    DB_Novo_slopick_ORDER_atownpick_5_BAG_W_STANDING
+    DB_Novo_slopick_ORDER_atownpick_5_BAG_W_STANDING,
+    mockUser
   );
   expect(actualValue1[0]).toEqual(expected6[0]);
 });
@@ -439,7 +448,8 @@ test("Standing orders go to full order if no cart order exists AND proper altern
 
   const actualValue1: testResultFormat = getDeliveriesByDate(
     "2022-01-24",
-    DB_ONLY_STANDING_W_ALT
+    DB_ONLY_STANDING_W_ALT,
+    mockUser
   );
   expect(actualValue1[0]).toEqual(expected3[0]);
 });

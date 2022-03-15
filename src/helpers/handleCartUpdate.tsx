@@ -27,6 +27,7 @@ type updateDetails = {
 
     const products = database[0]
     const altPricing = database[7]
+    let ordsToUpdate = [...database[4]]
     for (let ord of curr.curr) {
      
       let rte = curr.route;
@@ -46,17 +47,24 @@ type updateDetails = {
         
       };
 
+      console.log("ord",ord)
+      console.log("update", updateDetails)
+
       console.log("ord", ord)
 
       if (ord["id"]) {
         console.log("trying update");
         updateDetails.id = ord["id"];
         updateDetails._version = ord["_version"];
+        let ind = ordsToUpdate.findIndex(ord => ord.custName === curr.chosen && ord.delivDate === curr.delivDate)
+        ordsToUpdate[ind].qty = ord.qty
+        ordsToUpdate[ind].PONote = curr.ponote
+        ordsToUpdate[ind].route = rte
         try {
           await API.graphql(
             graphqlOperation(updateOrder, { input: { ...updateDetails } })
           );
-          
+          // setOrders or setDatabase
           console.log(updateDetails.prodName, "Successful update");
         } catch (error) {
           confirmDialog({
@@ -67,6 +75,7 @@ type updateDetails = {
         }
       } else {
         console.log("trying create");
+        //create new line for Orders
         try {
           await API.graphql(
             graphqlOperation(createOrder, { input: { ...updateDetails } })
