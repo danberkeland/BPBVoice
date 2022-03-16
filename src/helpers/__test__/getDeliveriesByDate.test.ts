@@ -314,7 +314,7 @@ const mockCustResult: {
   value: string;
 }[] = [{ label: "Novo", value: "Novo" }];
 
-const mockUser:{ sub: string, userName: string, authType: string} = {sub:'',userName:'',authType:''}
+const mockUser:{ sub: string, userName: string, authType: string} = {sub:'',userName:'',authType:'bpbadmin'}
 
 describe("Test getDeliveriesByDate", () => {
   test("Orders with quantites of zero should not be included in full orders", () => {

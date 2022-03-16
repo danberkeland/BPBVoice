@@ -37,9 +37,9 @@ jest.mock("../OrderingParts/PushToTalkButton.tsx", () => ({
   }));
 
 jest.mock('../../helpers/userInfoCheck', () => ({
-    userInfoCheck: async (): Promise<(string)> => {
+    userInfoCheck: async (): Promise<(any)> => {
         return new Promise((resolve, reject) => {      
-                resolve('Dan')     
+                resolve({sub:'',userName: '', authType: 'bpbadmin' })     
         })
     }
 }))
