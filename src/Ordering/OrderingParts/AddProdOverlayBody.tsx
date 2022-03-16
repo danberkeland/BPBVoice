@@ -9,6 +9,8 @@ import styled from "styled-components";
 import { ToggleContext } from "../../Contexts/ToggleContexts";
 import { addOrder } from "../../helpers/addOrder";
 
+import { findAvailableProducts } from "../../helpers/findAvailableProducts";
+
 const BasicContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -36,9 +38,9 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
   const [pickedProd, setPickedProd] = useState<string>('')
   const [qty, setQty] = useState<number>(0)
 
-  const products = database[0]
+  const products = findAvailableProducts(database[0], chosen, delivDate, database[1])
   const productList: { label: string, value: string }[] = products.map(prod => {
-    return {label: prod.prodName, value: prod.prodName}})
+    return {label: prod.trueProdName, value: prod.prodName}})
 
     let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
 

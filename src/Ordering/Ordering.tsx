@@ -210,7 +210,7 @@ const {
   useEffect(() => {
     setIsLoading(true)
     
-    userInfo &&
+    userInfo.authType &&
       promisedData()
         .then((db) =>getDeliveriesByDate(delivDate, db, userInfo)
           ).then((ords) => {
@@ -224,6 +224,15 @@ const {
           }).catch(err => console.log("Uh oh",err));
 
   }, [userInfo, delivDate]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    try{
+      setChosen(customerList[0].value)
+    }catch{
+
+    }
+    
+  },[customerList])
 
   useEffect(() => {
     let ords: [Order[], Database, {

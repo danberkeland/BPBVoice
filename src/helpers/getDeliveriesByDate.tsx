@@ -41,7 +41,7 @@ export const getDeliveriesByDate = (delivDate: string, database: Database, userI
     }
 
     )
-    let customerList: { label: string, value: string }[] = buildCustomerList(customers)
+    let customerList: { label: string, value: string }[] = buildCustomerList(customers, userInfo)
     return [Order, database, customerList];
 };
 
@@ -156,12 +156,24 @@ export const sortAtoZDataByIndex = (data: any[], index: string): any[] => {
     return data;
 };
 
-export const buildCustomerList = (customers: Customer[]): {
+export const buildCustomerList = (customers: Customer[], userInfo: UserInfo): {
     label: string;
     value: string;
 }[] => {
 
-    let customerList: string[] = customers.map(cust => cust.custName)
+    let customerPreList: Customer[]
+    if (userInfo.authType !== "bpbadmin"){
+       
+        try{customerPreList = customers.filter(cust=>cust.userSubs).filter(cust => cust.userSubs.includes(userInfo.sub))}
+        catch(e){
+            console.log(e)
+        }
+        console.log("preList",customerPreList)
+    } else {
+        customerPreList = customers
+    }
+
+    let customerList = customerPreList.map(cust => cust.custName)
     let customerListSet = new Set(customerList)
     let customerListArray = Array.from(customerListSet)
     let customerListObj = customerListArray.map(custo => ({
@@ -169,6 +181,7 @@ export const buildCustomerList = (customers: Customer[]): {
         value: custo,
     }))
     sortAtoZDataByIndex(customerListObj, "label")
+    console.log("custList",customerListObj)
     return customerListObj
 }
 

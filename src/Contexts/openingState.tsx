@@ -27,7 +27,7 @@ export const openingState: Opening = {
     isModified: false,
     userInfo: { sub: '', userName: '', authType: ''},
     customerList: [],
-    chosen: "Novo",
+    chosen: "",
     delivDate: today,
     database: [[], [], [], [], [], [], [], [], []],
     order: [],
