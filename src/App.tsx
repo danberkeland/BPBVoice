@@ -9,6 +9,7 @@ import { ToggleProvider } from "./Contexts/ToggleContexts"
 
 import AppRoutes from "./AppRoutes";
 import Nav from "./Nav";
+import NavCustomers from "./NavCustomers";
 
 import { userInfoCheck } from "./helpers/userInfoCheck";
 
@@ -53,23 +54,16 @@ interface UserInfo { sub: string, userName: string, authType: string}
 export function App(props: AuthProps): JSX.Element {
 
   const [ navUser, setNavUser ] = useState<UserInfo>({sub:'',userName: '', authType: ''})
-
-
-  useEffect(() =>{
-    console.log("user",props.user.attributes.sub)
-  },[])
-
   
   useEffect(() => {
     userInfoCheck().then(user => setNavUser(user)).catch(err => console.log("Uh oh",err))
   }, [])
   
 
-
   return (
     <ToggleProvider>
 
-      <Nav />
+    {navUser.authType === "bpbadmin" ? <Nav /> : <NavCustomers />}
 
       <div className="App">
         <Title>Back Porch Bakery</Title>
