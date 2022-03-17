@@ -4,6 +4,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Button } from "primereact/button";
 import { InputNumber } from "primereact/inputnumber";
 
+import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../../API"
 
 import styled from "styled-components";
 import { ToggleContext } from "../../Contexts/ToggleContexts";
@@ -38,7 +39,7 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
   const [pickedProd, setPickedProd] = useState<string>('')
   const [qty, setQty] = useState<number>(0)
 
-  const products = findAvailableProducts(database[0], chosen, delivDate, database[1])
+  const products: Product[] = findAvailableProducts(database[0], chosen, delivDate, database[1])
   const productList: { label: string, value: string }[] = products.map(prod => {
     return {label: prod.trueProdName, value: prod.prodName}})
 
@@ -46,7 +47,7 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
 
 
     const makeChange = (e: number, simpleItem: string) => {
-
+      
       if (e !== 0){
         setIsModified(true)
         let newOrder = addOrder(database, curr, simpleItem, e)
@@ -72,7 +73,7 @@ export const AddProdOverlayBody: React.FC = (): JSX.Element => {
             showButtons
           />
           </Spacer>
-          <Spacer>TOTAL: $22.90</Spacer>
+          <Spacer>TOTAL: </Spacer>
           <Spacer>
           <Button label="ADD" icon="pi pi-plus" iconPos="right" onClick={e => makeChange(qty, pickedProd)} className="p-button-raised p-button-rounded p-button-success"/>
           </Spacer>

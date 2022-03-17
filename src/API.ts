@@ -355,6 +355,7 @@ export type Product = {
   freezerNorthFlag?: string | null,
   createdAt: string,
   updatedAt: string,
+  [key: string]: any,
 };
 
 export type UpdateProductInput = {

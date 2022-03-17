@@ -6,14 +6,9 @@ type Database = [Product[], Customer[], Route[], Standing[], Order[], Dough[], D
 
 
 export const getThisPONote = (chosen: string, orders: Order[]): string => {
-    let poNote: string = ''
-    try{
-        if (orders.filter(ord => ord.custName === chosen)[0].PONote){
-            poNote = orders.filter(ord => ord.custName === chosen)[0].PONote
-        }
-
-    
-    }catch{}
+    let poNote: string 
+    let testNote = orders.filter(ord => ord.custName === chosen)[0].PONote
+    testNote ? poNote = testNote : poNote = ''
     
     return poNote
 }

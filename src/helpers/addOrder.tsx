@@ -28,10 +28,8 @@ export const addOrder = (
         return ordersToUpdate
     }
 
-    
-    let customers = database[1]
     let products = database[0]
-   
+
     let newItem: Order = {
         "__typename": "Order",
         "id": null,
@@ -49,11 +47,11 @@ export const addOrder = (
         "updatedAt": ""
     }
 
-   
+
 
     let altpricing = database[7]
     let rate = getRate(products, newItem, altpricing)
-    
+
 
     let ratedOrder = { ...newItem, "rate": rate }
     ordersToUpdate.push(ratedOrder)

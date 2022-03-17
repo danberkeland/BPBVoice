@@ -1,26 +1,30 @@
 
 import { cloneDeep } from "lodash";
 
+import { Customer, Route, Standing, Dough, DoughComponent, AltPricing, InfoQBAuth, Order, Product } from "../API";
+
 const { DateTime, Interval } = require("luxon");
 
+ 
+
 export const findAvailableProducts = (
-    products,
-    chosen,
-    delivDate,
-    customers
+    products: Product[],
+    chosen: string,
+    delivDate: string,
+    customers: Customer[]
    
-) => {
-    let availableProducts = cloneDeep(products);
+): Product[] => {
+    let availableProducts: Product[] = cloneDeep(products);
 
     try {
-        let customProds =
+        let customProds: string[] =
             customers[customers.findIndex((custo) => chosen === custo.custName)]
                 .customProd;
         for (let custo of customProds) {
             let ind = availableProducts.findIndex(
                 (avail) => avail.prodName === custo
             );
-            let prodToUpdate = cloneDeep(availableProducts[ind].defaultInclude);
+            let prodToUpdate: boolean = cloneDeep(availableProducts[ind].defaultInclude);
 
             if (prodToUpdate === true) {
                 availableProducts[ind].defaultInclude = false;
@@ -42,12 +46,10 @@ export const findAvailableProducts = (
     let diff = Math.ceil(Interval.fromDateTimes(today, ddate).length("days"))
     Number.isNaN(diff) ? diff=0 : 
     console.log("today",today)
-    console.log("ddate",ddate)
-
+   
 
     for (let avail of availableProducts) {
-        console.log("avail",avail.leadTime)
-        console.log("diff",diff)
+       
         if (Number(avail.leadTime) > Number(diff)) {
             avail.trueProdName = avail.prodName + " (IN PRODUCTION)";
         } else {
