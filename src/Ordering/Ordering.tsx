@@ -3,6 +3,8 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from "primereact/button";
 import { InputText } from 'primereact/inputtext';
+import { Checkbox } from 'primereact/checkbox';
+
 
 import { promisedData } from "../helpers/databaseFetchers";
 import { getDeliveriesByDate } from "../helpers/getDeliveriesByDate"
@@ -200,6 +202,9 @@ const {
 } = useContext<ToggleInterface>(ToggleContext)
 
 
+const [checked, setChecked] = useState(false)
+
+
   const op = useRef(null);
   let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
 
@@ -272,6 +277,11 @@ const {
         {userInfo.authType==="bpbadmin" ? <button>ORDER GUARD ON</button> : <button>ORDER GUARD OFF</button>}
         <CustList chosen={chosen} setChosen={setChosen} customerList={customerList} setIsModified={setIsModified}/>
         <Cal />
+        <div className="field-checkbox">
+                <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} />
+                <label htmlFor="binary">{checked ? ' SHOWING LATE ORDERS' : ' NOT SHOWING LATE ORDERS'}</label>
+              </div>
+            
       </BasicContainer>
       <Fulfill />
       <PONote ponote={ponote} setPonote={setPonote} setIsModified={setIsModified}/>

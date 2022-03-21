@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { InputNumber } from 'primereact/inputnumber';
 import { DataScroller } from 'primereact/datascroller';
@@ -56,143 +56,147 @@ const AlignRight = styled.div`
 
 export const DataScroll: React.FC = (): JSX.Element => {
 
-const { 
+  const {
 
-  setCurrentOrder,
-  database,
-  setIsModified,
-  currentOrder,
-  chosen,
-  delivDate,
-  route,
-  ponote
-  
+    setCurrentOrder,
+    database,
+    setIsModified,
+    currentOrder,
+    chosen,
+    delivDate,
+    route,
+    ponote
 
-} = useContext<ToggleInterface>(ToggleContext)
 
-let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
+  } = useContext<ToggleInterface>(ToggleContext)
 
-const makeChange = (e: number, simpleItem: string) => {
 
-  // Is this a late order?  If YES, handle it ...
+  let curr = { curr: currentOrder, chosen: chosen, delivDate: delivDate, route: route, ponote: ponote }
 
-  if (e === 0){
-    confirmPopup({
-      message: 'Are you sure you want to delete this item?',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {setIsModified(true)
-        let newOrder = addOrder(database, curr, simpleItem, e)
-        setCurrentOrder(newOrder)},
-      reject: () => {return}
-  });
-  } else {
-    setIsModified(true)
-    let newOrder = addOrder(database, curr, simpleItem, e)
-    setCurrentOrder(newOrder)}
+  const makeChange = (e: number, simpleItem: string) => {
 
-}
+    // Is this a late order?  If YES, handle it ...
 
-const makeLateChange = (e: number, simpleItem: string) => {
+    if (e === 0) {
+      confirmPopup({
+        message: 'Are you sure you want to delete this item?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          setIsModified(true)
+          let newOrder = addOrder(database, curr, simpleItem, e)
+          setCurrentOrder(newOrder)
+        },
+        reject: () => { return }
+      });
+    } else {
+      setIsModified(true)
+      let newOrder = addOrder(database, curr, simpleItem, e)
+      setCurrentOrder(newOrder)
+    }
 
-}
-    
-const Quantity: React.FC<Order> = (item: Order): JSX.Element => {
-  
-  let simpleItem = item.prodName
+  }
 
-  return (
-    <InputNumber
-      name="changeQty"
-      key={simpleItem}
-      value={item.qty}
-      size={3}
-      buttonLayout="horizontal"
-      onValueChange= {e => makeChange(e.value, simpleItem)}
-      
-    />
-    )
-}
+  const makeLateChange = (e: number, simpleItem: string) => {
 
-const LateQuantity: React.FC<Order> = (item: Order): JSX.Element => {
-  
-  let simpleItem = item.prodName
+  }
 
-  return (
-    <InputNumber
-      name="changeQty"
-      key={simpleItem}
-      value={item.qty}
-      size={3}
-      buttonLayout="horizontal"
-      onValueChange= {e => makeLateChange(e.value, simpleItem)}
-      
-    />
-    )
-}
+  const Quantity: React.FC<Order> = (item: Order): JSX.Element => {
 
-const Previous: React.FC<Order> = (item: Order): JSX.Element => {
-  return (
-    <React.Fragment>PREV</React.Fragment>
-  )
-}
-
-const Rate: React.FC<Order> = (item: Order): JSX.Element => {
-  return (
-    <div>${item.rate.toFixed(2)}/ea.</div>
-  )
-}
-  
-const TrashCan: React.FC<Order> = (item: Order): JSX.Element => {
-  
-  let simpleItem = item.prodName
-  
-  return (
-    <AlignRight>
-      
-      <Button 
-        icon="pi pi-trash" 
-        className="p-button-rounded p-button-help p-button-outlined" 
-        onClick = {e => makeChange(0, simpleItem)}/>
-      
-      
-    </AlignRight>
-  )
-}
-
-const itemTemplate: React.FC<Order> = (item: Order): JSX.Element => {
-  
-  return (
-    <React.Fragment>
-      <BasicContainer>
-        <TwoColumn>
-        <div style={{ textAlign: "left" }}>
-          <ProductTitle>{item.prodName}</ProductTitle>
-          <Rate {...item} />
-          <div>If bpbadmin, late check here</div>
-        </div>
-        
-          <TrashCan {...item}/>
-        
-        
-        </TwoColumn>
-        
-        <TwoColumn  >            
-          <Quantity {...item} />
-          <Previous {...item} />
-          <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
-        </TwoColumn>
-        <TwoColumn>
-          <LateQuantity {...item} />
-          LATE
-          <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
-        </TwoColumn>
-      </BasicContainer>
-    </React.Fragment>
-  )
-}
-
+    let simpleItem = item.prodName
 
     return (
-        <DataScroller value={currentOrder && currentOrder.filter(curr => curr.qty !== 0)} itemTemplate={item => itemTemplate(item)} rows={10} inline></DataScroller>
-    );
+      <InputNumber
+        name="changeQty"
+        key={simpleItem}
+        value={item.qty}
+        size={3}
+        buttonLayout="horizontal"
+        onValueChange={e => makeChange(e.value, simpleItem)}
+
+      />
+    )
+  }
+
+  const LateQuantity: React.FC<Order> = (item: Order): JSX.Element => {
+
+    let simpleItem = item.prodName
+
+    return (
+      <InputNumber
+        name="changeQty"
+        key={simpleItem}
+        value={item.qty}
+        size={3}
+        buttonLayout="horizontal"
+        onValueChange={e => makeLateChange(e.value, simpleItem)}
+
+      />
+    )
+  }
+
+  const Previous: React.FC<Order> = (item: Order): JSX.Element => {
+    return (
+      <React.Fragment>PREV</React.Fragment>
+    )
+  }
+
+  const Rate: React.FC<Order> = (item: Order): JSX.Element => {
+    return (
+      <div>${item.rate.toFixed(2)}/ea.</div>
+    )
+  }
+
+  const TrashCan: React.FC<Order> = (item: Order): JSX.Element => {
+
+    let simpleItem = item.prodName
+
+    return (
+      <AlignRight>
+
+        <Button
+          icon="pi pi-trash"
+          className="p-button-rounded p-button-help p-button-outlined"
+          onClick={e => makeChange(0, simpleItem)} />
+
+
+      </AlignRight>
+    )
+  }
+
+  const itemTemplate: React.FC<Order> = (item: Order): JSX.Element => {
+
+    return (
+      <React.Fragment>
+        <BasicContainer>
+          <TwoColumn>
+            <div style={{ textAlign: "left" }}>
+              <ProductTitle>{item.prodName}</ProductTitle>
+              <Rate {...item} />
+              
+            </div>
+
+            <TrashCan {...item} />
+
+
+          </TwoColumn>
+
+          <TwoColumn  >
+            <Quantity {...item} />
+            <Previous {...item} />
+            <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
+          </TwoColumn>
+          <TwoColumn>
+            <LateQuantity {...item} />
+            LATE
+            <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
+          </TwoColumn>
+        </BasicContainer>
+      </React.Fragment>
+    )
+  }
+
+
+  return (
+    <DataScroller value={currentOrder && currentOrder.filter(curr => curr.qty !== 0)} itemTemplate={item => itemTemplate(item)} rows={10} inline></DataScroller>
+  );
 };
