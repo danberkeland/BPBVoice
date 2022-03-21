@@ -19,6 +19,7 @@ export interface Opening {
     order: Order[],
     route: string,
     currentOrder: Order[],
+    orderGuard: boolean,
     ponote: string,
 }
 
@@ -33,5 +34,6 @@ export const openingState: Opening = {
     order: [],
     route: "",
     ponote: "",
-    currentOrder: []
+    currentOrder: [],
+    orderGuard: false
 }

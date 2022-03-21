@@ -448,6 +448,7 @@ export type Order = {
   route?: string | null,
   SO?: number | null,
   isWhole?: boolean | null,
+  isLate?: number | null,
   delivDate?: string | null,
   timeStamp?: string | null,
   rate?: number | null,

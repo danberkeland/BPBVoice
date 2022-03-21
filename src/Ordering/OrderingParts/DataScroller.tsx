@@ -41,7 +41,7 @@ const BasicContainer = styled.div`
 
 const TwoColumn = styled.div`
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.5fr 1fr 1fr;
   margin: 2px 0px;
   align-items: center;
   
@@ -74,6 +74,8 @@ let curr = {curr: currentOrder, chosen: chosen, delivDate: delivDate, route: rou
 
 const makeChange = (e: number, simpleItem: string) => {
 
+  // Is this a late order?  If YES, handle it ...
+
   if (e === 0){
     confirmPopup({
       message: 'Are you sure you want to delete this item?',
@@ -87,6 +89,10 @@ const makeChange = (e: number, simpleItem: string) => {
     setIsModified(true)
     let newOrder = addOrder(database, curr, simpleItem, e)
     setCurrentOrder(newOrder)}
+
+}
+
+const makeLateChange = (e: number, simpleItem: string) => {
 
 }
     
@@ -107,9 +113,26 @@ const Quantity: React.FC<Order> = (item: Order): JSX.Element => {
     )
 }
 
+const LateQuantity: React.FC<Order> = (item: Order): JSX.Element => {
+  
+  let simpleItem = item.prodName
+
+  return (
+    <InputNumber
+      name="changeQty"
+      key={simpleItem}
+      value={item.qty}
+      size={3}
+      buttonLayout="horizontal"
+      onValueChange= {e => makeLateChange(e.value, simpleItem)}
+      
+    />
+    )
+}
+
 const Previous: React.FC<Order> = (item: Order): JSX.Element => {
   return (
-    <React.Fragment></React.Fragment>
+    <React.Fragment>PREV</React.Fragment>
   )
 }
 
@@ -145,6 +168,7 @@ const itemTemplate: React.FC<Order> = (item: Order): JSX.Element => {
         <div style={{ textAlign: "left" }}>
           <ProductTitle>{item.prodName}</ProductTitle>
           <Rate {...item} />
+          <div>If bpbadmin, late check here</div>
         </div>
         
           <TrashCan {...item}/>
@@ -152,9 +176,14 @@ const itemTemplate: React.FC<Order> = (item: Order): JSX.Element => {
         
         </TwoColumn>
         
-        <TwoColumn>
+        <TwoColumn  >            
           <Quantity {...item} />
           <Previous {...item} />
+          <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
+        </TwoColumn>
+        <TwoColumn>
+          <LateQuantity {...item} />
+          LATE
           <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
         </TwoColumn>
       </BasicContainer>

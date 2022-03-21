@@ -269,6 +269,7 @@ const {
         setIsModified={setIsModified}
       />
       <BasicContainer>
+        {userInfo.authType==="bpbadmin" ? <button>ORDER GUARD ON</button> : <button>ORDER GUARD OFF</button>}
         <CustList chosen={chosen} setChosen={setChosen} customerList={customerList} setIsModified={setIsModified}/>
         <Cal />
       </BasicContainer>

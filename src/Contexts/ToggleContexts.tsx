@@ -29,7 +29,9 @@ export interface ToggleInterface {
     currentOrder: Order[],
     ponote: string,
     setPonote: React.Dispatch<React.SetStateAction<string>>,
-    setCurrentOrder: React.Dispatch<React.SetStateAction<Order[]>>
+    setCurrentOrder: React.Dispatch<React.SetStateAction<Order[]>>,
+    orderGuard: boolean,
+    setOrderGuard: React.Dispatch<React.SetStateAction<boolean>>,
 
 }
 
@@ -53,6 +55,7 @@ export const ToggleProvider = (props: any) => {
     const [order, setOrder] = useState<Order[]>(openingState.order)
     const [route, setRoute] = useState<string>(openingState.route);
     const [ponote, setPonote] = useState<string>(openingState.ponote);
+    const [orderGuard, setOrderGuard] = useState<boolean>(openingState.orderGuard)
     const [currentOrder, setCurrentOrder] = useState<Order[]>(openingState.currentOrder)
 
     return (
@@ -69,7 +72,8 @@ export const ToggleProvider = (props: any) => {
                 order, setOrder,
                 route, setRoute,
                 ponote, setPonote,
-                currentOrder, setCurrentOrder
+                currentOrder, setCurrentOrder,
+                orderGuard, setOrderGuard
 
             }}>
             {props.children}

@@ -1,4 +1,3 @@
-/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
@@ -208,6 +207,7 @@ export const getOrder = /* GraphQL */ `
       delivDate
       timeStamp
       rate
+      isLate
       createdAt
       updatedAt
     }
@@ -232,6 +232,7 @@ export const listOrders = /* GraphQL */ `
         delivDate
         timeStamp
         rate
+        isLate
         createdAt
         updatedAt
       }

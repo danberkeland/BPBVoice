@@ -26,7 +26,7 @@ export const getDeliveriesByDate = (delivDate: string, database: Database, userI
 }[]] => {
 
     const [products, customers, routes, standing, orders, d, dd, altpricing] = database;
-    let buildOrders: Order[] = buildCartList("*", delivDate, orders, customers);
+    let buildOrders: Order[] = buildCartList("*", delivDate, orders);
     let buildStand: Order[] = buildStandList("*", delivDate, standing, customers);
     let Order: Order[] = compileOrderList(buildOrders, buildStand, customers);
     Order = Order.filter(full => full.qty > 0)
@@ -46,7 +46,7 @@ export const getDeliveriesByDate = (delivDate: string, database: Database, userI
 };
 
 
-export const buildCartList = (chosen: string, delivDate: string, orders: Order[], customers: Customer[]): Order[] => {
+export const buildCartList = (chosen: string, delivDate: string, orders: Order[]): Order[] => {
     let BPBDate = convertDatetoBPBDate(delivDate);
     let filteredOrders: Order[] = clonedeep(orders);
     let builtCartList: Order[] = [];
