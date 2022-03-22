@@ -16,7 +16,8 @@ export const addOrder = (
             ponote: string
         },
     simpleItem: string,
-    qty: number): Order[] => {
+    qty: number
+): Order[] => {
     let ordersToUpdate = [...currentOrder.curr]
     for (let ord of ordersToUpdate) {
         if (ord.prodName === simpleItem) {
@@ -60,4 +61,29 @@ export const addOrder = (
     return ordersToUpdate
 
 
+}
+
+
+
+
+export const addLateOrder = (
+    database: Database,
+    currentOrder:
+        {
+            curr: Order[],
+            chosen: string,
+            delivDate: string,
+            route: string,
+            ponote: string
+        },
+    simpleItem: string,
+    qty: number
+): Order[] => {
+    let ordersToUpdate = [...currentOrder.curr]
+    for (let ord of ordersToUpdate) {
+        if (ord.prodName === simpleItem) {
+            ord.isLate = qty
+            return ordersToUpdate
+        }
+    }
 }

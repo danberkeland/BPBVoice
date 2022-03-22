@@ -5,7 +5,7 @@ import { DataScroller } from 'primereact/datascroller';
 import { Button } from "primereact/button";
 import { confirmPopup } from 'primereact/confirmpopup';
 
-import { addOrder } from "../../helpers/addOrder";
+import { addOrder, addLateOrder } from "../../helpers/addOrder";
 import { ToggleContext, ToggleInterface } from "../../Contexts/ToggleContexts";
 
 import styled from "styled-components";
@@ -97,7 +97,9 @@ export const DataScroll: React.FC<{ checked: boolean }> = ({ checked }): JSX.Ele
   }
 
   const makeLateChange = (e: number, simpleItem: string) => {
-
+    setIsModified(true)
+    let newOrder = addLateOrder(database, curr, simpleItem, e)
+    setCurrentOrder(newOrder)
   }
 
   const Quantity: React.FC<Order> = (item: Order): JSX.Element => {
@@ -179,30 +181,19 @@ export const DataScroll: React.FC<{ checked: boolean }> = ({ checked }): JSX.Ele
             <div style={{ textAlign: "left" }}>
               <ProductTitle>{item.prodName}</ProductTitle>
               <Rate {...item} />
-
             </div>
-
             <TrashCan {...item} />
-
-
           </TwoColumn>
-
           <TwoColumn  >
             <Quantity {...item} />
             <Previous {...item} />
             <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
           </TwoColumn>
-         
-          {(checked || Number(item.isLate)>0) && <TwoColumn>
-              <LateQuantity {...item} />
-              {`OF ${item.qty} ARE LATE ORDERED`}
-              <ProductTotal name="productTotal">${(item.rate * Number(item.isLate) * .25).toFixed(2)}</ProductTotal>
-            </TwoColumn>}
-
-
-            
-         
-
+          {(checked || Number(item.isLate) > 0) && <TwoColumn>
+            <LateQuantity {...item} />
+            {`OF ${item.qty} ARE LATE ORDERED`}
+            <ProductTotal name="productTotal">${(item.rate * Number(item.isLate) * .25).toFixed(2)}</ProductTotal>
+          </TwoColumn>}
         </BasicContainer>
       </React.Fragment>
     )

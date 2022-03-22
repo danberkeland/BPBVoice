@@ -16,6 +16,7 @@ type updateDetails = {
         route: string,
         SO: number,
         isWhole: boolean,
+        isLate: number,
         delivDate: string,
         timeStamp: Date,
         id?: string,
@@ -24,6 +25,8 @@ type updateDetails = {
 
     
   export const handleCartUpdate = async (curr: curr, database: Database) => {
+
+    console.log("curr",curr)
 
     const products = database[0]
     const altPricing = database[7]
@@ -42,6 +45,7 @@ type updateDetails = {
         route: rte,
         SO: ord["qty"],
         isWhole: true,
+        isLate: ord["isLate"],
         delivDate: convertDatetoBPBDate(curr.delivDate),
         timeStamp: new Date(),
         
@@ -49,15 +53,17 @@ type updateDetails = {
 
       console.log("ord",ord)
       console.log("update", updateDetails)
-
-      console.log("ord", ord)
+      console.log("curr", curr)
 
       if (ord["id"]) {
         console.log("trying update");
         updateDetails.id = ord["id"];
         updateDetails._version = ord["_version"];
-        let ind = ordsToUpdate.findIndex(ord => ord.custName === curr.chosen && ord.delivDate === curr.delivDate)
+        console.log("ordsToUpdate",ordsToUpdate)
+        let ind = ordsToUpdate.findIndex(ord => ord.custName === curr.chosen && ord.delivDate === convertDatetoBPBDate(curr.delivDate))
+        console.log("ind",ind)
         ordsToUpdate[ind].qty = ord.qty
+        ordsToUpdate[ind].isLate = ord.isLate
         ordsToUpdate[ind].PONote = curr.ponote
         ordsToUpdate[ind].route = rte
         try {
