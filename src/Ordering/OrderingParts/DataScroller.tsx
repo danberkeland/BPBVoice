@@ -54,7 +54,7 @@ const AlignRight = styled.div`
 `;
 
 
-export const DataScroll: React.FC = (): JSX.Element => {
+export const DataScroll: React.FC<{ checked: boolean }> = ({ checked }): JSX.Element => {
 
   const {
 
@@ -114,6 +114,7 @@ export const DataScroll: React.FC = (): JSX.Element => {
         onValueChange={e => makeChange(e.value, simpleItem)}
 
       />
+
     )
   }
 
@@ -122,15 +123,21 @@ export const DataScroll: React.FC = (): JSX.Element => {
     let simpleItem = item.prodName
 
     return (
-      <InputNumber
-        name="changeQty"
-        key={simpleItem}
-        value={item.qty}
-        size={3}
-        buttonLayout="horizontal"
-        onValueChange={e => makeLateChange(e.value, simpleItem)}
 
-      />
+      <React.Fragment>
+        {checked ? <InputNumber
+          name="changeQty"
+          key={simpleItem}
+          value={Number(item.isLate)}
+          size={3}
+          buttonLayout="horizontal"
+          onValueChange={e => makeLateChange(e.value, simpleItem)}
+
+        /> : <div>{Number(item.isLate)}</div>}
+      </React.Fragment>
+
+
+
     )
   }
 
@@ -172,7 +179,7 @@ export const DataScroll: React.FC = (): JSX.Element => {
             <div style={{ textAlign: "left" }}>
               <ProductTitle>{item.prodName}</ProductTitle>
               <Rate {...item} />
-              
+
             </div>
 
             <TrashCan {...item} />
@@ -185,11 +192,17 @@ export const DataScroll: React.FC = (): JSX.Element => {
             <Previous {...item} />
             <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
           </TwoColumn>
-          <TwoColumn>
-            <LateQuantity {...item} />
-            LATE
-            <ProductTotal name="productTotal">${(item.rate * item.qty).toFixed(2)}</ProductTotal>
-          </TwoColumn>
+         
+          {(checked || Number(item.isLate)>0) && <TwoColumn>
+              <LateQuantity {...item} />
+              {`OF ${item.qty} ARE LATE ORDERED`}
+              <ProductTotal name="productTotal">${(item.rate * Number(item.isLate) * .25).toFixed(2)}</ProductTotal>
+            </TwoColumn>}
+
+
+            
+         
+
         </BasicContainer>
       </React.Fragment>
     )

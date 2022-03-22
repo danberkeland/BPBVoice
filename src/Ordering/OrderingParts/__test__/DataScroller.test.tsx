@@ -20,7 +20,7 @@ describe("Testing DataScroll Component", () => {
 
         render(
             <ToggleProvider>
-                <DataScroll />
+                <DataScroll checked={false}/>
             </ToggleProvider>
         )
 

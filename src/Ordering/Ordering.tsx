@@ -279,13 +279,13 @@ const [checked, setChecked] = useState(false)
         <Cal />
         <div className="field-checkbox">
                 <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} />
-                <label htmlFor="binary">{checked ? ' SHOWING LATE ORDERS' : ' NOT SHOWING LATE ORDERS'}</label>
+                <label htmlFor="binary">{checked ? ' EDITING LATE ORDERS' : ' NOT EDITING LATE ORDERS'}</label>
               </div>
             
       </BasicContainer>
       <Fulfill />
       <PONote ponote={ponote} setPonote={setPonote} setIsModified={setIsModified}/>
-      <DataScroll />
+      <DataScroll checked={checked}/>
       <ControlPanel />
       
     </React.Fragment>
