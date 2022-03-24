@@ -6,6 +6,9 @@ import { updateOrder, createOrder } from "../graphql/mutations";
 import { Order } from "../API";
 import { confirmDialog } from 'primereact/confirmdialog'; 
 
+
+const { DateTime, Interval } = require("luxon");
+
 type curr = {curr: Order[], chosen: string, delivDate: string, route: string, ponote: string }
 type updateDetails = {
         qty: number,
@@ -27,6 +30,7 @@ type updateDetails = {
   export const handleCartUpdate = async (curr: curr, database: Database) => {
 
     console.log("curr",curr)
+    curr = handleLateOrder(curr,database)
 
     const products = database[0]
     const altPricing = database[7]
@@ -98,4 +102,33 @@ type updateDetails = {
       }
     }
   };
+
+
+  export const handleLateOrder = (curr: curr, database: Database) => {
+ 
+  
+  let today = DateTime.now().setZone("America/Los_Angeles");
+  let ddate = DateTime.fromISO(curr.delivDate).setZone("America/Los_Angeles");
+  let diff = Number(Math.ceil(Interval.fromDateTimes(today, ddate).length("days")))
+    
+  let products = database[0]
+    for (let ord of curr.curr){
+      console.log("got here 1")
+      console.log("ordCurr",ord)
+      let prodInd = products.findIndex(prod => ord.prodName===prod.prodName)
+      let leadtime = products[prodInd].leadTime
+      console.log("leadTime",leadtime)
+      console.log("diff",diff)
+      if (Number(leadtime) > Number(diff)){
+        console.log("got here 2")
+        ord.isLate = Number(ord.isLate) + (Number(ord.qty)-Number(ord.SO))
+        if (ord.isLate<0){
+          console.log("got here 3")
+          ord.isLate=0
+        }
+      }
+    }
+    
+    return curr
+  }
 

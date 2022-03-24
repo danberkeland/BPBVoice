@@ -132,6 +132,8 @@ export const DataScroll: React.FC<{ checked: boolean }> = ({ checked }): JSX.Ele
           key={simpleItem}
           value={Number(item.isLate)}
           size={3}
+          min={0}
+          max={item.qty}
           buttonLayout="horizontal"
           onValueChange={e => makeLateChange(e.value, simpleItem)}
 
