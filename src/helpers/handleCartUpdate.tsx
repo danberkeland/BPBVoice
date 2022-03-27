@@ -29,7 +29,6 @@ type updateDetails = {
     
   export const handleCartUpdate = async (curr: curr, database: Database) => {
 
-    console.log("curr",curr)
     curr = handleLateOrder(curr,database)
 
     const products = database[0]
@@ -55,17 +54,10 @@ type updateDetails = {
         
       };
 
-      console.log("ord",ord)
-      console.log("update", updateDetails)
-      console.log("curr", curr)
-
       if (ord["id"]) {
-        console.log("trying update");
         updateDetails.id = ord["id"];
         updateDetails._version = ord["_version"];
-        console.log("ordsToUpdate",ordsToUpdate)
         let ind = ordsToUpdate.findIndex(ord => ord.custName === curr.chosen && ord.delivDate === convertDatetoBPBDate(curr.delivDate))
-        console.log("ind",ind)
         ordsToUpdate[ind].qty = ord.qty
         ordsToUpdate[ind].isLate = ord.isLate
         ordsToUpdate[ind].PONote = curr.ponote
@@ -113,22 +105,15 @@ type updateDetails = {
     
   let products = database[0]
     for (let ord of curr.curr){
-      console.log("got here 1")
-      console.log("ordCurr",ord)
       let prodInd = products.findIndex(prod => ord.prodName===prod.prodName)
       let leadtime = products[prodInd].leadTime
-      console.log("leadTime",leadtime)
-      console.log("diff",diff)
       if (Number(leadtime) > Number(diff)){
-        console.log("got here 2")
         ord.isLate = Number(ord.isLate) + (Number(ord.qty)-Number(ord.SO))
         if (ord.isLate<0){
-          console.log("got here 3")
           ord.isLate=0
         }
       }
-    }
-    
+    }   
     return curr
   }
 
